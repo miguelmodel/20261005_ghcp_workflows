@@ -1,7 +1,7 @@
 ---
 orchestrator_version: 1
 started_at: 2026-10-05T18:48:53Z
-last_updated: 2026-10-05T23:02:00Z
+last_updated: 2026-10-06T11:18:00Z
 current_phase: done
 current_gate: complete
 review_cycle:
@@ -32,11 +32,11 @@ review_cycle:
 | Content | presentation-content | ✅ done | 2/3 | presentation-content.md (v2) | APPROVED r2 (40/50) |
 | Gate 3 | post-content | ✅ done | – | brief.md (Visual preferences) | Auto-decided: GitHub Cosmos theme |
 | Slides | build/review | ✅ done | 2/3 | presentation/2026-10-05T2153-v2-copilot-cli-subagents-orchestration/ (current, build v2) | APPROVED r2 (0/0/0). v2 http://localhost:5174/ (PID 26080); v1 http://localhost:5173/ (PID 45444) |
-| Gate 4 | final summary | ✅ done | – | — | User pre-instructed: local review only, **no publish / no GitHub commit** |
+| Gate 4 | final summary | ✅ done | – | — | User reviewed locally, then opted in to publish (2026-10-06) |
+| Publish | GitHub repo + Pages | ✅ done | – | https://github.com/miguelmodel/20261005_ghcp_workflows (public; `main` = project, `gh-pages` = build v2 `dist/`) | Live: https://miguelmodel.github.io/20261005_ghcp_workflows/ — verified HTTP 200, `#slide-container`, 49 slides render |
 
 ## Open user decisions
-- Local review of build v2 by the user (requested). Optional later: GitHub Pages publish (not requested).
-- Preview servers still running (not stopped without instruction): v2 http://localhost:5174/ PID 26080; v1 http://localhost:5173/ PID 45444.
+- None. Optional: stop local preview servers (still running): v2 http://localhost:5174/ PID 26080; v1 http://localhost:5173/ PID 45444.
 
 ## Revision log (UTC)
 - 2026-10-05T18:48:53Z — Provisioned research/, agent-reviews/, presentation/ (verified).
@@ -85,6 +85,9 @@ review_cycle:
 - 2026-10-05T22:20:00Z — Slide review round 2 BLOCKED_REQUIRED_CAPABILITY (playwright/*; stage: invocation; browser_evaluate timeout during theme matrix). Review file untouched; 0 rounds consumed. Retried with bounded evaluate guidance.
 - 2026-10-05T23:00:00Z — Slide review round 2 (build v2): APPROVED (49 clean; 0 🔴 / 0 🟡 / 0 🟢; 49 fresh screenshots).
 - 2026-10-05T23:02:00Z — Gate 4: final summary prepared; per user instruction no GitHub commit/publish. Status set done/complete; running `presentation-check.py final`.
+- 2026-10-06T11:10:00Z — User opted in to publish: account miguelmodel, repo 20261005_ghcp_workflows, public, GitHub Pages. Added `.gitignore` (node_modules, dist, logs, .playwright-mcp) and README; staged files scanned clean for secrets/local paths; initial commit pushed to `main` of https://github.com/miguelmodel/20261005_ghcp_workflows.
+- 2026-10-06T11:14:00Z — Fresh `npm run build -- --base=/20261005_ghcp_workflows/` in build v2 (49 slides) + `dist/.nojekyll`; pushed `dist/` to `gh-pages`; Pages source gh-pages `/` (public); Pages build status `built`.
+- 2026-10-06T11:17:00Z — Live verification: https://miguelmodel.github.io/20261005_ghcp_workflows/ HTTP 200 with `#slide-container`; JS/CSS/slide-001/slide-049 HTTP 200; headless Edge render shows 49 slides, counter `1 / 49`. Local publish `dist/` removed (dev base remains `/`).
 
 ## Infrastructure blockers
 - 2026-10-05T19:10Z — R1 reviewer: WebIQ-MCP `browse` transient server error (invocation). Retrying; zero rounds consumed.
