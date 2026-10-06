@@ -1,0 +1,57 @@
+<article class="slide is-dense" data-number="21" data-type="code-example" data-section="Configuration &amp; MCP">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Share MCP config without committing secrets</h1>
+    <div class="slide-main">
+      <div class="code-split">
+        <figure class="code-figure">
+          <div class="code-head" aria-hidden="true"><span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span><p class="code-lang">jsonc</p></div>
+<pre class="code-block" aria-label=".github/mcp.json example"><code><span class="t-com">// .github/mcp.json (committed; loads only in trusted folders)</span>
+<span class="t-pun">{</span>
+  <span class="t-key">"mcpServers"</span><span class="t-pun">: {</span>
+    <span class="t-key">"playwright"</span><span class="t-pun">: {</span>
+      <span class="t-key">"type"</span><span class="t-pun">:</span> <span class="t-str">"stdio"</span><span class="t-pun">,</span>
+      <span class="t-key">"command"</span><span class="t-pun">:</span> <span class="t-str">"npx"</span><span class="t-pun">,</span>
+      <span class="t-key">"args"</span><span class="t-pun">: [</span><span class="t-str">"@playwright/mcp@latest"</span><span class="t-pun">],</span>
+      <span class="t-key">"tools"</span><span class="t-pun">: [</span><span class="t-str">"*"</span><span class="t-pun">]</span>
+    <span class="t-pun">},</span>
+    <span class="t-key">"context7"</span><span class="t-pun">: {</span>
+      <span class="t-key">"type"</span><span class="t-pun">:</span> <span class="t-str">"http"</span><span class="t-pun">,</span>
+      <span class="t-key">"url"</span><span class="t-pun">:</span> <span class="t-str">"https://mcp.context7.com/mcp"</span><span class="t-pun">,</span>
+      <span class="t-key">"headers"</span><span class="t-pun">: {</span> <span class="t-key">"CONTEXT7_API_KEY"</span><span class="t-pun">:</span> <span class="t-str">"<span class="t-var">${CONTEXT7_API_KEY}</span>"</span> <span class="t-pun">},</span>
+      <span class="t-key">"tools"</span><span class="t-pun">: [</span><span class="t-str">"*"</span><span class="t-pun">]</span>
+    <span class="t-pun">}</span>
+  <span class="t-pun">}</span>
+<span class="t-pun">}</span></code></pre>
+        </figure>
+        <div class="side-stack">
+          <div class="annot">
+            <span class="side-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+            <p><code>${VAR}</code> is read from each developer's shell, so the secret never enters Git.</p>
+          </div>
+          <div class="annot">
+            <span class="side-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 17l6-6-6-6M12 19h8"/></svg></span>
+            <p>Local servers inherit only <code>PATH</code>; pass anything else through <code>env</code>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>Adapted from the docs: server definitions from "Adding MCP servers", plus the reference's <code>${VAR}</code> expansion (supported in <code>env</code> and in remote <code>headers</code>). Delete the <code>//</code> comment line before saving; GitHub documents only <code>settings.json</code> as accepting JSON with comments.</p>
+    <p>Points to make:</p>
+    <ul>
+      <li><code>stdio</code> vs <code>http</code>: local process vs remote Streamable HTTP. Prefer <code>stdio</code> as the type name for portability to VS Code and the cloud agent.</li>
+      <li><code>"tools": ["*"]</code> exposes every tool from a server. In real use, narrow it to the tools you need; the github-mcp-server README notes that fewer tools "can help the LLM with tool choice and reduce the context size."</li>
+      <li>For local servers added via <code>/mcp add</code>, "The <code>PATH</code> variable is automatically inherited from your environment. All other environment variables must be configured here."</li>
+      <li><code>/mcp add</code> makes a server available immediately; after hand-editing a config file, restart (or try <code>/mcp reload</code>, whose exact scope isn't documented).</li>
+    </ul>
+    <p>Security notes from the permissions research:</p>
+    <ul>
+      <li><code>--secret-env-vars</code> masks values in output and logs; it is not documented as removing variables from child-process environments. Don't export secrets a task doesn't need.</li>
+      <li><code>copilot mcp add --show-secrets</code> can print header and env values; avoid it on shared screens.</li>
+    </ul>
+    <p>Transition: "Once you've got agents, skills, hooks and MCP config you like, how do you share the whole set?"</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-customization-mcp.md, research/2026-10-05-cli-permissions-guardrails.md</p>
+  </aside>
+</article>

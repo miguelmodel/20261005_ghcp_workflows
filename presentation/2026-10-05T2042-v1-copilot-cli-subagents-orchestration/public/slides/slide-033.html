@@ -1,0 +1,38 @@
+<article class="slide" data-number="33" data-type="table" data-section="Parallel &amp; delegated workflows">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Out-of-the-box multi-agent commands</h1>
+    <div class="slide-main">
+      <table class="slide-table table-md">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 22%">Command</th>
+            <th scope="col" style="width: 42%">What runs</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row"><code>/plan</code></th><td>Main agent plans; helper subagents inherit plan-mode limits</td><td class="status-cell"><span class="badge badge-announce">Included in the Copilot CLI GA announcement (2026-02-25)</span></td></tr>
+          <tr><th scope="row">Autopilot (<kbd>Shift+Tab</kbd>)</th><td>Main agent keeps working until done, blocked, or capped</td><td class="status-cell"><span class="badge badge-announce">Included in the Copilot CLI GA announcement (2026-02-25)</span></td></tr>
+          <tr><th scope="row"><code>/review</code></th><td><code>code-review</code> agent</td><td class="status-cell"><span class="badge badge-announce">Included in the Copilot CLI GA announcement (2026-02-25)</span></td></tr>
+          <tr><th scope="row"><code>/security-review</code></th><td><code>security-review</code> agent</td><td class="status-cell"><span class="badge badge-preview">Public preview (experimental), announced 2026-06-10</span></td></tr>
+          <tr><th scope="row"><code>/rubber-duck</code></th><td><code>rubber-duck</code> agent on a different model family</td><td class="status-cell"><span class="badge badge-ga">GA (2026-06-02)</span></td></tr>
+          <tr><th scope="row"><code>/research</code></th><td><code>research</code> agent writes a cited report</td><td class="status-cell"><span class="badge badge-shipped">Shipped in CLI v0.0.417 (2026-02-25); no separate status label</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>These are the "free" multi-agent features: no configuration needed.</p>
+    <p>Highlights:</p>
+    <ul>
+      <li><strong><code>/research TOPIC</code></strong> starts a specialized research agent that gathers information from your codebase, GitHub and the web and writes a Markdown report with citations. It "never interrupts you with clarifying questions", records assumptions in a "Confidence Assessment" section, uses a fixed model, and "produces a report, not code modifications."</li>
+      <li><strong>Autopilot</strong> keeps going until the task is complete, a problem blocks progress, you press <code>Ctrl+C</code>, or it hits the continuation limit. The docs disagree on the default limit (5 vs unlimited), so set <code>--max-autopilot-continues</code> explicitly. With limited permissions, autopilot auto-denies anything that needs approval. <code>--no-ask-user</code> is different: it suppresses questions but doesn't keep going on its own.</li>
+      <li><strong><code>/review</code></strong> can take a prompt: the best-practices guide suggests asking it to use two named models for a multi-model review of your branch against <code>main</code>.</li>
+      <li><strong><code>/security-review</code></strong> before opening a PR; triage high-severity findings first.</li>
+    </ul>
+    <p>Also available: <code>/pr</code> (shipped in CLI v1.0.5, 2026-03-13; no separate status label) manages the PR lifecycle. Its self-paced <code>auto</code> loop has no dated introduction, so it's not demoed.</p>
+    <p>Transition: "All of this also works without a human at the keyboard."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-fleet-delegate-workflows.md, research/2026-10-05-cli-subagent-foundations.md, research/2026-10-05-cli-permissions-guardrails.md</p>
+  </aside>
+</article>

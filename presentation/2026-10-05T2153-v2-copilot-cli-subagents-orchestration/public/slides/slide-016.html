@@ -1,0 +1,42 @@
+<article class="slide" data-number="16" data-type="comparison" data-section="Custom agents">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Session agent vs delegated subagent</h1>
+    <div class="slide-main">
+      <table class="slide-table table-md compare-table">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 20%"><span class="visually-hidden">Aspect</span></th>
+            <th scope="col" style="width: 40%">Session agent</th>
+            <th scope="col">Delegated subagent</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">How it starts</th><td>You pick it: <code>/agent</code>, <code>--agent</code>, or by inference</td><td>The main agent dispatches it through the <code>task</code> tool</td></tr>
+          <tr><th scope="row">Context</th><td>Drives the whole session in the main window</td><td>Its own context window; returns a result</td></tr>
+          <tr><th scope="row">Repo instructions</th><td>Applied automatically</td><td>Only with <code>include-custom-instructions: true</code></td></tr>
+          <tr><th scope="row">Typical use</th><td>&ldquo;Be this specialist for the whole session&rdquo;</td><td>&ldquo;Do this one piece of work, then report back&rdquo;</td></tr>
+        </tbody>
+      </table>
+      <figure class="code-figure">
+        <div class="code-head" aria-hidden="true"><span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span><p class="code-lang">shell</p></div>
+<pre class="code-block code-lg"><code><span class="t-cmd">copilot</span> <span class="t-flag">--agent</span> security-auditor <span class="t-flag">--prompt</span> <span class="t-str">"Check /src/app/validator.go"</span></code></pre>
+      </figure>
+      <p class="slide-body is-sm">Or ask in a normal session: <code>Use the security-auditor agent on all files in the /src/app directory</code></p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>The same <code>.agent.md</code> file serves both roles; isolation comes from <strong>delegation</strong>, not from the file itself.</p>
+    <p>The CLI how-to documents four ways to use a custom agent:</p>
+    <ol>
+      <li><code>/agent</code> to browse and select (built-in agents aren't in that list).</li>
+      <li><code>--agent &lt;id-or-name&gt;</code> at launch, interactive or with <code>--prompt</code>.</li>
+      <li>An explicit instruction in your prompt, like the second example.</li>
+      <li>Inference: Copilot picks the agent from its <code>description</code>. The docs' example puts the trigger word "seccheck" in the description, so <code>seccheck /src/app/validator.go</code> routes to it.</li>
+    </ol>
+    <p>Honest gap: the docs don't say whether an inferred or prompt-requested agent runs as the session agent or as a delegated subagent. For demos, use <code>/agent</code>/<code>--agent</code> to show session selection, and an explicit delegation prompt with <code>/tasks</code> open to show subagent isolation.</p>
+    <p>Small gotchas: <code>/clear</code> and <code>/new</code> reset the active custom agent. For programmatic runs, the reference says <code>--allow-all-tools</code> is "required", while the how-tos show <code>-p</code> working with scoped <code>--allow-tool</code> values; prefer least privilege.</p>
+    <p>Transition: "Whichever way it runs, the <code>tools</code> list is the hard boundary. And it flows downhill."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-custom-agents.md, research/2026-10-05-cli-customization-mcp.md, research/2026-10-05-cli-fleet-delegate-workflows.md</p>
+  </aside>
+</article>

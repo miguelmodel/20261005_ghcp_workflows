@@ -1,0 +1,40 @@
+<article class="slide" data-number="31" data-type="code-example" data-section="Parallel &amp; delegated workflows">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Prompting for parallelism</h1>
+    <div class="slide-main">
+      <figure class="code-figure">
+        <div class="code-head" aria-hidden="true"><span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span><p class="code-lang">prompt</p></div>
+<pre class="code-block code-lg" aria-label="/fleet prompt"><code><span class="t-cmd">/fleet</span> Create docs for the API module:
+<span class="t-kw">-</span> <span class="t-key">docs/authentication.md</span> covering token flow and examples
+<span class="t-kw">-</span> <span class="t-key">docs/endpoints.md</span> with request/response schemas for all REST endpoints
+<span class="t-kw">-</span> <span class="t-key">docs/errors.md</span> with error codes and troubleshooting steps
+<span class="t-kw">-</span> <span class="t-key">docs/index.md</span> linking to all three pages <span class="t-var">(depends on the others finishing first)</span></code></pre>
+      </figure>
+      <div class="annot-row">
+        <div class="annot">
+          <span class="side-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg></span>
+          <p>One concrete deliverable per line, each owning its own file.</p>
+        </div>
+        <div class="annot">
+          <span class="side-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h4M4 12h4M4 18h4"/><path d="M8 6c6 0 6 6 10 6M8 18c6 0 6-6 10-6M8 12h10"/><path d="m16 10 2 2-2 2"/></svg></span>
+          <p>A declared dependency becomes a second wave; everything else runs in parallel.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>Verbatim prompt from the GitHub Blog post on <code>/fleet</code>. Expected shape: three subagents in the first wave, then <code>docs/index.md</code> in a second wave.</p>
+    <p>The blog's four rules:</p>
+    <ol>
+      <li>Name a concrete deliverable for every work item (a file, a test suite, a doc section). "Vague prompts lead to sequential execution because the orchestrator can't identify independent pieces."</li>
+      <li>Set explicit boundaries: which directories each track owns, what must not be touched, which checks must pass.</li>
+      <li>Declare dependencies; the orchestrator "will serialize those items and parallelize the rest."</li>
+      <li>Use custom agents for different kinds of work (a heavier model for complex logic, a lighter one for boilerplate).</li>
+    </ol>
+    <p>The SDK fleet docs add: give each worker complete context ("sub-agents are stateless across calls"), require each to report what it changed, how it validated, and what's blocked, and have the parent verify the combined result.</p>
+    <p>Checking that it's really parallel: confirm the plan shows multiple tracks, open <code>/tasks</code>, and if needed steer with <code>List active sub-agents and what each is currently doing.</code> If it runs sequentially, stop and ask for an explicit decomposition.</p>
+    <p>Transition: "<code>/fleet</code> keeps everything on your machine. Sometimes you want the work to leave entirely."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-fleet-delegate-workflows.md</p>
+  </aside>
+</article>

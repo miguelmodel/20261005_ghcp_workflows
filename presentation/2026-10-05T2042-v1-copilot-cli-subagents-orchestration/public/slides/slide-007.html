@@ -1,0 +1,40 @@
+<article class="slide" data-number="7" data-type="quote" data-section="Foundations">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">When delegation happens, and what it costs</h1>
+    <div class="slide-main">
+      <figure class="slide-quote">
+        <blockquote>
+          <p>&ldquo;Subagents should be treated as a parallelism tool, not a pause button.&rdquo;</p>
+        </blockquote>
+        <figcaption>GitHub Blog, &ldquo;How we made GitHub Copilot CLI more selective about delegation&rdquo; (2026-06-12)</figcaption>
+      </figure>
+      <div class="point-row">
+        <div class="point-card">
+          <div class="point-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><circle cx="12" cy="12" r="4"/></svg></div>
+          <p>The main model decides, guided by each agent's <code>description</code>.</p>
+        </div>
+        <div class="point-card">
+          <div class="point-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12h6"/><path d="M10 12l10-7M10 12l10 0M10 12l10 7"/><circle cx="4" cy="12" r="1.5"/></svg></div>
+          <p>Focused work stays in the main agent; broad, independent or parallel work goes to subagents.</p>
+        </div>
+        <div class="point-card">
+          <div class="point-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div>
+          <p>Every subagent makes its own model calls, and depth and concurrency are capped.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>Delegation is a model judgment, not a fixed rule. The docs: the model "can choose to delegate a task to a subsidiary subagent process ... if it judges that this would result in the work being completed more effectively. The model may equally choose to handle the work directly in the main agent." Agents surface to the model as tools, and each agent's <code>description</code> is what the model reads.</p>
+    <p>Since "smarter subagent delegation" (CLI v1.0.42+, blog dated 2026-06-12), the harness is deliberately selective. Describe it as a harness behavior change, not a labeled feature. GitHub reports (vendor-reported A/B numbers) 23% fewer tool failures per session and 5% lower P95 user wait time, with no quality regression.</p>
+    <p>Practical implication for you and for demos: a small, well-scoped prompt may never produce a subagent. To see delegation reliably, give a broad or parallel task, or name the agent explicitly ("Use the explore agent to...").</p>
+    <p>Costs and limits:</p>
+    <ul>
+      <li>"Splitting work up into smaller tasks that are run by subagents may result in more LLM interactions than if the work was handled by the main agent."</li>
+      <li>The CLI caps nesting depth and concurrency to prevent runaway spawning. Official sources <strong>disagree</strong> on the numbers: the command reference's limits table says depth 6 (max 256) and plan-based concurrency rows; the environment-variable table and the v1.0.71 changelog say depth 4 (max 128). Don't quote a single number; check on your own machine if it matters.</li>
+    </ul>
+    <p>Transition: "Let's meet the agents that ship in the box."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-subagent-foundations.md, research/2026-10-05-cli-fleet-delegate-workflows.md, research/2026-10-05-copilot-plans-pricing.md</p>
+  </aside>
+</article>

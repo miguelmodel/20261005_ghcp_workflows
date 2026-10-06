@@ -1,0 +1,38 @@
+<article class="slide is-appendix is-dense" data-number="44" data-type="list" data-section="Appendix">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <p class="appendix-mark">Appendix</p>
+    <h1 class="slide-title">Org agents, network, visibility and other admin controls</h1>
+    <div class="slide-main">
+      <div class="list-card">
+        <ul class="slide-list is-sm">
+          <li>Org and enterprise custom agents load at the lowest priority; a user or repo agent with the same ID wins <span class="nw">(<span class="badge badge-preview">public preview</span>)</span>.</li>
+          <li>Managed plugins (<code>enabledPlugins</code>, <code>strictKnownMarketplaces</code>) push agents, skills, hooks and MCP config to everyone <span class="nw">(<span class="badge badge-ga">GA keys, <span class="nw">2026-07-01</span></span>)</span>.</li>
+          <li>Network: the cloud agent firewall covers delegated cloud work, not local subagents; local egress uses managed <code>Domain(...)</code> rules or sandbox network policy.</li>
+          <li>Content exclusion is <span class="nw"><span class="badge badge-ga">GA in the CLI (<span class="nw">2026-09-02</span>)</span>;</span> it filters context and isn't an access boundary.</li>
+          <li>The usage dashboard excludes CLI activity; use the usage-metrics API and managed OpenTelemetry export.</li>
+          <li>Configure &ldquo;MCP servers in Copilot&rdquo; and other feature policies before the <span class="nw">2026-10-22</span> default takes effect.</li>
+        </ul>
+      </div>
+      <p class="status-line"><span class="status-tag">Status</span> for network controls: the firewall and subscription-based routing are <span class="nw"><span class="badge badge-nodate">documented with no dated status</span>;</span> managed permission rules <span class="nw"><span class="badge badge-ga">GA (<span class="nw">2026-09-09</span>)</span>;</span> sandboxes <span class="nw"><span class="badge badge-preview">public preview (<span class="nw">2026-06-02</span>)</span>.</span></p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p><strong>Network controls</strong> (the bullet most admins ask about):</p>
+    <ul>
+      <li><strong>Cloud agent firewall</strong> ("Internet access" in org or repo Copilot settings): on by default with a recommended allowlist. It governs <code>/delegate</code>d cloud work and <code>copilot --cloud</code> sandboxes, which "inherit from Copilot cloud agent policies". It does <strong>not</strong> govern subagents running locally in the CLI. Limitations: "The firewall only applies to processes started by the agent via its Bash tool. It does not apply directly to Model Context Protocol (MCP) server processes or processes started in configured Copilot setup steps," and "Sophisticated attacks may bypass the firewall."</li>
+      <li><strong>Subscription-based network routing</strong>: Copilot CLI is in scope. To keep corporate-network use on company plans, allowlist <code>*.business.githubcopilot.com</code> and/or <code>*.enterprise.githubcopilot.com</code> and block <code>*.individual.githubcopilot.com</code>. Don't add a blanket <code>*.githubcopilot.com</code> rule when using this routing.</li>
+      <li><strong>Local egress for CLI subagents</strong>: managed <code>permissions</code> <code>Domain(...)</code> rules (GA 2026-09-09) and managed <code>sandbox.userPolicy.network</code> settings (<code>allowedHosts</code>, <code>blockedHosts</code>, <code>proxy</code>, and so on; sandboxes are public preview). Caveat: "an upstream proxy is not a complete egress-control boundary because some applications can ignore proxy settings." The "Copilot can search the web" policy doesn't apply to the CLI.</li>
+      <li>The firewall and routing controls are documented without a dated status label, so they carry none here.</li>
+    </ul>
+    <p>Details for the other bullets:</p>
+    <ul>
+      <li><strong>Org/enterprise agents</strong> live in <code>/agents/</code> in the organization's <code>.github</code> or <code>.github-private</code> repo (enterprise: a designated <code>.github-private</code>). They reach the CLI as the "Remote" tier. Use them to distribute vetted specialists, and use managed settings, MCP lists and policy hooks to enforce. A ruleset can restrict who edits agent files.</li>
+      <li><strong>Managed plugins</strong>: GitHub describes them as a way to define "hooks and MCP configurations that are always enabled across your enterprise." Plugin hooks load after policy, user and project hooks and aren't documented as immune to <code>disableAllHooks</code>; use policy hooks for must-run checks. With a non-empty <code>strictKnownMarketplaces</code>, the CLI applies the allowlist to built-in marketplaces too.</li>
+      <li><strong>Content exclusion</strong>: "Excluded files are not used as context." It doesn't apply to symlinks or remote filesystems, and the docs don't say whether it stops shell reads such as <code>cat</code>.</li>
+      <li><strong>Visibility</strong>: "These charts do not include Copilot CLI usage." API fields include <code>used_cli</code>, <code>totals_by_cli</code>, <code>totals_by_custom_agent</code> and <code>totals_by_mcp</code>. Managed OpenTelemetry export is the only documented admin channel for step-level visibility into local subagent activity; by default it excludes prompts, responses and tool arguments. Audit logs: filter <code>actor:Copilot</code> for agentic activity.</li>
+      <li><strong>2026-10-22</strong>: "If you don't take action, unconfigured features will be enabled on October 22." Preview features stay opt-in.</li>
+    </ul>
+    <p class="sn-sources">Sources: research/2026-10-05-copilot-governance-appendix.md, research/2026-10-05-cli-custom-agents.md</p>
+  </aside>
+</article>

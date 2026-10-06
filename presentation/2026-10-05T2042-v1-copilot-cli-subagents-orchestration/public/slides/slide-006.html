@@ -1,0 +1,46 @@
+<article class="slide" data-number="6" data-type="table" data-section="Foundations">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">What a subagent inherits, and what it doesn't</h1>
+    <div class="slide-main">
+      <table class="slide-table table-md compare-table">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 17%"><span class="visually-hidden">Aspect</span></th>
+            <th scope="col" style="width: 19%">Main agent</th>
+            <th scope="col" style="width: 34%"><code>explore</code>, <code>task</code>, <code>code-review</code></th>
+            <th scope="col">Custom agent as subagent</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Context window</th><td>Session</td><td>Its own</td><td>Its own</td></tr>
+          <tr><th scope="row">Your conversation</th><td>Yes</td><td>Only what the handoff carries</td><td>Only what the handoff carries</td></tr>
+          <tr><th scope="row">Repo instructions</th><td>Yes</td><td>No</td><td>Only with <code>include-custom-instructions: true</code></td></tr>
+          <tr><th scope="row">Tools</th><td>Session settings</td><td><code>explore</code> read-only; <code>task</code> gets the parent's tools and permissions; <code>code-review</code> makes no file changes</td><td>Its <code>tools</code> list (default: all)</td></tr>
+          <tr><th scope="row">Memory</th><td>Read and write</td><td>Read only</td><td>Read only</td></tr>
+        </tbody>
+      </table>
+      <p class="slide-takeaway">The handoff prompt must carry the context.</p>
+      <p class="status-line"><span class="status-tag">Status</span> <code>include-custom-instructions</code> <span class="badge badge-shipped">shipped in CLI v1.0.86 (2026-09-17); no separate status label</span>.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>This table is the single most important "gotcha" slide for newcomers. Repository instruction files (<code>copilot-instructions.md</code>, <code>AGENTS.md</code>, <code>CLAUDE.md</code>) do <strong>not</strong> automatically flow into every subagent:</p>
+    <ul>
+      <li>The main agent gets them.</li>
+      <li>Built-in <code>explore</code>, <code>task</code> and <code>code-review</code> do <strong>not</strong>.</li>
+      <li>A custom agent running as a subagent gets them only if its frontmatter sets <code>include-custom-instructions: true</code>. And <code>--no-custom-instructions</code> always wins over that opt-in.</li>
+      <li>(The built-in <code>general-purpose</code> agent also receives them; it is documented but has no dated lifecycle evidence, so we keep it out of status claims and demos.)</li>
+    </ul>
+    <p>None of your conversation is visible to a subagent unless the main agent puts it in the handoff prompt. GitHub's delegation post says a good handoff states "what the user asked, what is already known, what the subagent owns, and what kind of result the main agent needs back."</p>
+    <p>Other inheritance facts:</p>
+    <ul>
+      <li>Only the root agent can store or vote on memories; subagents can read them.</li>
+      <li>Plan-mode protections are inherited by helper subagents ("safety net, not a guarantee"; more in the guardrails section).</li>
+      <li>With a bring-your-own model provider, built-in subagents inherit your provider configuration.</li>
+    </ul>
+    <p>Likely question: "Why not give every subagent the repo instructions?" Cost and focus. The docs recommend opting in only for agents that edit or review code; leaving it off keeps search and summarize agents faster and cheaper.</p>
+    <p>Transition: "So who decides to delegate in the first place?"</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-subagent-foundations.md, research/2026-10-05-cli-custom-agents.md, research/2026-10-05-cli-customization-mcp.md</p>
+  </aside>
+</article>

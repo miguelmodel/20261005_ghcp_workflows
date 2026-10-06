@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.validation-dist/
+*.log
+.playwright-mcp/
+.DS_Store
+Thumbs.db

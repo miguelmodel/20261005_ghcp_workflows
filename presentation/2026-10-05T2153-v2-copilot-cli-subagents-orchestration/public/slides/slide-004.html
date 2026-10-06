@@ -1,0 +1,35 @@
+<article class="slide" data-number="4" data-type="table" data-section="Foundations">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Vocabulary</h1>
+    <div class="slide-main">
+      <table class="slide-table">
+        <thead>
+          <tr><th scope="col" style="width: 22%">Term</th><th scope="col">What it is</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Main agent</th><td>The agent that handles your prompt: the default agent, or a custom agent you selected.</td></tr>
+          <tr><th scope="row">Subagent</th><td>A separate agent run started by the main agent, with its own context window.</td></tr>
+          <tr><th scope="row">Custom agent</th><td>A definition: an <code>.agent.md</code> profile with a prompt, tools and optional MCP servers.</td></tr>
+          <tr><th scope="row">MCP server</th><td>A Model Context Protocol server: a local process or remote service that gives Copilot extra tools.</td></tr>
+          <tr><th scope="row">Built-in agent</th><td>A pre-built custom agent that ships with the CLI.</td></tr>
+          <tr><th scope="row"><code>task</code> tool</th><td>The tool the main agent calls to start any subagent.</td></tr>
+        </tbody>
+      </table>
+      <p class="slide-takeaway">A custom agent is a definition; a subagent is an execution.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>The docs draw this line clearly: a <strong>custom agent</strong> is a definition, and a <strong>subagent</strong> is an execution. Quote: "A subagent is the execution of a separate AI agent that the main agent of a Copilot CLI session spins up to do a specific piece of work."</p>
+    <p><strong>MCP</strong> (Model Context Protocol) is the open protocol Copilot uses to connect to external tool providers. A host like the Copilot CLI connects to each MCP server, and each server exposes tools (plus resources and prompts) that the model can call: for example the built-in GitHub MCP server's issue and pull request tools, or a docs-search server. Servers run either as a local process over standard input/output or as a remote service over HTTP. Once a server is connected, its tools look like any other tool to the agent, which is why an agent's <code>tools</code> list can name them as <code>server/tool</code>. We configure MCP in detail in the Configuration &amp; MCP section.</p>
+    <p>The same custom agent can be used two ways: as the <strong>session agent</strong> (you pick it with <code>/agent</code> or <code>--agent</code>, and it drives the whole session), or as a <strong>subagent</strong> (the main agent delegates a piece of work to it). Built-in agents are described in the docs as "a set of pre-built custom agents".</p>
+    <p>Three easy-to-confuse terms, worth a quick warning:</p>
+    <ul>
+      <li><strong>"task"</strong> has three meanings: the built-in <code>task</code> agent, the <code>task</code> tool that launches every subagent, and the entries in <code>/tasks</code> (subagents and shell commands).</li>
+      <li><strong><code>/agent</code> vs <code>/agents</code></strong>: <code>/agent</code> selects the session agent; <code>/agents</code> is an alias of <code>/subagents</code>, which configures subagent models.</li>
+      <li><strong>"subagent" vs "sub-agent"</strong>: same concept; the CLI docs use "subagent", the SDK docs use "sub-agent".</li>
+    </ul>
+    <p>Transition: "So what actually happens when the main agent calls that <code>task</code> tool?"</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-subagent-foundations.md, research/2026-10-05-cli-custom-agents.md, research/2026-10-05-cli-customization-mcp.md</p>
+  </aside>
+</article>

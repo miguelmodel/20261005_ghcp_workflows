@@ -1,0 +1,42 @@
+<article class="slide" data-number="14" data-type="table" data-section="Custom agents">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Frontmatter keys that matter</h1>
+    <div class="slide-main">
+      <table class="slide-table table-md">
+        <thead>
+          <tr><th scope="col" style="width: 34%">Key</th><th scope="col">What it controls</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row"><code>description</code> (required)</th><td>Routing: when the main agent should delegate here</td></tr>
+          <tr><th scope="row"><code>tools</code></th><td>Allow-list: omit for all tools, <code>[]</code> for none, <code>server/tool</code> or <code>server/*</code> for MCP</td></tr>
+          <tr><th scope="row"><code>model</code>, <code>models</code>, <code>modelPolicy</code></th><td>Model choice, ordered fallback list, and whether overrides are allowed</td></tr>
+          <tr><th scope="row"><code>reasoningEffort</code></th><td>Default reasoning effort for this agent</td></tr>
+          <tr><th scope="row"><code>mcp-servers</code></th><td>MCP servers that only this agent can see</td></tr>
+          <tr><th scope="row"><code>include-custom-instructions</code></th><td>Load repo instructions when running as a subagent</td></tr>
+          <tr><th scope="row"><code>infer</code></th><td><code>false</code> means never auto-delegate; manual use only</td></tr>
+        </tbody>
+      </table>
+      <p class="slide-body is-sm">Unrecognized tool names are ignored, which keeps one file portable across surfaces.</p>
+      <p class="status-line"><span class="status-tag">Status</span> <code>models</code> and <code>modelPolicy</code> <span class="nw"><span class="badge badge-shipped">shipped in CLI v1.0.83 (<span class="nw">2026-09-04</span>)</span>;</span> <code>include-custom-instructions</code> <span class="nw"><span class="badge badge-shipped">shipped in CLI v1.0.86 (<span class="nw">2026-09-17</span>)</span>;</span> no separate status labels.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>These come from the "Custom agent frontmatter fields" table in the CLI command reference. Live priority: <code>description</code>, <code>tools</code> and <code>include-custom-instructions</code>; touch the model keys briefly (slide 10 covered resolution) and leave <code>infer</code> for questions.</p>
+    <p><code>tools</code> gotchas:</p>
+    <ul>
+      <li>Omitted (or <code>["*"]</code>) means <strong>all</strong> tools, including MCP tools.</li>
+      <li>A <code>*</code> anywhere in the list grants everything; <code>["view", "*"]</code> is not read-only.</li>
+      <li>Unknown names are silently ignored. If you copy an agent from a blog whose <code>tools</code> lists external programs like <code>gh</code> or <code>semgrep</code>, it may end up with no usable tools in the CLI.</li>
+    </ul>
+    <p>Model keys: <code>models</code> is an ordered list (first one your plan can access wins); <code>modelPolicy: "preferred"</code> (default) lets <code>/subagents</code> override it, <code>"required"</code> refuses overrides and refuses dispatch if none of the listed models is available.</p>
+    <p>Documentation gaps to be honest about:</p>
+    <ul>
+      <li>The cross-surface reference also defines <code>disable-model-invocation</code>, <code>user-invocable</code>, <code>target</code> and <code>metadata</code>, but the CLI reference doesn't list them; their CLI behavior is unverified.</li>
+      <li>The cross-surface reference marks <code>infer</code> as <strong>Retired</strong>, while the CLI reference documents it as active. For an agent that must never be auto-delegated, set both <code>infer: false</code> and <code>disable-model-invocation: true</code>.</li>
+      <li>Key spelling: the reference uses camelCase; some changelog entries use kebab-case (<code>model-policy</code>, <code>reasoning-effort</code>).</li>
+    </ul>
+    <p>Transition: "Your agent file can live in several places. Which copy wins?"</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-custom-agents.md</p>
+  </aside>
+</article>

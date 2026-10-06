@@ -1,0 +1,90 @@
+<!-- HAND-CRAFTED OVERRIDE — do not regenerate -->
+<article class="slide is-dense" data-number="3" data-type="diagram" data-section="Opening">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Map: seven ways to use multi-agent in Copilot</h1>
+    <div class="slide-main">
+      <div class="map-questions">
+        <div class="map-lead">
+          <p class="map-lead-text">Compare them with two questions:</p>
+          <p class="map-note">(Cards are in talk order, not plotted on an axis.)</p>
+        </div>
+        <div class="map-question">
+          <span class="mq-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3v6a6 6 0 0 0 6 6h0a6 6 0 0 0 6-6V3"/><path d="M12 15v6M8 21h8"/></svg></span>
+          <div class="mq-text">
+            <p class="mq-q">Who decides the split?</p>
+            <p class="mq-a">Copilot, or your code?</p>
+          </div>
+        </div>
+        <div class="map-question">
+          <span class="mq-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="11" height="9" rx="1.5"/><path d="M6 17h5M8.5 13v4"/><path d="M15 15a4 4 0 0 1 3.8-5.2A4.5 4.5 0 0 1 22 14a3 3 0 0 1-3 5h-3"/></svg></span>
+          <div class="mq-text">
+            <p class="mq-q">Where does it run?</p>
+            <p class="mq-a">Your machine, or GitHub's cloud?</p>
+          </div>
+        </div>
+      </div>
+
+      <ol class="route-grid">
+        <li class="route-card">
+          <div class="route-head"><span class="route-num" aria-hidden="true">1</span><h2 class="route-name">Subagents</h2></div>
+          <p class="route-desc">main agent hands work to built-in helpers</p>
+        </li>
+        <li class="route-card">
+          <div class="route-head"><span class="route-num" aria-hidden="true">2</span><h2 class="route-name">Custom agents</h2></div>
+          <p class="route-desc">your <code>.agent.md</code> specialists</p>
+        </li>
+        <li class="route-card">
+          <div class="route-head"><span class="route-num" aria-hidden="true">3</span><h2 class="route-name"><code>/fleet</code></h2></div>
+          <p class="route-desc">orchestrator runs parallel waves of subagents</p>
+        </li>
+        <li class="route-card">
+          <div class="route-head"><span class="route-num" aria-hidden="true">4</span><h2 class="route-name"><code>/delegate</code> (<code>&amp;</code>)</h2></div>
+          <p class="route-desc">Copilot cloud agent works remotely and opens a draft PR</p>
+        </li>
+        <li class="route-card">
+          <div class="route-head"><span class="route-num" aria-hidden="true">5</span><h2 class="route-name">Dynamic workflows</h2></div>
+          <p class="route-desc">a process defined in code</p>
+        </li>
+        <li class="route-card">
+          <div class="route-head"><span class="route-num" aria-hidden="true">6</span><h2 class="route-name">Review commands</h2></div>
+          <ul class="chip-list">
+            <li><code>/review</code></li>
+            <li><code>/security-review</code></li>
+            <li><code>/rubber-duck</code></li>
+            <li><code>/research</code></li>
+          </ul>
+        </li>
+        <li class="route-card">
+          <div class="route-head"><span class="route-num" aria-hidden="true">7</span><h2 class="route-name">Beyond the CLI</h2></div>
+          <ul class="chip-list is-plain">
+            <li>VS Code</li>
+            <li>GitHub Copilot app</li>
+            <li>github.com</li>
+          </ul>
+        </li>
+      </ol>
+
+      <ul class="status-legend">
+        <li><span class="badge badge-announce">Included in the Copilot CLI GA announcement (2026-02-25)</span>: subagents (<code>explore</code>, <code>task</code>, <code>code-review</code>), custom agents, <code>/delegate</code>, <code>/review</code>.</li>
+        <li><span class="badge badge-shipped">Shipped in CLI v0.0.411 (2026-02-17); no separate status label</span>: <code>/fleet</code>.</li>
+        <li><span class="badge badge-preview">Public preview</span>: dynamic workflows (2026-10-01), <code>/security-review</code> (announced 2026-06-10). <span class="badge badge-ga">GA</span>: rubber duck (2026-06-02).</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>This is the route for the talk. The most useful way to tell these mechanisms apart, per GitHub's own comparison of autopilot, fleet and dynamic workflows, is two questions: <strong>who decides how the work is split</strong> (Copilot each time, or a process you wrote) and <strong>where it runs</strong> (your machine or GitHub's cloud). The cards are in the order we'll cover them; they aren't placed on those two dimensions.</p>
+    <ol>
+      <li><strong>Subagents</strong>: the main agent decides, case by case, to hand work to built-in helpers like <code>explore</code>, <code>task</code> and <code>code-review</code>.</li>
+      <li><strong>Custom agents</strong>: your own specialists in <code>.agent.md</code> files; the main agent can delegate to them the same way.</li>
+      <li><strong><code>/fleet</code></strong>: the main agent becomes an orchestrator that splits a task into parallel waves of subagents on your machine.</li>
+      <li><strong><code>/delegate</code></strong> (or the <code>&amp;</code> prefix): hands the task to the Copilot cloud agent (formerly "Copilot coding agent"), which works remotely and opens a draft pull request.</li>
+      <li><strong>Dynamic workflows</strong>: "a process defined in code" that runs agents in sequence or parallel. Public preview since 2026-10-01; needs <code>--experimental</code> in the CLI.</li>
+      <li><strong>Out-of-the-box review commands</strong>: <code>/review</code>, <code>/security-review</code>, <code>/rubber-duck</code> and <code>/research</code> each run a specialist agent. <code>/research</code> shipped in CLI v0.0.417 (2026-02-25) with no separate status label.</li>
+      <li><strong>Beyond the CLI</strong>: the same agent files show up in VS Code, the GitHub Copilot app and on github.com. We touch these lightly near the end.</li>
+    </ol>
+    <p>Likely question: "Is <code>/fleet</code> the same as autopilot?" No. Autopilot is about autonomy (keep going without waiting for input); <code>/fleet</code> is about parallel subagents. You can combine them.</p>
+    <p>Transition: "Before we use any of these, we need four words of vocabulary."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-fleet-delegate-workflows.md, research/2026-10-05-cli-subagent-foundations.md, research/2026-10-05-copilot-agents-beyond-cli.md</p>
+  </aside>
+</article>

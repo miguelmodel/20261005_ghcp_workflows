@@ -1,0 +1,37 @@
+<article class="slide" data-number="36" data-type="table" data-section="Beyond the CLI">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Same agent file, more surfaces</h1>
+    <div class="slide-main">
+      <table class="slide-table table-sm">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 18%">Surface</th>
+            <th scope="col" style="width: 42%">Multi-agent angle</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">VS Code</th><td>Parallel subagents; custom agents with <code>handoffs</code>; the Agents window</td><td class="status-cell"><span class="nw"><span class="badge badge-shipped">Subagents shipped in VS Code 1.109 (<span class="nw">2026-02-04</span>), no separate status label</span>;</span> <span class="badge badge-preview">Agents window Preview (VS Code 1.120, <span class="nw">2026-05-13</span>)</span></td></tr>
+          <tr><th scope="row">GitHub Copilot app</th><td>Desktop app built on Copilot CLI; parallel sessions, each with its own worktree and branch</td><td class="status-cell"><span class="badge badge-ga">GA (<span class="nw">2026-06-17</span>)</span></td></tr>
+          <tr><th scope="row">Copilot cloud agent</th><td>Asynchronous work in a GitHub Actions environment; runs your custom agents; opens PRs</td><td class="status-cell"><span class="badge badge-ga">GA (<span class="nw">2025-09-25</span>, as Copilot coding agent)</span></td></tr>
+          <tr><th scope="row">GitHub Agentic Workflows</th><td>Markdown automations compiled to Actions; Copilot CLI is the default engine</td><td class="status-cell"><span class="badge badge-preview">Public preview (<span class="nw">2026-06-11</span>)</span></td></tr>
+        </tbody>
+      </table>
+      <p class="slide-takeaway is-sm"><code>.github/agents/*.agent.md</code> travels with the repo, but not every key is honored on every surface.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>The CLI is the focus, but your agents aren't trapped there. VS Code's Copilot harness and the GitHub Copilot app run on the same agent runtime as the CLI: "It uses the GitHub Copilot SDK to access the agent runtime also used by GitHub Copilot CLI and the GitHub Copilot app." But: "A shared runtime does not mean that all sessions or personal settings synchronize between products."</p>
+    <p>Per surface, briefly:</p>
+    <ul>
+      <li><strong>VS Code</strong>: custom agents and <code>handoffs</code> (guided, human-in-the-loop transitions between agents) shipped in VS Code 1.106 (2025-11-12), no separate status label. Using custom agents <em>as</em> subagents (a coordinator with an <code>agents</code> allow-list) was last dated as Experimental (1.107, 2025-12-10), so treat that pattern carefully.</li>
+      <li><strong>GitHub Copilot app</strong>: "a desktop application for agent-driven development"; GA 2026-06-17 for macOS, Windows and Linux. Its slash-command reference documents <code>/fleet</code>, <code>/spawn</code> and <code>/orchestrate</code>, but those commands have no per-command dates, so no status label for them.</li>
+      <li><strong>Copilot cloud agent</strong>: the renamed coding agent; picks up custom agents from repo, org and enterprise locations.</li>
+      <li><strong>GitHub Agentic Workflows</strong>: workflows can load <code>.github/agents/</code> files via <code>engine.agent</code>, or define inline sub-agents.</li>
+    </ul>
+    <p>Portability rules: unrecognized tool names are ignored; the cloud agent ignores VS Code's <code>handoffs</code> and <code>argument-hint</code>; <code>mcp-servers</code> is "Not used in VS Code and other IDE custom agents"; CLI-only keys like <code>include-custom-instructions</code> and <code>modelPolicy</code> aren't in the VS Code table. Test a shared file on each surface you rely on.</p>
+    <p>Transition: "On GitHub.com, the multi-agent story is about hand-off, review and automation."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-copilot-agents-beyond-cli.md, research/2026-10-05-cli-custom-agents.md</p>
+  </aside>
+</article>

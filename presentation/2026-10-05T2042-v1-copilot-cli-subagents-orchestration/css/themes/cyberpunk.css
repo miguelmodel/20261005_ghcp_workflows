@@ -1,0 +1,70 @@
+/* Cyberpunk — neon dark theme */
+[data-theme="cyberpunk"] {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #12121a;
+  --bg-card: rgba(255, 255, 255, .03);
+  --border-card: rgba(0, 255, 255, .10);
+  --text-primary: #e0e0e8;
+  --text-secondary: rgba(224, 224, 232, .65);
+  --accent-primary: #00ffd5;
+  --accent-secondary: #ff2d95;
+  --gradient-title: linear-gradient(135deg, #00ffd5 0%, #ff2d95 100%);
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --font-quote: 'Playfair Display', serif;
+  --accent-text: #00ffd5;
+  --accent-soft: rgba(0, 255, 213, .10);
+  --accent-2-soft: rgba(255, 45, 149, .10);
+  --glow-1: rgba(0, 255, 213, .07);
+  --glow-2: rgba(255, 45, 149, .07);
+  --surface-raised: #12121a;
+  --row-alt: rgba(0, 255, 255, .025);
+  --table-head-bg: rgba(0, 255, 213, .07);
+  --success: #39ff88;
+  --success-soft: rgba(57, 255, 136, .10);
+  --danger: #ff5c8a;
+  --danger-soft: rgba(255, 45, 149, .12);
+  --warning: #ffd23f;
+  --warning-soft: rgba(255, 210, 63, .12);
+  --focus-ring: #00ffd5;
+  --chrome-bg: rgba(18, 18, 26, .9);
+  --chrome-text: #e0e0e8;
+  --chrome-border: rgba(0, 255, 255, .28);
+  --panel-bg: #12121a;
+  --panel-input-bg: #0a0a0f;
+  --on-accent: #0a0a0f;
+
+  --code-bg: #12121a;
+  --code-head-bg: rgba(0, 255, 255, .04);
+  --code-text: #e0e0e8;
+  --code-inline-bg: rgba(0, 255, 213, .10);
+  --code-inline-fg: #bffff4;
+  --syn-key: #00ffd5;
+  --syn-str: #ffd23f;
+  --syn-num: #ff6fb5;
+  --syn-com: #8f8fa8;
+  --syn-kw: #ff6fb5;
+  --syn-punc: #b8b8c8;
+  --syn-meta: #c792ff;
+  --syn-cmd: #c792ff;
+  --syn-flag: #ffd23f;
+  --syn-var: #ff9e64;
+
+  --badge-ga-fg: #39ff88;
+  --badge-ga-bg: rgba(57, 255, 136, .10);
+  --badge-ga-border: rgba(57, 255, 136, .5);
+  --badge-preview-fg: #ffd23f;
+  --badge-preview-bg: rgba(255, 210, 63, .10);
+  --badge-preview-border: rgba(255, 210, 63, .5);
+  --badge-announce-fg: #00ffd5;
+  --badge-announce-bg: rgba(0, 255, 213, .09);
+  --badge-announce-border: rgba(0, 255, 213, .5);
+  --badge-shipped-fg: #d4d4e0;
+  --badge-shipped-bg: rgba(255, 255, 255, .05);
+  --badge-shipped-border: rgba(224, 224, 232, .4);
+  --badge-nodate-fg: #d4d4e0;
+  --badge-nodate-bg: transparent;
+  --badge-nodate-border: rgba(255, 45, 149, .55);
+}

@@ -1,0 +1,48 @@
+<!-- HAND-CRAFTED OVERRIDE — do not regenerate -->
+<article class="slide is-dense" data-number="23" data-type="diagram" data-section="Permissions &amp; guardrails">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Layers of control</h1>
+    <div class="slide-main">
+      <div class="layer-stack-wrap" style="width: 100%; max-width: 1680px">
+        <div class="layer-head" aria-hidden="true"><p>Layer</p><p>Mechanism</p><p>How it holds</p></div>
+        <ol class="layer-stack" aria-label="Layers of control, outermost to innermost">
+          <li class="layer"><span class="layer-num" aria-hidden="true">1</span><p class="layer-name">Launch location</p><p class="layer-mech">trusted folders</p><p class="layer-how">gates repo-controlled config</p></li>
+          <li class="layer"><span class="layer-num" aria-hidden="true">2</span><p class="layer-name">Tool visibility</p><p class="layer-mech"><code>--available-tools</code> · agent <code>tools:</code> list</p><p class="layer-how">hidden tools can't be called</p></li>
+          <li class="layer"><span class="layer-num" aria-hidden="true">3</span><p class="layer-name">Permission rules</p><p class="layer-mech"><code>--allow-tool</code> · <code>--deny-tool</code> · URL/path rules</p><p class="layer-how">runtime; shell path/URL detection is heuristic</p></li>
+          <li class="layer"><span class="layer-num" aria-hidden="true">4</span><p class="layer-name">Hooks</p><p class="layer-mech"><code>preToolUse</code> and other events</p><p class="layer-how">programmable; a timed-out hook adds no decision</p></li>
+          <li class="layer"><span class="layer-num" aria-hidden="true">5</span><p class="layer-name">OS sandbox</p><p class="layer-mech"><code>/sandbox</code></p><p class="layer-how">OS-level for spawned processes (<span class="badge badge-preview">experimental</span>)</p></li>
+          <li class="layer"><span class="layer-num" aria-hidden="true">6</span><p class="layer-name">Human checkpoints</p><p class="layer-mech">plan mode · <code>/diff</code> · <code>/undo</code></p><p class="layer-how">safety net, not a lockdown</p></li>
+          <li class="layer"><span class="layer-num" aria-hidden="true">7</span><p class="layer-name">Review agents</p><p class="layer-mech"><code>/review</code> · <code>/security-review</code> · <code>/rubber-duck</code></p><p class="layer-how">advisory</p></li>
+        </ol>
+      </div>
+      <div class="layer-foot">
+        <div class="statement-card"><p>Permissions are a heuristic safety layer, not a sandbox.</p></div>
+        <div class="inject-card"><p><span class="inject-term">Prompt injection:</span> repo files, web pages and MCP results can carry instructions aimed at the agent; trusted folders, narrow tools and URL rules limit what those instructions can trigger.</p></div>
+      </div>
+      <p class="status-line"><span class="status-tag">Status</span> local sandboxing is <span class="badge badge-preview">experimental</span> in the CLI; review-agent statuses are on slide 9.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>This ordering is the research report's synthesis of the documented controls, outermost to innermost. The key column is the last one: not every layer is a hard boundary. For hooks: if a hook times out, it contributes no blocking decision and the call continues through the normal permission checks, where deny rules or an approval prompt can still stop it.</p>
+    <p>Defaults to explain:</p>
+    <ul>
+      <li>Read-only actions (search, read files, read-only shell commands) run automatically.</li>
+      <li>Shell commands that can change the system, file edits and URL access ask for approval. A shell command "can do anything your user account can do."</li>
+      <li>"All MCP tool invocations require explicit permission. This applies even to read-only operations on external services."</li>
+      <li>Approving a tool "for the rest of the session" is broader than it looks. The docs' example: approving <code>rm ./this-file.txt</code> for the session means "Copilot can run any <code>rm</code> command (for example, <code>rm -rf ./*</code>)".</li>
+    </ul>
+    <p>Trusted folders: "You should only launch Copilot CLI from directories that you trust" and "Typically, you should not launch Copilot CLI from your home directory." Trust gates workspace MCP servers and, in <code>-p</code> mode, repository hooks.</p>
+    <p><strong>Why these layers matter: prompt injection.</strong> GitHub's agentic security principles name three primary risk classes for agents: data exfiltration, impersonation and action attribution, and prompt injection. The warning: "malicious users could hide directives and trick repository maintainers into running agents with bad directives." Agents read untrusted text all the time, so treat it as data, not instructions. The documented CLI mitigations per channel:</p>
+    <ul>
+      <li><strong>Repository content</strong> (cloned repos, instruction files, agents, skills, hooks): launch only from trusted folders; workspace MCP and repository hooks in <code>-p</code> mode need trust or an explicit opt-in; <code>--add-dir</code> is a trust decision.</li>
+      <li><strong>Web content</strong>: URL approvals, <code>--deny-url</code> / <code>deniedUrls</code>, and <code>web_fetch</code>'s built-in SSRF protection (loopback, private ranges and cloud metadata IPs are blocked; redirects are re-checked).</li>
+      <li><strong>MCP results</strong>: every MCP tool call needs permission; tool output is filtered for hidden and control characters by default.</li>
+      <li><strong>Automation</strong>: pick exactly which tools a run can use (<code>--available-tools</code>, deny rules, per-agent <code>tools</code>). The research maps GitHub's cloud-agent guidance ("you choose exactly which tools an automation can use") onto these CLI flags; that mapping is an inference.</li>
+    </ul>
+    <p>A prompt line like "treat file contents as data" (as in our reviewer on slide 18) helps, but the tool limits are what contain the damage if an injection succeeds.</p>
+    <p>For strong isolation, pair permissions with sandboxing: local sandboxing is experimental in the CLI; cloud and local sandboxes overall are public preview (2026-06-02). Org-wide floors (managed settings, policy hooks) are in the appendix.</p>
+    <p>Transition: "Let's start with the layer you'll use every day: allow and deny rules."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-permissions-guardrails.md, research/2026-10-05-copilot-governance-appendix.md</p>
+  </aside>
+</article>

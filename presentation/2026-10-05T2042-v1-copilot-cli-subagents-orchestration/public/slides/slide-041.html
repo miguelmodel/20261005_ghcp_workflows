@@ -1,0 +1,38 @@
+<article class="slide is-appendix" data-number="41" data-type="table" data-section="Appendix">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <p class="appendix-mark">Appendix</p>
+    <h1 class="slide-title">Governance: three control mechanisms</h1>
+    <div class="slide-main">
+      <table class="slide-table table-sm">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 22%">Mechanism</th>
+            <th scope="col" style="width: 39%">Where it's set</th>
+            <th scope="col">What it governs for the CLI</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">GitHub AI Controls policies</th><td>Enterprise AI controls tab; organization Copilot policies</td><td>Whether the CLI, cloud agent, models, MCP and content exclusion are available</td></tr>
+          <tr><th scope="row">Client managed settings</th><td><code>managed-settings.json</code> via a <code>.github-private</code> repo, MDM, or a root-owned file</td><td>Bypass mode, permission rules, MCP allow/deny lists, plugins, sandbox floor, telemetry</td></tr>
+          <tr><th scope="row">Host policy hooks</th><td><code>/etc/github-copilot/policy.d/</code> or <code>C:\ProgramData\GitHub\Copilot\policy.d\</code></td><td>Machine-wide hooks that users and repos can't disable</td></tr>
+        </tbody>
+      </table>
+      <p class="slide-takeaway is-sm">A grouping, not a precedence order; a subagent can only do what its parent session is allowed to do.</p>
+      <p class="status-line"><span class="status-tag">Status</span> Copilot CLI <span class="badge badge-ga">GA (2026-02-25)</span>, admin must enable it for Business and Enterprise; <code>managed-settings.json</code> <span class="badge badge-ga">GA (2026-07-01)</span>; MDM and file delivery <span class="badge badge-ga">GA (2026-07-08)</span>; policy hooks <span class="badge badge-nodate">documented with no dated status</span>.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>In Copilot Business and Enterprise, these three mechanisms decide what a CLI subagent can do before any <code>.agent.md</code> file or flag applies. A subagent runs inside the parent CLI session, so it inherits these limits (an inference; subagent inheritance is only partly documented).</p>
+    <p>Key admin facts:</p>
+    <ul>
+      <li>"For Copilot Business and Enterprise subscribers, an administrator must enable Copilot CLI from the Policies page." <code>/delegate</code> additionally requires the <strong>Copilot cloud agent</strong> policy. The Copilot app has its own separate client policy.</li>
+      <li>Managed settings "are in addition to the policies available in the AI Controls tab."</li>
+      <li>Policy hooks "load before all other hooks and cannot be disabled by <code>disableAllHooks</code>," run on the host even when sandboxed, and aren't supported in the cloud agent. Timeouts still fail open: a timed-out policy hook adds no decision and the call continues through normal permission checks, so pair policy hooks with managed deny rules.</li>
+      <li>Organization custom instructions don't reach the CLI; distribute guidance as an agent, skill or plugin.</li>
+      <li>Date to flag: the "Default policy for new features" starts applying to unconfigured GA features, including <strong>MCP servers in Copilot</strong>, on 2026-10-22, defaulting to Enabled.</li>
+      <li>Model policy: the CLI sees only enterprise-enabled models. An agent pinned to a disabled model falls back to the session model, unless it sets <code>modelPolicy: "required"</code>, in which case dispatch is refused.</li>
+    </ul>
+    <p class="sn-sources">Sources: research/2026-10-05-copilot-governance-appendix.md</p>
+  </aside>
+</article>

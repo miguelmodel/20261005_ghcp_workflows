@@ -1,0 +1,69 @@
+<!-- HAND-CRAFTED OVERRIDE — do not regenerate -->
+<article class="slide is-dense" data-number="10" data-type="diagram" data-section="Built-in subagents">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">How a subagent's model and effort are chosen</h1>
+    <div class="slide-main">
+      <div class="ladder-layout">
+        <div class="tier-stack">
+          <span class="tier-axis" aria-hidden="true"></span>
+          <p class="tier-cap">Highest priority</p>
+          <ol class="tier-list">
+            <li class="tier-item">
+              <span class="tier-num" aria-hidden="true">1</span>
+              <div>
+                <p class="tier-name">Per-call value</p>
+                <p class="tier-detail">model/effort requested when the subagent is launched</p>
+              </div>
+            </li>
+            <li class="tier-item">
+              <span class="tier-num" aria-hidden="true">2</span>
+              <div>
+                <p class="tier-name"><code>/subagents</code> override</p>
+                <p class="tier-detail"><code>~/.copilot/settings.json</code> → <code>subagents.agents.&lt;name&gt;</code></p>
+              </div>
+            </li>
+            <li class="tier-item">
+              <span class="tier-num" aria-hidden="true">3</span>
+              <div>
+                <p class="tier-name">Agent definition</p>
+                <p class="tier-detail"><code>model</code> · <code>models</code> · <code>modelPolicy</code> · <code>reasoningEffort</code> (<code>.agent.md</code>)</p>
+              </div>
+            </li>
+            <li class="tier-item">
+              <span class="tier-num" aria-hidden="true">4</span>
+              <div>
+                <p class="tier-name">Parent session</p>
+                <p class="tier-detail"><code>/model</code> · <code>--model</code> · <code>--effort</code></p>
+              </div>
+            </li>
+          </ol>
+          <p class="tier-cap">Lowest priority</p>
+        </div>
+        <section class="side-card" aria-labelledby="s10-exceptions">
+          <h2 id="s10-exceptions" class="side-card-title">Exceptions</h2>
+          <ul class="side-list">
+            <li><p><strong>Auto session</strong> → a custom agent's <code>model</code> field is replaced by the resolved session model</p></li>
+            <li><p><strong><code>modelPolicy: required</code></strong> → dispatch is refused instead of substituting another model</p></li>
+            <li><p><strong><code>research</code></strong> → fixed model; <strong><code>rubber-duck</code></strong> → complementary model family</p></li>
+          </ul>
+        </section>
+      </div>
+      <p class="status-line"><span class="status-tag">Status</span> Auto model selection is <span class="badge badge-ga">GA in the CLI (2026-04-17)</span>; <code>models</code> and <code>modelPolicy</code> <span class="badge badge-shipped">shipped in CLI v1.0.83 (2026-09-04); no separate status label</span>.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>The command reference states the order verbatim: "an explicit per-call value, the <code>subagents</code> override in <code>~/.copilot/settings.json</code>, the agent definition's <code>model</code>/<code>models</code>/<code>reasoningEffort</code> field, then the parent session's value." This chain covers model and reasoning effort only.</p>
+    <p>Fallback rules: a declared model or effort that can't be honored falls back to the session's value so dispatch still succeeds, <strong>unless</strong> the agent declares <code>modelPolicy: "required"</code>, in which case dispatch is refused rather than silently substituting. A <code>subagents</code> override can't unlock a required policy set in the agent file.</p>
+    <p>The Auto rule, scoped carefully: the reference says that when the session model is Auto, subagents inherit the resolved session model regardless of a custom agent's <code>model</code> field. Whether Auto also overrides <code>/subagents</code> preferences, per-call requests or <code>modelPolicy: "required"</code> is <strong>not documented</strong>. So don't say "Auto always wins." Demo tip: pick a specific session model when you want to show per-agent models.</p>
+    <p>Specialists follow their own rules: <code>research</code> uses a fixed model that <code>/model</code> doesn't change; <code>rubber-duck</code> deliberately picks a model from a different family.</p>
+    <p>Other details if asked:</p>
+    <ul>
+      <li><code>"inherit"</code> is valid for <code>model</code>, <code>effortLevel</code> and <code>contextTier</code> in <code>subagents.agents</code>, but not for <code>modelPolicy</code>.</li>
+      <li>Context tier is configurable per subagent, but no precedence order for it is documented.</li>
+      <li>Key spelling: the reference uses camelCase (<code>modelPolicy</code>, <code>reasoningEffort</code>); some changelog entries use kebab-case. Follow the reference.</li>
+    </ul>
+    <p>Transition: "You can set these preferences without editing JSON by hand."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-subagent-foundations.md, research/2026-10-05-cli-custom-agents.md</p>
+  </aside>
+</article>

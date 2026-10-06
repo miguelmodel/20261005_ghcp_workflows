@@ -1,0 +1,50 @@
+<article class="slide is-dense" data-number="13" data-type="code-example" data-section="Custom agents">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Anatomy of an <code>.agent.md</code> file</h1>
+    <div class="slide-main">
+      <figure class="code-figure">
+        <div class="code-head" aria-hidden="true"><span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span><p class="code-lang">markdown</p></div>
+<pre class="code-block code-wrap" aria-label="readme-creator agent profile"><code><span class="t-meta">---</span>
+<span class="t-key">name</span><span class="t-pun">:</span> <span class="t-str">readme-creator</span>
+<span class="t-key">description</span><span class="t-pun">:</span> <span class="t-str">Agent specializing in creating and improving README files</span>
+<span class="t-meta">---</span>
+
+You are a documentation specialist focused on README files. Your scope is limited to README files or other related documentation files only - do not modify or analyze code files.
+
+Focus on the following instructions:
+<span class="t-kw">-</span> Create and update README.md files with clear project descriptions
+<span class="t-kw">-</span> Structure README sections logically: overview, installation, usage, contributing
+<span class="t-kw">-</span> Write scannable content with proper headings and formatting</code></pre>
+      </figure>
+      <div class="annot-row">
+        <div class="annot">
+          <span class="side-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg></span>
+          <p>YAML frontmatter configures the agent; the Markdown body is its prompt (up to 30,000 characters).</p>
+        </div>
+        <div class="annot">
+          <span class="side-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>
+          <p>Saved as <code>.github/agents/readme-creator.agent.md</code>, its agent ID is <code>readme-creator</code>.</p>
+        </div>
+      </div>
+      <p class="status-line"><span class="status-tag">Status</span> custom agents <span class="nw"><span class="badge badge-announce">included in the Copilot CLI GA announcement (<span class="nw">2026-02-25</span>)</span>.</span></p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>This is the official minimal profile from the CLI concept page (trimmed to the first three instruction bullets). Two parts:</p>
+    <ul>
+      <li><strong>Frontmatter</strong>: configuration. <code>description</code> is the only required key, and it's the routing signal the main agent reads when deciding whether to delegate.</li>
+      <li><strong>Body</strong>: the agent's prompt. The documented maximum is 30,000 characters (stated in the cross-surface reference; the CLI reference gives no separate limit).</li>
+    </ul>
+    <p>Naming rules worth knowing:</p>
+    <ul>
+      <li>The <strong>agent ID</strong> comes from the file path relative to the <code>agents</code> directory, with <code>.agent.md</code> or <code>.md</code> stripped and folders joined by <code>--</code>. So <code>agents/team/reviewer.agent.md</code> becomes <code>team--reviewer</code>.</li>
+      <li>The optional <code>name</code> field does <strong>not</strong> deduplicate agents; IDs do.</li>
+      <li>Use lowercase letters and hyphens, and keep <code>name</code> equal to the ID to avoid ambiguity.</li>
+    </ul>
+    <p>Easiest way to start: <code>/agent</code> → <strong>Create new agent</strong> → Project or User, then let Copilot draft the profile. Restart the CLI to load a new agent.</p>
+    <p>Status: custom agents shipped in the CLI on 2025-10-28 during public preview and are named in the CLI GA announcement (2026-02-25). Org- and enterprise-hosted agents still carry a public-preview banner.</p>
+    <p>Transition: "That file had two keys. Here are the ones you'll actually reach for."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-custom-agents.md</p>
+  </aside>
+</article>

@@ -1,0 +1,18 @@
+{
+  "name": "copilot-cli-subagents-orchestration-presentation",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Subagents & Multi-Agent Orchestration with GitHub Copilot CLI (content v2, build v1)",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "gsap": "^3.12.7"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  }
+}

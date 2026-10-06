@@ -1,0 +1,38 @@
+<article class="slide" data-number="35" data-type="demo-placeholder" data-section="Parallel &amp; delegated workflows">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <div class="demo-terminal" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h12M4 12h16M4 18h9"/><path d="m14 4 2 2-2 2M18 10l2 2-2 2"/></svg></div>
+    <p class="demo-badge"><span class="demo-dot" aria-hidden="true"></span><span>Live demo</span></p>
+    <h1 class="slide-title">Demo 3: Parallel work and hand-off</h1>
+    <p class="slide-subtitle">Plan mode, then <code>/fleet</code>, then <code>/review</code>, then <code>&amp;</code> to the cloud agent</p>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>Timing: 5-minute demo slot (counted). The third break. Keep a clock visible and follow the elapsed-time cutoffs; the last 30 seconds are reserved for the transition into the last section.</p>
+    <p>Setup before the session:</p>
+    <ul>
+      <li>A <strong>disposable</strong>, GitHub-hosted repo, because this demo uses allow-all. Copilot cloud agent enabled for the account and repo; signed in to GitHub.</li>
+      <li>Delegate one small task (for example <code>&amp; add JSDoc comments to src/utils</code>) <strong>before</strong> the talk so a draft PR already exists to show.</li>
+      <li>An account whose subagent concurrency allows several parallel subagents. The documented plan rows suggest Pro/Pro+ or above, but current applicability is unresolved; rehearse on the actual account.</li>
+      <li>Fallback assets: a second terminal with a session where this exact plan → fleet → review flow already completed, plus a short recording of the <code>/tasks</code> view during the fleet run.</li>
+    </ul>
+    <p>Steps (elapsed time):</p>
+    <ol>
+      <li><strong>0:00–0:20</strong> <code>copilot --allow-all --max-autopilot-continues 10</code>. Say out loud: allow-all only in a disposable or isolated environment, as on slide 24. Skip the optional <code>/limits</code> cap live (public preview; soft; per-response vs per-session scope unresolved).</li>
+      <li><strong>0:20–1:10</strong> <code>Shift+Tab</code> into plan mode; paste the docs prompt from slide 31. Answer clarifying questions briefly. <strong>Cutoff at 1:10</strong>: accept the plan as it stands.</li>
+      <li><strong>1:10–2:40</strong> Choose <strong>Accept plan and build on autopilot + /fleet</strong>. Open <code>/tasks</code> (list view only; don't press <code>Enter</code> on a subagent row): three subagents in parallel, the index item waiting for its dependencies. <strong>Hard cutoff at 2:40</strong>: if the fleet hasn't finished, leave it running and switch to the pre-completed session for the next step.</li>
+      <li><strong>2:40–3:30</strong> In the finished session, run <code>/review</code>. If the review is still streaming at 3:20, stop narrating it and run <code>/usage</code> to show per-model usage, including subagents.</li>
+      <li><strong>3:30–4:30</strong> <code>&amp; add JSDoc comments to src/utils</code>. Point out the checkpoint-commit prompt and the PR/session links. Open the <strong>Sessions</strong> tab and press <code>a</code> to show remote sessions (or use <code>/resume</code>), then show the pre-delegated draft PR. Don't wait for the new cloud session to make progress.</li>
+      <li><strong>4:30–5:00</strong> Reserve: wrap-up and transition.</li>
+    </ol>
+    <p>Recovery:</p>
+    <ul>
+      <li>Work runs sequentially: say so (it's a teaching moment about prompt specificity) and switch to the pre-completed session; don't re-prompt live.</li>
+      <li>Anything hangs: press <code>Esc</code> twice to interrupt the running turn and move to the next step.</li>
+      <li>Cloud agent slow to start: show the pre-delegated session instead.</li>
+      <li><code>/delegate</code> fails: check the cloud agent policy, GitHub sign-in, and that the repo has a GitHub remote; show the pre-delegated PR.</li>
+    </ul>
+    <p>Lifecycle of what's shown: plan mode, autopilot, <code>/review</code>, <code>&amp;</code>/<code>/delegate</code> and <code>/resume</code> are included in the Copilot CLI GA announcement (2026-02-25). The plan menu's autopilot + fleet option shipped in CLI v0.0.415 (2026-02-23); <code>/fleet</code> in v0.0.411 (2026-02-17); <code>/tasks</code> in v0.0.404 (2026-02-04); <code>--allow-all</code> in v0.0.381 (2026-01-13); <code>--max-autopilot-continues</code> by v1.0.40 (2026-05-01); the Sessions tab in v1.0.79 (2026-08-10); none has a separate status label. Deliberately not used: the <code>--fleet</code> option, teleporting into subagents, and <code>/pr auto</code>.</p>
+    <p>Transition after the demo: "Everything we've built in the terminal travels further than the terminal."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-fleet-delegate-workflows.md, research/2026-10-05-cli-permissions-guardrails.md, research/2026-10-05-copilot-plans-pricing.md</p>
+  </aside>
+</article>

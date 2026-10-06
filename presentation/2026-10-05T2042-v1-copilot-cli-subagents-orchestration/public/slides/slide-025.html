@@ -1,0 +1,42 @@
+<article class="slide" data-number="25" data-type="table" data-section="Permissions &amp; guardrails">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Hooks as programmable policy</h1>
+    <div class="slide-main">
+      <table class="slide-table table-md">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 27%">Event</th>
+            <th scope="col" style="width: 40%">What it can do</th>
+            <th scope="col">When several hooks answer</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row"><code>preToolUse</code></th><td>Allow, deny, ask, or rewrite a tool call</td><td>Any deny wins</td></tr>
+          <tr><th scope="row"><code>permissionRequest</code></th><td>Allow or deny before the rules engine runs</td><td>The later output wins</td></tr>
+          <tr><th scope="row"><code>agentStop</code> / <code>subagentStop</code></th><td>Block, forcing another turn of the same agent</td><td>Runaway guard ends it after 8 blocks</td></tr>
+          <tr><th scope="row"><code>subagentStart</code></th><td>Prepend context to a subagent's prompt</td><td>Can't block</td></tr>
+        </tbody>
+      </table>
+      <div class="callout-row">
+        <div class="callout is-warning"><p>A crashing <code>preToolUse</code> command hook denies the call; a hook that times out adds no decision, and normal permission checks still apply.</p></div>
+        <div class="callout"><p>A repository can set <code>disableAllHooks: true</code>; only admin policy hooks keep running.</p></div>
+      </div>
+      <p class="status-line"><span class="status-tag">Status</span> hooks <span class="badge badge-announce">included in the Copilot CLI GA announcement (2026-02-25)</span>; <code>preToolUse</code> hook errors deny the call, <span class="badge badge-shipped">shipped in CLI v1.0.57 (2026-06-01); no separate status label</span>. The other events are <span class="badge badge-nodate">documented without dated status</span> and stay out of demos.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>Why hooks are special: "While skills and instructions guide Copilot's behavior through prompts, hooks ensure that operations you have defined will be performed at specific moments." The CLI supports 14 hook events; these four matter most for multi-agent guardrails.</p>
+    <p>Design guidance from the research:</p>
+    <ol>
+      <li>Put <strong>policy denials in <code>preToolUse</code></strong>: its any-deny-wins aggregation means a later hook can't cancel an earlier deny. <code>permissionRequest</code> uses last-output-wins, so a user or plugin hook returning <code>allow</code> could override an earlier deny.</li>
+      <li>Use <code>permissionRequest</code> mainly for narrow, programmatic approvals in <code>-p</code> or CI runs.</li>
+      <li><strong>Fail-open vs fail-closed</strong>: command <code>preToolUse</code> hooks that crash or exit non-zero deny the call. Every timeout fails open, even for admin policy hooks: the timed-out hook contributes no blocking decision, a warning is shown, and the call continues through the normal permission flow. That flow can still stop it (a deny rule, another hook's deny, or an approval prompt), but the safeguard that hook was supposed to provide is gone. Quote: "a slow or unreachable hook must not silently block tool calls or work, even when the hook was deployed by an administrator as policy." So keep hooks fast and layer them with deny flags or the sandbox.</li>
+      <li><code>agentStop</code>/<code>subagentStop</code> "block" continues the <strong>same</strong> agent with your <code>reason</code> as its next prompt. Useful for a bounded retry; not a completion gate.</li>
+    </ol>
+    <p>Locations: <code>.github/hooks/*.json</code> (repo), <code>~/.copilot/hooks/</code> (user), plugins, and machine-wide policy hooks. Load order: policy, user, project, plugins; all entries for an event run.</p>
+    <p>Hook events other than <code>preToolUse</code> (including <code>permissionRequest</code>, <code>subagentStart</code>, <code>subagentStop</code>) are documented in the current hooks reference but have no dated introduction evidence, so they get no status label and aren't demoed. The <code>agentStop</code> runaway guard itself shipped in CLI v1.0.72 (2026-07-20).</p>
+    <p>Transition: "Here's what a real <code>preToolUse</code> policy looks like."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-permissions-guardrails.md</p>
+  </aside>
+</article>

@@ -1,0 +1,35 @@
+<article class="slide is-appendix" data-number="46" data-type="table" data-section="Appendix">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <p class="appendix-mark">Appendix</p>
+    <h1 class="slide-title">How multi-agent work consumes credits</h1>
+    <div class="slide-main">
+      <table class="slide-table table-md">
+        <thead>
+          <tr><th scope="col" style="width: 28%">Driver</th><th scope="col">Effect on spend</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">More subagents</th><td>Each makes its own model calls, so <code>/fleet</code> may consume more credits</td></tr>
+          <tr><th scope="row">Model per worker</th><td>The biggest lever; set per-agent models with a specific session model, then verify with <code>/usage</code></td></tr>
+          <tr><th scope="row">Auto model selection</th><td>10% discount on model costs on paid plans; overrides a custom agent's <code>model</code> field, other interactions undocumented</td></tr>
+          <tr><th scope="row">Rubber duck</th><td>An extra reasoning pass on a separate model</td></tr>
+          <tr><th scope="row">Mid-session changes</th><td>Switching model, effort, tools or MCP servers invalidates the cache</td></tr>
+        </tbody>
+      </table>
+      <p class="slide-takeaway is-sm">Concurrency raises the peak spend rate, not the price per token.</p>
+      <p class="slide-body is-sm">Subagent depth and concurrency defaults conflict across official sources; check them on your machine.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>The <code>/fleet</code> docs: "Using <code>/fleet</code> in a prompt may therefore cause more GitHub AI Credits to be consumed." Note "may", not "always".</p>
+    <p>Two different cost strategies, not one combined recipe:</p>
+    <ul>
+      <li><strong>Explicit cheaper workers</strong>: set <code>model</code>/<code>models</code> on worker agents and pick a specific session model. GitHub's tutorial: "Run subagents on cheaper models."</li>
+      <li><strong>Auto</strong>: accept the server-selected model and the 10% discount on paid plans (Auto is GA in the CLI since 2026-04-17). What's documented is narrow: under Auto, a custom agent's <code>model</code> field is overridden by the resolved session model. How Auto treats an ordered <code>models</code> list, <code>/subagents</code> preferences, per-call requests and built-in defaults is not documented, and <code>research</code> (fixed model) and <code>rubber-duck</code> (complementary model) follow their own rules.</li>
+    </ul>
+    <p>Either way, don't assume your settings decided the cost: check which models actually ran with <code>/usage</code>.</p>
+    <p>Illustration (synthesized arithmetic from published per-token rates; not GitHub figures): one subagent turn of 40,000 uncached input and 4,000 output tokens costs about 12 credits on Claude Sonnet 5 and about 1.8 on GPT-5 mini. Four parallel subagents × 10 such turns on Sonnet 5 ≈ 480 credits ($4.80), about a third of Pro's monthly allowance, before the orchestrator's own turns. Real sessions use cached input, which is cheaper.</p>
+    <p>Limits, with caveats: the CLI reference documents per-plan concurrency rows (Free/Education 2, Pro/Pro+ 4, Max 8, Business 16, Enterprise 32) plus a separate usage-based-billing row of 32, and which row applies today is unresolved. Nesting depth is 6 (max 256) in the reference's limits table but 4 (max 128) in the env-var table and the v1.0.71 changelog. Usage-based billing users can override with <code>subagents.maxConcurrency</code> / <code>subagents.maxDepth</code>.</p>
+    <p class="sn-sources">Sources: research/2026-10-05-copilot-plans-pricing.md, research/2026-10-05-cli-subagent-foundations.md, research/2026-10-05-cli-fleet-delegate-workflows.md</p>
+  </aside>
+</article>

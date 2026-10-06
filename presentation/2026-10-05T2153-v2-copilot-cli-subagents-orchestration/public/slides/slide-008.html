@@ -1,0 +1,46 @@
+<article class="slide is-dense" data-number="8" data-type="table" data-section="Built-in subagents">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">The seven built-in agents</h1>
+    <div class="slide-main">
+      <table class="slide-table table-sm">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 16%">Agent</th>
+            <th scope="col" style="width: 27%">Job</th>
+            <th scope="col" style="width: 18%">Access</th>
+            <th scope="col" style="width: 20%">How it runs</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row"><code>explore</code></th><td>Fast codebase questions, short answers</td><td>Read-only</td><td>Automatic</td><td class="status-cell"><span class="badge badge-announce">A</span></td></tr>
+          <tr><th scope="row"><code>task</code></th><td>Tests, builds, linters, installs</td><td>Parent's tools and permissions</td><td>Automatic</td><td class="status-cell"><span class="badge badge-announce">A</span></td></tr>
+          <tr><th scope="row"><code>code-review</code></th><td>High-signal review of your changes</td><td>No file changes</td><td>Automatic or <code>/review</code></td><td class="status-cell"><span class="badge badge-announce">A</span></td></tr>
+          <tr><th scope="row"><code>security-review</code></th><td>Exploitable vulnerabilities in local changes</td><td>Read-only</td><td><code>/security-review</code> or delegation</td><td class="status-cell"><span class="badge badge-preview">Public preview (<span class="nw">2026-06-10</span>)</span></td></tr>
+          <tr><th scope="row"><code>rubber-duck</code></th><td>Critique from a different model family</td><td>Read-only</td><td>Automatic or <code>/rubber-duck</code></td><td class="status-cell"><span class="badge badge-ga">GA (<span class="nw">2026-06-02</span>)</span></td></tr>
+          <tr><th scope="row"><code>research</code></th><td>Cited research report</td><td>Saves a report; no edits</td><td>Only via <code>/research</code></td><td class="status-cell"><span class="badge badge-shipped">S</span></td></tr>
+          <tr><th scope="row"><code>general-purpose</code></th><td>Full-capability helper in its own context</td><td>Same as the main agent</td><td>Automatic</td><td class="status-cell"><span class="badge badge-nodate">No dated status</span></td></tr>
+        </tbody>
+      </table>
+      <p class="table-footnote"><span class="nw"><span class="badge badge-announce">A</span>:</span> included in the Copilot CLI GA announcement (<span class="nw">2026-02-25</span>). <span class="nw"><span class="badge badge-shipped">S</span>:</span> shipped in CLI v0.0.417 (<span class="nw">2026-02-25</span>); no separate status label.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>All seven names are confirmed in the current docs. Live priority: walk <code>explore</code>, <code>task</code>, <code>code-review</code> and <code>research</code> here; the two reviewers and the rubber duck get the next slide, and <code>general-purpose</code> is a one-line mention. Call out:</p>
+    <ul>
+      <li><strong><code>explore</code></strong> "Returns focused answers under 300 words. Safe to run in parallel." It has read-only access to GitHub MCP tools.</li>
+      <li><strong><code>task</code></strong> returns a brief summary on success and full output on failure. It has "all of the tools the parent agent can use ... with the same permissions granted or denied." It is not read-only.</li>
+      <li><strong><code>code-review</code></strong> "never comments on style or formatting" and "will not make any changes to files."</li>
+      <li><strong><code>security-review</code></strong> only flags issues with more than 80% confidence of exploitability across 11 categories. It covers active local changes and "is not a full repository security audit." It was announced on 2026-06-10 as an experimental feature in public preview; since CLI v1.0.64 (2026-06-23) it no longer needs <code>--experimental</code>. No GA announcement was found, so we call it public preview.</li>
+      <li><strong><code>rubber-duck</code></strong>: experimental 2026-04-06, GA 2026-06-02, enabled for every model family in CLI v1.0.87 (2026-09-21).</li>
+      <li><strong><code>research</code></strong> is the only one the main agent can't trigger on its own: "it can only be invoked by using the <code>/research</code> slash command."</li>
+      <li><strong><code>general-purpose</code></strong>: documented, but no dated launch/GA/preview evidence, so it gets no status label and isn't in our demos.</li>
+    </ul>
+    <p>Default models per agent are listed in the command reference, but model IDs are inconsistent across GitHub pages and change often. Check <code>/subagents</code> on your machine instead of memorizing them.</p>
+    <p>Likely question: "What happened to the Plan agent?" Early-2026 announcements listed one; current docs don't, and no removal notice was found. Use plan mode (<code>Shift+Tab</code>, <code>/plan</code>) instead. Don't call it a rename.</p>
+    <p>You can turn built-ins off with <code>subagents.disabledSubagents</code> in <code>~/.copilot/settings.json</code>, except the rubber duck, which has its own <code>builtInAgents.rubberDuck</code> switch.</p>
+    <p>Transition: "Three of these are review specialists. Let's compare them side by side."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-subagent-foundations.md, research/2026-10-05-cli-permissions-guardrails.md, research/2026-10-05-cli-fleet-delegate-workflows.md</p>
+  </aside>
+</article>

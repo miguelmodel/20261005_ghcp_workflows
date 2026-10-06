@@ -1,0 +1,57 @@
+<!-- HAND-CRAFTED OVERRIDE — do not regenerate -->
+<article class="slide" data-number="37" data-type="diagram" data-section="Beyond the CLI">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">On GitHub.com: hand-off, review, automation</h1>
+    <div class="slide-main">
+      <div class="handoff-flow" role="img" aria-label="CLI, via &amp; or /delegate, to Copilot cloud agent, to draft PR, to human review and CI. The cloud agent self-reviews with Copilot code review before the draft PR.">
+        <svg class="handoff-wires" viewBox="0 0 1680 252" aria-hidden="true" focusable="false">
+          <defs>
+            <marker id="s37-ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path class="wire-head" d="M0 0 L10 5 L0 10 z"/>
+            </marker>
+            <marker id="s37-ah-alt" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path class="wire-head is-alt" d="M0 0 L10 5 L0 10 z"/>
+            </marker>
+          </defs>
+          <path class="wire" d="M202 82 L414 82" marker-end="url(#s37-ah)"/>
+          <path class="wire" d="M822 82 L934 82" marker-end="url(#s37-ah)"/>
+          <path class="wire" d="M1182 82 L1294 82" marker-end="url(#s37-ah)"/>
+          <path class="wire is-alt is-dashed" d="M620 142 L620 196 L1060 196 L1060 148" marker-end="url(#s37-ah-alt)"/>
+        </svg>
+        <div class="handoff-step is-cli" aria-hidden="true"><p>CLI</p></div>
+        <div class="handoff-step is-cloud" aria-hidden="true"><p>Copilot cloud agent</p></div>
+        <div class="handoff-step is-pr" aria-hidden="true"><p>draft PR</p></div>
+        <div class="handoff-step is-gate" aria-hidden="true"><p>human review &amp; CI</p></div>
+        <p class="handoff-label" style="left: 310px; top: 32px; transform: translateX(-50%)" aria-hidden="true"><code>&amp;</code> or <code>/delegate</code></p>
+        <p class="handoff-label" style="left: 840px; top: 206px; transform: translateX(-50%)" aria-hidden="true">self-review with Copilot code review</p>
+      </div>
+      <div class="surface-cards">
+        <section class="surface-card">
+          <h2 class="surface-card-title">Copilot code review</h2>
+          <p>agentic, tool-calling reviewer on GitHub Actions</p>
+        </section>
+        <section class="surface-card">
+          <h2 class="surface-card-title">Agentic Workflows</h2>
+          <p>agents run read-only; writes go through &ldquo;safe outputs&rdquo;</p>
+        </section>
+        <section class="surface-card">
+          <h2 class="surface-card-title">Agent HQ</h2>
+          <p>assign Copilot, Claude or Codex to the same issue and compare</p>
+        </section>
+      </div>
+      <p class="status-line"><span class="status-tag">Status</span> cloud agent <span class="badge badge-ga">GA (2025-09-25)</span>; agentic code review <span class="badge badge-ga">GA (2026-03-05)</span>; Agentic Workflows <span class="badge badge-preview">public preview (2026-06-11)</span>; Claude and Codex via Agent HQ <span class="badge badge-preview">public preview (2026-02-04)</span>.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>Three GitHub.com patterns mirror what we did in the terminal:</p>
+    <ul>
+      <li><strong>Hand-off</strong>: work you <code>&amp;</code>-delegate from the CLI appears in the repository's <strong>Agents</strong> tab (shipped 2026-01-26; no separate status label), where you can steer it, open it in VS Code, or "Continue in GitHub Copilot CLI". The cloud agent reviews its own changes with Copilot code review before opening the PR (shipped 2025-10-28; no separate status label). Limits worth knowing: one repo, one branch and one PR per task, and a 59-minute maximum session. By default, Actions workflows don't run on Copilot's pushes until a human approves them (configurable).</li>
+      <li><strong>Review</strong>: Copilot code review "now runs on an agentic tool-calling architecture" and is GA since 2026-03-05. Its ability to pass suggestions to the cloud agent is in public preview.</li>
+      <li><strong>Automation</strong>: GitHub Agentic Workflows are "AI-powered repository automations that you define in markdown and run as GitHub Actions workflows." Copilot CLI is the default engine. The key guardrail: "agents run read-only and request actions via structured output, while separate permission-controlled jobs execute those requests."</li>
+    </ul>
+    <p>This is the deck's one Agent HQ mention: Claude and Codex coding agents run on GitHub in public preview (launched 2026-02-04), and you can assign several agents to one issue to compare approaches. Admin enablement is required.</p>
+    <p>Transition: "Let's pull it all together into one decision."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-copilot-agents-beyond-cli.md</p>
+  </aside>
+</article>

@@ -1,0 +1,70 @@
+/* Warm — editorial light theme */
+[data-theme="warm"] {
+  --bg-primary: #faf6f1;
+  --bg-secondary: #f0e9df;
+  --bg-card: rgba(0, 0, 0, .03);
+  --border-card: rgba(0, 0, 0, .08);
+  --text-primary: #2d2a26;
+  --text-secondary: rgba(45, 42, 38, .65);
+  --accent-primary: #c47a2e;
+  --accent-secondary: #8b5e3c;
+  --gradient-title: linear-gradient(135deg, #c47a2e 0%, #8b5e3c 100%);
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --font-quote: 'Playfair Display', serif;
+  --accent-text: #8b5e3c;
+  --accent-soft: rgba(196, 122, 46, .12);
+  --accent-2-soft: rgba(139, 94, 60, .10);
+  --glow-1: rgba(196, 122, 46, .10);
+  --glow-2: rgba(139, 94, 60, .07);
+  --surface-raised: #fffdf9;
+  --row-alt: rgba(0, 0, 0, .025);
+  --table-head-bg: rgba(196, 122, 46, .10);
+  --success: #2f6b2f;
+  --success-soft: rgba(47, 107, 47, .10);
+  --danger: #a3341f;
+  --danger-soft: rgba(163, 52, 31, .09);
+  --warning: #8a5a00;
+  --warning-soft: rgba(196, 140, 20, .14);
+  --focus-ring: #8b5e3c;
+  --chrome-bg: rgba(255, 252, 247, .92);
+  --chrome-text: #2d2a26;
+  --chrome-border: rgba(0, 0, 0, .16);
+  --panel-bg: #fffdf9;
+  --panel-input-bg: #faf6f1;
+  --on-accent: #ffffff;
+
+  --code-bg: #f3ece2;
+  --code-head-bg: rgba(0, 0, 0, .04);
+  --code-text: #2d2a26;
+  --code-inline-bg: rgba(139, 94, 60, .12);
+  --code-inline-fg: #4a2f1c;
+  --syn-key: #8b3a1e;
+  --syn-str: #2f6b2f;
+  --syn-num: #8a5a00;
+  --syn-com: #6b645c;
+  --syn-kw: #7a3b8f;
+  --syn-punc: #4a4540;
+  --syn-meta: #7a3b8f;
+  --syn-cmd: #7a3b8f;
+  --syn-flag: #8b3a1e;
+  --syn-var: #8a5a00;
+
+  --badge-ga-fg: #285c28;
+  --badge-ga-bg: rgba(47, 107, 47, .10);
+  --badge-ga-border: rgba(47, 107, 47, .45);
+  --badge-preview-fg: #7a4f00;
+  --badge-preview-bg: rgba(196, 140, 20, .14);
+  --badge-preview-border: rgba(138, 90, 0, .45);
+  --badge-announce-fg: #6e4a2f;
+  --badge-announce-bg: rgba(196, 122, 46, .12);
+  --badge-announce-border: rgba(139, 94, 60, .45);
+  --badge-shipped-fg: #3f3a35;
+  --badge-shipped-bg: rgba(0, 0, 0, .05);
+  --badge-shipped-border: rgba(0, 0, 0, .28);
+  --badge-nodate-fg: #3f3a35;
+  --badge-nodate-bg: transparent;
+  --badge-nodate-border: rgba(0, 0, 0, .35);
+}

@@ -1,0 +1,32 @@
+<article class="slide" data-number="39" data-type="list" data-section="Recap &amp; next steps">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Start this week</h1>
+    <div class="slide-main">
+      <div class="list-card">
+        <ol class="slide-list is-ordered">
+          <li>Run <code>/subagents</code> and <code>/tasks</code> in your next session to see what already delegates.</li>
+          <li>Write one read-only reviewer <code>.agent.md</code> with a scoped <code>tools</code> list.</li>
+          <li>Add one deny rule and one logging-only <code>preToolUse</code> hook to a repo.</li>
+          <li>Try <code>/fleet</code> on a task with clear file boundaries, and check <code>/usage</code> afterwards.</li>
+          <li>Keep required CI checks and human PR review as the merge gate.</li>
+        </ol>
+      </div>
+      <p class="slide-body is-sm">Governance, plans and billing are in the appendix.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>Close with concrete, low-risk first steps, each tied to a section:</p>
+    <ol>
+      <li>Observe before you configure: <code>/subagents</code> shows per-agent models; <code>/tasks</code> shows what's running.</li>
+      <li>Your first custom agent should be read-only. It's useful immediately and safe to auto-delegate. Start from the reviewer on slide 18.</li>
+      <li>Guardrails: one deny rule for the command you never want run, and a <code>preToolUse</code> hook that starts by logging only, as GitHub's tutorial recommends.</li>
+      <li>Parallelism: pick a task with one owner per file and explicit dependencies; compare <code>/usage</code> with a single-agent run.</li>
+      <li>Whatever you automate, the enforceable gate stays outside the agent.</li>
+    </ol>
+    <p>Point to the appendix for admins and budget owners: org/enterprise policies and managed settings, MCP allowlists, plans and GitHub AI Credits, cost controls, and billing through Azure. Those slides aren't presented live.</p>
+    <p>Reminder: the CLI changes weekly. Everything here was verified on 2026-10-05; re-check the command reference and changelog on your installed version.</p>
+    <p>Thank the audience. End of the counted session.</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-subagent-foundations.md, research/2026-10-05-cli-custom-agents.md, research/2026-10-05-cli-permissions-guardrails.md, research/2026-10-05-cli-fleet-delegate-workflows.md</p>
+  </aside>
+</article>

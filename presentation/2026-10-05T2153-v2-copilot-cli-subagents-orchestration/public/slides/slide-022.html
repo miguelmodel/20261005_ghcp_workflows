@@ -1,0 +1,33 @@
+<article class="slide" data-number="22" data-type="list" data-section="Configuration &amp; MCP">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Plugins: bundle and distribute</h1>
+    <div class="slide-main">
+      <div class="list-card">
+        <ul class="slide-list is-md">
+          <li>A plugin bundles custom agents, skills, hooks, MCP servers and LSP configuration in one install.</li>
+          <li>Install from a marketplace: <code>copilot plugin install database-data-management@awesome-copilot</code>.</li>
+          <li>Turn one on for a single repository with <code>enabledPlugins</code> in <code>.github/copilot/settings.json</code>.</li>
+          <li>Name collisions: for agents and skills your local copy wins; for MCP servers the plugin's wins.</li>
+          <li>Built-in tools and agents can't be overridden by any plugin.</li>
+        </ul>
+      </div>
+      <p class="status-line"><span class="status-tag">Status</span> plugins <span class="nw"><span class="badge badge-announce">included in the Copilot CLI GA announcement (<span class="nw">2026-02-25</span>)</span>;</span> Agent Plugins 1.0 format <span class="nw"><span class="badge badge-ga">GA (<span class="nw">2026-08-12</span>)</span>.</span></p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>Plugins are the team-sharing story: GitHub lists "Reusability across projects", "Team standardization of Copilot configuration", and the ability to "Encapsulate complex MCP server setups."</p>
+    <p>Details:</p>
+    <ul>
+      <li>Two marketplaces are registered by default: <code>copilot-plugins</code> and <code>awesome-copilot</code>. Add others with <code>copilot plugin marketplace add</code>.</li>
+      <li>Two formats: Agent Plugins 1.0 (portable open standard, GA 2026-08-12 across VS Code, the CLI, the SDK and the Copilot app) and the legacy Copilot format ("no migration required"). For new plugins, use Agent Plugins 1.0 unless you need configurable component paths.</li>
+      <li>Repo scoping: "A plugin enabled only through a repository's <code>enabledPlugins</code> is scoped to that repository: it auto-installs and activates in the declaring repository, but stays disabled globally."</li>
+      <li>Collision rules from the plugin reference: if a project-level agent or skill has the same name as a plugin's, "the agent or skill in the plugin is silently ignored." MCP servers are the opposite: a plugin's same-named server replaces yours, and only <code>--additional-mcp-config</code> outranks it.</li>
+      <li>Installed plugins are cached; reinstall after editing a local plugin, or load it with <code>--plugin-dir</code> while developing.</li>
+      <li><code>awesome-copilot</code> is community content: "Please inspect any agent and its documentation before installing."</li>
+    </ul>
+    <p>Enterprise-managed plugins (force-install, lock marketplaces) are in the appendix.</p>
+    <p>Transition: "We've given agents tools and reach. Now: how do we keep them in bounds?"</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-customization-mcp.md, research/2026-10-05-cli-custom-agents.md</p>
+  </aside>
+</article>

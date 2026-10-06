@@ -1,0 +1,279 @@
+/* ============================================================
+   Settings panel (admin drawer). Every control sets explicit
+   colour, font, hover and focus styles from theme tokens.
+   ============================================================ */
+
+#admin-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(0, 0, 0, .45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+
+body.admin-open #admin-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#admin-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 80;
+  width: min(420px, 100vw);
+  display: flex;
+  flex-direction: column;
+  background: var(--panel-bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.45;
+  border-left: 1px solid var(--chrome-border);
+  box-shadow: -12px 0 32px rgba(0, 0, 0, .35);
+  transform: translateX(105%);
+  visibility: hidden;
+  transition: transform .25s ease, visibility 0s linear .25s;
+}
+
+body.admin-open #admin-panel {
+  transform: translateX(0);
+  visibility: visible;
+  transition: transform .25s ease, visibility 0s linear 0s;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--chrome-border);
+  background: var(--bg-secondary);
+}
+
+.admin-title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.admin-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 8px 20px 24px;
+}
+
+.admin-section {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-card);
+}
+
+.admin-section:last-child {
+  border-bottom: 0;
+}
+
+.admin-section-title {
+  margin: 0 0 10px;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+}
+
+.admin-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 8px 0;
+  color: var(--text-primary);
+}
+
+.admin-field label,
+.admin-label {
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+}
+
+.admin-select,
+.admin-input {
+  min-width: 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--chrome-border);
+  background: var(--panel-input-bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+}
+
+.admin-select {
+  flex: 0 0 200px;
+}
+
+.admin-select option {
+  background: var(--panel-bg);
+  color: var(--text-primary);
+}
+
+.admin-input {
+  width: 90px;
+}
+
+.admin-select:hover,
+.admin-input:hover {
+  border-color: var(--accent-primary);
+}
+
+.admin-select:focus-visible,
+.admin-input:focus-visible,
+.admin-btn:focus-visible,
+.admin-check:focus-visible,
+.admin-close:focus-visible,
+.checklist-go:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.admin-btn,
+.admin-close,
+.checklist-go {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--chrome-border);
+  background: var(--panel-input-bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.admin-btn:hover,
+.admin-close:hover,
+.checklist-go:hover {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: var(--on-accent);
+}
+
+.admin-btn.is-primary {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: var(--on-accent);
+}
+
+.admin-btn.is-primary:hover {
+  background: var(--accent-secondary);
+  border-color: var(--accent-secondary);
+  color: var(--on-accent);
+}
+
+.admin-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-check {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--accent-primary);
+  cursor: pointer;
+}
+
+.admin-hint {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.admin-kbd {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  border: 1px solid var(--chrome-border);
+  color: var(--text-primary);
+}
+
+.checklist-tools {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.checklist-tools .admin-btn {
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
+.slide-checklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.checklist-row {
+  display: grid;
+  grid-template-columns: 22px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 5px 6px;
+  border-radius: 8px;
+  color: var(--text-primary);
+}
+
+.checklist-row:hover {
+  background: var(--accent-soft);
+}
+
+.checklist-row.is-current {
+  background: var(--accent-soft);
+  box-shadow: inset 3px 0 0 var(--accent-primary);
+}
+
+.checklist-row.is-hidden .checklist-label {
+  color: var(--text-secondary);
+  text-decoration: line-through;
+}
+
+.checklist-label {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.checklist-go {
+  width: 30px;
+  height: 28px;
+  padding: 0;
+  font-size: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #admin-panel,
+  #admin-overlay {
+    transition: none;
+  }
+}

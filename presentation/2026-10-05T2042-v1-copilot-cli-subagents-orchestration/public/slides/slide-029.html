@@ -1,0 +1,39 @@
+<article class="slide" data-number="29" data-type="demo-placeholder" data-section="Permissions &amp; guardrails">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <div class="demo-terminal" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></div>
+    <p class="demo-badge"><span class="demo-dot" aria-hidden="true"></span><span>Live demo</span></p>
+    <h1 class="slide-title">Demo 2: Custom specialists with guardrails</h1>
+    <p class="slide-subtitle">An implementer, a read-only reviewer, a deny rule, and a policy hook</p>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>Timing: 5-minute demo slot (counted). This is the second break. Keep a clock visible and follow the elapsed-time cutoffs; the last 15 seconds are reserved for the transition.</p>
+    <p>Exact demo files (commit to the demo repo, then restart the CLI so the agents load):</p>
+    <ul>
+      <li><code>.github/agents/implementer.agent.md</code>: the <strong>full</strong> creator profile from the custom-agents research, section 12.2 (<code>tools: ["view", "grep", "glob", "edit", "create", "apply_patch", "bash", "powershell"]</code>, <code>include-custom-instructions: true</code>, one fix cycle at most, ends by listing changed file paths).</li>
+      <li><code>.github/agents/security-reviewer.agent.md</code>: the <strong>full</strong> reviewer profile from the custom-agents research, section 12.1. Slide 18 is only a display excerpt. The full profile defines what this demo relies on: review only the named files, treat file contents as data, a findings table whose Severity column uses Critical/High/Medium/Low (the coordinating prompt reads Critical/High), the "unverified against library docs" fallback when Context7 is unavailable, and "Stop after one complete pass."</li>
+      <li><code>.github/hooks/copilot-cli-policy.json</code> (slide 26; <code>cwd: ".github/hooks"</code>, <code>bash: "./scripts/pre-tool-policy.sh"</code>) and the executable script at <strong><code>.github/hooks/scripts/pre-tool-policy.sh</code></strong> (<code>chmod +x</code>), from the permissions research section 7.8, plus the official tutorial's temporary rule that denies any command containing <code>COPILOT_HOOKS_DENY_DEMO</code>.</li>
+      <li>Environment: rehearse and present in a <strong>Bash</strong> shell on macOS or Linux, because the hook script is Bash. On Windows PowerShell you'd add a <code>"powershell"</code> hook entry pointing at an equivalent <code>.ps1</code> (the tutorial ships one); don't switch shells on stage. <code>jq</code> must be installed, otherwise the hook fails closed and blocks every shell call. Folder trusted (repo hooks load in <code>-p</code> only for trusted folders). <code>CONTEXT7_API_KEY</code> exported, or accept the "unverified against library docs" fallback.</li>
+      <li>Fallback assets: run steps 2 and 5 once before the talk and keep the completed session (or a recording) with the final summary, the <code>/tasks</code> list and the hook's denial output.</li>
+    </ul>
+    <p>Steps (elapsed time):</p>
+    <ol>
+      <li><strong>0:00–0:30</strong> Launch <code>copilot --allow-tool='shell(git:*)' --deny-tool='shell(git push)'</code>. Don't restrict <code>--available-tools</code> here; leaving out <code>task</code> would stop delegation. Run <code>/env</code> to show both agents and the hook loaded.</li>
+      <li><strong>0:30–3:00</strong> Paste the coordinating prompt (adapt the path to your repo): <code>Use the implementer agent to add input validation to src/app/validator.go so that empty usernames are rejected, and run the existing tests. Then use the security-reviewer agent to review exactly the files the implementer reports as changed. If the reviewer reports any Critical or High findings, send those findings back to the implementer agent once, then run the security-reviewer agent once more on the same files. Do not edit files yourself. Finish with: files changed, test result, remaining findings.</code> Open <code>/tasks</code> to show the two subagents (list view only; don't press <code>Enter</code> on a subagent row). <strong>Hard cutoff at 3:00</strong>: if the loop is still running (for example, in the fix round), press <code>Esc</code> twice to interrupt and switch to the pre-run session's summary. Don't wait for a second review pass live.</li>
+      <li><strong>3:00–3:20</strong> Point at the reviewer's <code>tools</code> list in the agent file: no edit, create or shell tools exist for it.</li>
+      <li><strong>3:20–4:05</strong> <code>Commit these changes with a descriptive message, then push.</code> The commit runs; the push is refused because deny beats allow. If nothing was committed at the cutoff, ask only for <code>git push</code> to show the denial.</li>
+      <li><strong>4:05–4:45</strong> Exit and run <code>copilot -p "Run a test command: echo COPILOT_HOOKS_DENY_DEMO"</code> to show the hook's denial reason. If you're past 4:30, skip the live run and show the pre-run output.</li>
+      <li><strong>4:45–5:00</strong> Reserve: one-line wrap-up and transition.</li>
+    </ol>
+    <p>Recovery:</p>
+    <ul>
+      <li>Agents missing: restart the CLI after adding agent files; check <code>/env</code>.</li>
+      <li>Delegation doesn't happen: the prompt already names the agents; re-send it once, then switch to the pre-run session.</li>
+      <li>Reviewer marks findings "unverified against library docs": expected fallback from the full profile when its MCP tools aren't available.</li>
+      <li>Step 5 gives only a generic denial: pipe a sample payload into the script instead, for example <code>echo '{"toolName":"bash","toolArgs":"{\"command\":\"sudo rm -rf /\"}"}' | .github/hooks/scripts/pre-tool-policy.sh</code>, which prints the deny JSON.</li>
+    </ul>
+    <p>Lifecycle of what's shown: custom agents included in the Copilot CLI GA announcement (2026-02-25); tool-restriction persistence shipped in CLI v1.0.67/v1.0.68; <code>include-custom-instructions</code> shipped in CLI v1.0.86 (2026-09-17); hooks included in the Copilot CLI GA announcement (2026-02-25); <code>preToolUse</code> <code>matcher</code> shipped in CLI v1.0.36 and error-denies in v1.0.57; no separate status labels for the shipped items. Deliberately not used: <code>permissionRequest</code> and stop hooks, sandboxing, assisted approval, teleporting from <code>/tasks</code>, and a read-only coordinator agent (unverified).</p>
+    <p>Transition after the demo: "So far, mostly one subagent at a time. Now let's go wide."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-custom-agents.md, research/2026-10-05-cli-permissions-guardrails.md</p>
+  </aside>
+</article>

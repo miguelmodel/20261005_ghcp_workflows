@@ -1,0 +1,62 @@
+<!-- HAND-CRAFTED OVERRIDE — do not regenerate -->
+<article class="slide" data-number="2" data-type="boxes" data-section="Opening">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Why multi-agent?</h1>
+    <div class="slide-main">
+      <div class="tool-grid">
+        <section class="tool-card">
+          <div class="tool-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="10" height="14" rx="2"/><rect x="14" y="8" width="7" height="10" rx="1.5"/><path d="M6 8h4M6 11h4M6 14h2"/></svg>
+          </div>
+          <div class="tool-card-text">
+            <h2 class="tool-card-title">Context isolation</h2>
+            <p class="tool-card-body">A subagent reads and searches in its own context window and returns only the result.</p>
+          </div>
+        </section>
+        <section class="tool-card">
+          <div class="tool-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 20c1.2-3.5 3.8-5 7-5s5.8 1.5 7 5"/><path d="m15.5 4.5 2-2M8.5 4.5l-2-2"/></svg>
+          </div>
+          <div class="tool-card-text">
+            <h2 class="tool-card-title">Specialization</h2>
+            <p class="tool-card-body">A tailored prompt and a restricted toolset, such as a read-only reviewer.</p>
+          </div>
+        </section>
+        <section class="tool-card">
+          <div class="tool-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 6h12M4 12h16M4 18h9"/><path d="m14 4 2 2-2 2M18 10l2 2-2 2"/></svg>
+          </div>
+          <div class="tool-card-text">
+            <h2 class="tool-card-title">Parallelism</h2>
+            <p class="tool-card-body">Independent work runs side by side or in the background.</p>
+          </div>
+        </section>
+        <section class="tool-card">
+          <div class="tool-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="7" cy="8" r="3.5"/><circle cx="17" cy="8" r="3.5"/><circle cx="12" cy="17" r="3.5"/><path d="M9.5 10.5 11 14M14.5 10.5 13 14"/></svg>
+          </div>
+          <div class="tool-card-text">
+            <h2 class="tool-card-title">Model mix</h2>
+            <p class="tool-card-body">Lighter models for exploration; a different model family for critique.</p>
+          </div>
+        </section>
+      </div>
+      <p class="slide-takeaway">The trade-off: more model calls and more coordination.</p>
+      <p class="definition"><span class="definition-term">Context window:</span> the limited working memory a model sees at once, including instructions, messages, and every tool call with its result.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>First, one term everything else depends on. A model's <strong>context window</strong> is the bounded amount of material it can consider at once. In the Copilot CLI it holds the system instructions, tool definitions, your messages, Copilot's responses, and every tool call with its result. When it fills up (around 80%), the CLI compacts it into a summary, and fine detail can be lost. So anything that keeps bulky reading and logs out of the main window helps.</p>
+    <p>GitHub's docs give three reasons to use subagents, and the model-mix point follows from how models are assigned:</p>
+    <ol>
+      <li><strong>Context isolation.</strong> The docs put it as: "Keep the context window of the main agent in a CLI session focused, by offloading a chunk of work to a separate agent." The built-in <code>explore</code> agent, for example, returns focused answers under 300 words while doing all the reading in its own window.</li>
+      <li><strong>Specialization.</strong> A custom agent can have its own prompt and a narrow tool list, for example a reviewer that can only view, grep and glob.</li>
+      <li><strong>Parallelism.</strong> Read-only agents such as <code>explore</code> "can be called in parallel", and work can run in the background.</li>
+      <li><strong>Model mix.</strong> Cheaper or faster models for exploration and commands; stronger or different models for review and critique (the rubber duck deliberately uses a different model family).</li>
+    </ol>
+    <p>The cost: "Each subagent can interact with the LLM independently of the main agent", so splitting work up can mean more model calls, more GitHub AI Credits, and more coordination overhead. We will keep coming back to that trade-off.</p>
+    <p>Transition: "There isn't just one way to get multiple agents working. Here's the map we'll follow for the rest of the hour."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-subagent-foundations.md, research/2026-10-05-cli-fleet-delegate-workflows.md</p>
+  </aside>
+</article>

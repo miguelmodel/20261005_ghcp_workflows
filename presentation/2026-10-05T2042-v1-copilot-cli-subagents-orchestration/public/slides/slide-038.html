@@ -1,0 +1,103 @@
+<!-- HAND-CRAFTED OVERRIDE — do not regenerate -->
+<article class="slide is-dense" data-number="38" data-type="decision-tree" data-section="Recap &amp; next steps">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Choosing a pattern</h1>
+    <div class="slide-main">
+      <div class="dt">
+        <div class="dt-row">
+          <div class="dt-node dt-q dt-w1"><p class="dt-text">Is the task small and focused?</p></div>
+          <ul class="dt-branches">
+            <li class="dt-branch">
+              <div class="dt-node dt-leaf dt-w2">
+                <p class="dt-answer">Yes</p>
+                <p class="dt-text">Let the main agent handle it. No delegation needed.</p>
+              </div>
+            </li>
+            <li class="dt-branch">
+              <div class="dt-row">
+                <div class="dt-node dt-q dt-w2">
+                  <p class="dt-answer">No</p>
+                  <p class="dt-text">Does it split into independent parts with clear file ownership?</p>
+                </div>
+                <ul class="dt-branches">
+                  <li class="dt-branch">
+                    <div class="dt-row">
+                      <div class="dt-node dt-q dt-w3">
+                        <p class="dt-answer">Yes</p>
+                        <p class="dt-text">Should it keep running with your laptop closed?</p>
+                      </div>
+                      <ul class="dt-branches">
+                        <li class="dt-branch">
+                          <div class="dt-node dt-leaf is-outcome dt-w4">
+                            <p class="dt-answer">Yes</p>
+                            <p class="dt-text"><code>&amp;</code> or <code>/delegate</code> to the Copilot cloud agent</p>
+                          </div>
+                        </li>
+                        <li class="dt-branch">
+                          <div class="dt-node dt-leaf is-outcome dt-w4">
+                            <p class="dt-answer">No</p>
+                            <p class="dt-text"><code>/fleet</code> with explicit deliverables and dependencies</p>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="dt-branch">
+                    <div class="dt-row">
+                      <div class="dt-node dt-q dt-w3">
+                        <p class="dt-answer">No</p>
+                        <p class="dt-text">What do you need?</p>
+                      </div>
+                      <ul class="dt-branches">
+                        <li class="dt-branch">
+                          <div class="dt-node dt-leaf is-outcome dt-w4">
+                            <p class="dt-answer">A specialist</p>
+                            <p class="dt-text">custom agent with a scoped tools list</p>
+                          </div>
+                        </li>
+                        <li class="dt-branch">
+                          <div class="dt-node dt-leaf is-outcome dt-w4">
+                            <p class="dt-answer">A second opinion</p>
+                            <p class="dt-text"><code>/review</code> · <code>/security-review</code> · <code>/rubber-duck</code></p>
+                          </div>
+                        </li>
+                        <li class="dt-branch">
+                          <div class="dt-node dt-leaf is-outcome dt-w4">
+                            <p class="dt-answer">A repeatable process</p>
+                            <p class="dt-text">dynamic workflow (<span class="badge badge-preview">public preview</span>)</p>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="always-bar">
+        <p class="always-label">Always:</p>
+        <ul class="always-items">
+          <li>context in the handoff</li>
+          <li>least-privilege tools</li>
+          <li>deny rules</li>
+          <li>CI + human review as the gate</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>This is the synthesis of the hour, not a list of what we covered. Three ideas carry through everything:</p>
+    <ol>
+      <li><strong>Context is the currency.</strong> Subagents exist to protect the main context window, and they only know what the handoff gives them (plus repo instructions only if they opt in). Good delegation is good briefing.</li>
+      <li><strong>Tools are the boundary.</strong> The <code>tools</code> list and deny rules are what the runtime enforces, and restrictions flow down from parent to child. Prompts guide; tools and permissions constrain.</li>
+      <li><strong>Review is advisory; CI and humans are the gate.</strong> Creator↔reviewer loops and review agents raise quality, but required checks and pull request review are what actually stop bad changes.</li>
+    </ol>
+    <p>Walk the tree once with an example: "Update three independent doc pages" → not small, splits cleanly, I'm staying at my desk → <code>/fleet</code>. "Clean up docs in a module I'm not touching" → <code>&amp;</code> to the cloud agent.</p>
+    <p>Remember the cost dimension: every branch to the right of "main agent" means more model calls, so delegate when the isolation or parallelism is worth it.</p>
+    <p>Transition: "Here's how to start on Monday."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-subagent-foundations.md, research/2026-10-05-cli-custom-agents.md, research/2026-10-05-cli-permissions-guardrails.md, research/2026-10-05-cli-fleet-delegate-workflows.md</p>
+  </aside>
+</article>

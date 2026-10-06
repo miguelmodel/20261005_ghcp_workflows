@@ -1,0 +1,81 @@
+<!-- HAND-CRAFTED OVERRIDE — do not regenerate -->
+<article class="slide is-dense" data-number="28" data-type="diagram" data-section="Permissions &amp; guardrails">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Creator ↔ reviewer: advisory, not enforcement</h1>
+    <div class="slide-main">
+      <div class="cr-layout">
+        <div class="cycle" role="img" aria-label="Main session coordinator: 1 implement one step goes to the implementer; 2 changed files go from implementer to reviewer; 3 BLOCKING findings go back from reviewer to implementer, at most 2 rounds, by prompt; 4 the reviewer reports to the main session.">
+          <svg class="cycle-wires" viewBox="0 0 940 520" aria-hidden="true" focusable="false">
+            <defs>
+              <marker id="s28-ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path class="wire-head" d="M0 0 L10 5 L0 10 z"/>
+              </marker>
+              <marker id="s28-ah-alt" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path class="wire-head is-alt" d="M0 0 L10 5 L0 10 z"/>
+              </marker>
+            </defs>
+            <path class="wire" d="M300 100 C300 210 165 200 165 314" marker-end="url(#s28-ah)"/>
+            <path class="wire" d="M332 382 L604 382" marker-end="url(#s28-ah)"/>
+            <path class="wire is-alt is-dashed" d="M775 446 L775 492 L165 492 L165 450" marker-end="url(#s28-ah-alt)"/>
+            <path class="wire is-alt" d="M775 318 C775 200 640 210 640 106" marker-end="url(#s28-ah-alt)"/>
+          </svg>
+          <div class="cy-node cy-coord" aria-hidden="true">
+            <p class="cy-title">Main session</p>
+            <p class="cy-sub">(coordinator)</p>
+          </div>
+          <div class="cy-node cy-impl" aria-hidden="true">
+            <p class="cy-title">implementer</p>
+            <p class="cy-sub">edit · execute</p>
+          </div>
+          <div class="cy-node cy-rev" aria-hidden="true">
+            <p class="cy-title">reviewer</p>
+            <p class="cy-sub">read · search only</p>
+          </div>
+          <p class="cy-label" style="left: 248px; top: 186px" aria-hidden="true">① implement one step</p>
+          <p class="cy-label" style="left: 372px; top: 336px" aria-hidden="true">② changed files</p>
+          <p class="cy-label is-small" style="left: 470px; top: 475px; transform: translateX(-50%)" aria-hidden="true">③ BLOCKING findings <span class="muted">(at most 2 rounds, by prompt)</span></p>
+          <p class="cy-label" style="left: 572px; top: 186px" aria-hidden="true">④ report</p>
+        </div>
+        <div class="guarantees">
+          <div class="guarantee">
+            <span class="verdict-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></svg></span>
+            <div>
+              <p class="guarantee-label">Enforced by the runtime:</p>
+              <p class="guarantee-text">the reviewer's read-only tools list</p>
+            </div>
+          </div>
+          <div class="guarantee is-not">
+            <span class="verdict-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 8v5M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg></span>
+            <div>
+              <p class="guarantee-label">Not enforced:</p>
+              <p class="guarantee-text">routing, the round cap, &ldquo;coordinator doesn't edit&rdquo;</p>
+            </div>
+          </div>
+          <div class="guarantee is-gate">
+            <span class="verdict-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z"/></svg></span>
+            <div>
+              <p class="guarantee-label">The real merge gate:</p>
+              <p class="guarantee-text">required CI checks + human pull request review</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="slide-takeaway is-sm">Review loops raise quality; CI and human review enforce it.</p>
+      <p class="status-line"><span class="status-tag">Status</span> <code>/review</code> <span class="badge badge-announce">included in the Copilot CLI GA announcement (2026-02-25)</span>; rubber duck <span class="badge badge-ga">GA (2026-06-02)</span>.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>The pattern combines documented building blocks: a writer agent with edit and execute tools, a read-only reviewer that follows the docs' "view/grep/glob (read-only) for auditing" example, and explicit invocation by name from the main agent. Variants: use the built-in <code>/review</code>, <code>/security-review</code> or the rubber duck as the reviewer half, or give your reviewer a different model family via <code>models</code>.</p>
+    <p>Be precise about guarantees:</p>
+    <ul>
+      <li>The main agent carries out the routing, the round cap and the final <code>/review</code> <strong>because the prompt asks it to</strong>. Nothing in the runtime enforces them, so a session can end with unresolved findings.</li>
+      <li>The only runtime-enforced piece is the reviewer's tool list.</li>
+      <li>Hooks don't turn this into a deterministic loop. A <code>subagentStop</code> hook can return <code>block</code>, but that makes the <strong>same</strong> subagent (the reviewer) keep working; it can't make the implementer fix anything, and the 8-block runaway guard still applies. <code>subagentStop</code> and <code>agentStop</code> are documented in the hooks reference without dated status, so they're not demoed.</li>
+    </ul>
+    <p>The VS Code subagents guide adds a caution that applies everywhere: "Separate contexts can surface different issues, but don't guarantee unbiased or correct conclusions. Review the combined findings before acting on them."</p>
+    <p>So: treat agent review as a quality aid, and keep the enforceable gate outside the agent: required CI checks, branch protection, and human PR review.</p>
+    <p>Transition: "Let's see this pattern, plus a deny rule and our policy hook, live."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-permissions-guardrails.md, research/2026-10-05-cli-custom-agents.md</p>
+  </aside>
+</article>

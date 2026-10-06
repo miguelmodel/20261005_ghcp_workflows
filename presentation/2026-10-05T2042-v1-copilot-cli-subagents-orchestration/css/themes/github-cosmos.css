@@ -1,0 +1,72 @@
+/* GitHub Cosmos — default theme */
+:root,
+[data-theme="github-cosmos"] {
+  --bg-primary: #0d1117;
+  --bg-secondary: #161b22;
+  --bg-card: rgba(255, 255, 255, .03);
+  --border-card: rgba(255, 255, 255, .20);
+  --text-primary: #e6edf3;
+  --text-secondary: rgba(230, 237, 243, .75);
+  --accent-primary: #58a6ff;
+  --accent-secondary: #bc8cff;
+  --gradient-title: linear-gradient(135deg, #58a6ff 0%, #bc8cff 100%);
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Extended tokens (defined identically in every theme) */
+  --font-quote: 'Playfair Display', serif;
+  --accent-text: #58a6ff;
+  --accent-soft: rgba(88, 166, 255, .14);
+  --accent-2-soft: rgba(188, 140, 255, .14);
+  --glow-1: rgba(88, 166, 255, .10);
+  --glow-2: rgba(188, 140, 255, .08);
+  --surface-raised: #161b22;
+  --row-alt: rgba(255, 255, 255, .025);
+  --table-head-bg: rgba(88, 166, 255, .08);
+  --success: #56d364;
+  --success-soft: rgba(46, 160, 67, .15);
+  --danger: #ff7b72;
+  --danger-soft: rgba(248, 81, 73, .14);
+  --warning: #e3b341;
+  --warning-soft: rgba(187, 128, 9, .16);
+  --focus-ring: #79c0ff;
+  --chrome-bg: rgba(22, 27, 34, .88);
+  --chrome-text: #e6edf3;
+  --chrome-border: rgba(255, 255, 255, .22);
+  --panel-bg: #161b22;
+  --panel-input-bg: #0d1117;
+  --on-accent: #0d1117;
+
+  --code-bg: #161b22;
+  --code-head-bg: rgba(255, 255, 255, .04);
+  --code-text: #e6edf3;
+  --code-inline-bg: rgba(110, 118, 129, .22);
+  --code-inline-fg: #e6edf3;
+  --syn-key: #79c0ff;
+  --syn-str: #a5d6ff;
+  --syn-num: #79c0ff;
+  --syn-com: #8b949e;
+  --syn-kw: #ff7b72;
+  --syn-punc: #c9d1d9;
+  --syn-meta: #d2a8ff;
+  --syn-cmd: #d2a8ff;
+  --syn-flag: #ffa657;
+  --syn-var: #ffa657;
+
+  --badge-ga-fg: #56d364;
+  --badge-ga-bg: rgba(46, 160, 67, .15);
+  --badge-ga-border: rgba(63, 185, 80, .55);
+  --badge-preview-fg: #e3b341;
+  --badge-preview-bg: rgba(187, 128, 9, .16);
+  --badge-preview-border: rgba(210, 153, 34, .55);
+  --badge-announce-fg: #79c0ff;
+  --badge-announce-bg: rgba(56, 139, 253, .15);
+  --badge-announce-border: rgba(88, 166, 255, .55);
+  --badge-shipped-fg: #d2d9e0;
+  --badge-shipped-bg: rgba(139, 148, 158, .14);
+  --badge-shipped-border: rgba(139, 148, 158, .55);
+  --badge-nodate-fg: #c9d1d9;
+  --badge-nodate-bg: transparent;
+  --badge-nodate-border: rgba(139, 148, 158, .6);
+}

@@ -1,0 +1,35 @@
+<article class="slide is-appendix" data-number="43" data-type="comparison" data-section="Appendix">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <p class="appendix-mark">Appendix</p>
+    <h1 class="slide-title">MCP governance: allowlists vs registry</h1>
+    <div class="slide-main">
+      <table class="slide-table table-md compare-table">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 24%"><span class="visually-hidden">Aspect</span></th>
+            <th scope="col" style="width: 38%">Managed allow/deny lists</th>
+            <th scope="col">Registry + &ldquo;Registry only&rdquo;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Status</th><td class="status-cell"><span class="badge badge-ga">GA (2026-08-06)</span></td><td class="status-cell"><span class="badge badge-preview">Public preview</span>, not prioritized for development</td></tr>
+          <tr><th scope="row">Matching</th><td><code>serverUrl</code> or exact <code>serverCommand</code></td><td>Server name or ID only</td></tr>
+          <tr><th scope="row">Can users bypass it?</th><td>Not by editing their config</td><td>Yes, by editing configuration files</td></tr>
+          <tr><th scope="row">Enforced in</th><td>Copilot CLI, VS Code, Copilot app</td><td>Copilot CLI and VS Code</td></tr>
+          <tr><th scope="row">Cloud agent</th><td>Not enforced</td><td>Not enforced</td></tr>
+          <tr><th scope="row">Bad config</th><td>Malformed list blocks all but built-in servers</td><td>Unreachable check blocks non-default servers</td></tr>
+        </tbody>
+      </table>
+      <p class="slide-takeaway is-sm">Built-in default servers are always exempt; the &ldquo;MCP servers in Copilot&rdquo; policy must be on for any MCP server to run.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>GitHub's own recommendation: use <code>allowedMcpServers</code> / <code>deniedMcpServers</code> in managed settings. Evaluation order: built-in default servers are always allowed; any denylist match blocks; if an allowlist exists, non-matching servers are blocked; servers whose URL or command contains an unresolved variable are blocked. Across sources, allowlists combine as an intersection and denylists as a union.</p>
+    <p><code>serverName</code> matching is "only supplied as a convenience, not a security control, since users can rename servers." Use <code>serverUrl</code> for remote servers and <code>serverCommand</code> for local ones.</p>
+    <p>The registry approach: "This feature is in public preview and is not the recommended method." Its enforcement "is based only on server name/ID matching, which can be bypassed by editing configuration files." In the CLI (v1.0.11+), the evaluate check is fail-closed.</p>
+    <p>Cloud agent is governed differently: MCP for cloud work is configured at repository level or in enterprise agent profiles, so <code>/delegate</code>d work doesn't run under the CLI user's allowlist (inference from the per-client support tables).</p>
+    <p>Inference to verify: the lists should apply to servers declared in agent <code>mcp-servers</code> frontmatter and in plugins, but no page states it explicitly. It's also unconfirmed which of the CLI's built-in servers count as exempt.</p>
+    <p class="sn-sources">Sources: research/2026-10-05-copilot-governance-appendix.md</p>
+  </aside>
+</article>

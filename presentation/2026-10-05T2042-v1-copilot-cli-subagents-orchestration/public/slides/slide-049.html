@@ -1,0 +1,38 @@
+<article class="slide is-appendix is-dense" data-number="49" data-type="table" data-section="Appendix">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <p class="appendix-mark">Appendix</p>
+    <h1 class="slide-title">Billing through Azure: eligibility, controls, commitments</h1>
+    <div class="slide-main">
+      <table class="slide-table table-md">
+        <thead>
+          <tr><th scope="col" style="width: 26%">Topic</th><th scope="col">What to know</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Unsupported subscriptions</th><td>Free Trial, Azure for Students, DreamSpark, Azure Pass, MSDN, and the <code>PayAsYouGo_2014-09-01</code> quota ID</td></tr>
+          <tr><th scope="row">Multiple subscriptions</th><td>Cost centers can each point to their own Azure subscription</td></tr>
+          <tr><th scope="row">Seat counting</th><td>One GitHub page says &ldquo;active seats&rdquo;; others say assigned seats, so don't assume inactive users are free</td></tr>
+          <tr><th scope="row">Commitments</th><td>GitHub products on the Azure invoice are MACC-eligible</td></tr>
+          <tr><th scope="row">Pre-purchase plans</th><td>GitHub and GitHub AI Credits pre-purchase plans: one-year term, non-cancellable</td></tr>
+          <tr><th scope="row">Prepaid usage</th><td>Not available for usage-based billing through Azure</td></tr>
+        </tbody>
+      </table>
+      <p class="status-line"><span class="status-tag">Status</span> <span class="badge badge-nodate">no official GA/preview statement</span> for these Azure billing mechanisms as of 2026-10-05.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>Eligibility: GitHub publishes only an unsupported list. The <code>PayAsYouGo_2014-09-01</code> quota ID includes offers such as MS-AZR-0003P. Check a subscription's <code>subscriptionPolicies.quotaId</code> with the Azure Resource Manager Subscriptions API before connecting (the Azure billing research includes a read-only preflight script). A Microsoft Q&amp;A volunteer answer claiming MS-AZR-0003P is supported conflicts with GitHub's table; GitHub's docs are authoritative.</p>
+    <p>Other notes:</p>
+    <ul>
+      <li>Connecting Azure during a non-EMU GitHub Enterprise Cloud trial ends the trial immediately.</li>
+      <li>Disconnecting Azure caps usage at the plan's included amounts.</li>
+      <li>Enterprises using GitHub Enterprise Cloud through a Microsoft Enterprise Agreement must connect a subscription to use Copilot.</li>
+      <li>"GitHub AI Credits" are not the same as Copilot Studio's "Copilot Credits".</li>
+      <li>MACC: credit-funded consumption doesn't count toward a MACC; MACC tracking in the portal is for direct EA and MCA customers.</li>
+      <li>Pre-purchase plans (GitHub Pre-Purchase, GitHub AI Credits Pre-Purchase, Microsoft Agent Prepurchase) apply automatically within their scope; scope must include the subscription linked to GitHub. "All purchases are final." Learn's discount examples use hypothetical prices.</li>
+      <li>GitHub says "Prepaid usage is not currently available for usage-based billing through Azure"; the Azure pre-purchase plans are an Azure-side commitment discount, not GitHub prepaid usage (an interpretation; the sources don't cross-reference).</li>
+      <li>The only evidence-backed Azure-billed status label found is Preview for Copilot code review in Azure DevOps, a separate product path.</li>
+    </ul>
+    <p class="sn-sources">Sources: research/2026-10-05-copilot-azure-billing.md, research/2026-10-05-copilot-plans-pricing.md</p>
+  </aside>
+</article>

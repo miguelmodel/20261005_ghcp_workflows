@@ -1,0 +1,48 @@
+<article class="slide is-appendix is-dense" data-number="42" data-type="code-example" data-section="Appendix">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <p class="appendix-mark">Appendix</p>
+    <h1 class="slide-title">Managed settings that shape CLI subagents</h1>
+    <div class="slide-main">
+      <figure class="code-figure">
+<pre class="code-block is-tight" aria-label="managed-settings.json excerpt"><code><span class="t-com">// copilot/managed-settings.json in the enterprise's .github-private repository (excerpt)</span>
+<span class="t-pun">{</span>
+  <span class="t-key">"permissions"</span><span class="t-pun">: {</span>
+    <span class="t-key">"disableBypassPermissionsMode"</span><span class="t-pun">:</span> <span class="t-str">"disable"</span><span class="t-pun">,</span>
+    <span class="t-key">"deny"</span><span class="t-pun">: [</span><span class="t-str">"Shell(rm -rf *)"</span><span class="t-pun">,</span> <span class="t-str">"Read(~/.ssh/**)"</span><span class="t-pun">,</span> <span class="t-str">"Edit(//etc/**)"</span><span class="t-pun">],</span>
+    <span class="t-key">"ask"</span><span class="t-pun">: [</span><span class="t-str">"Shell(git push *)"</span><span class="t-pun">]</span>
+  <span class="t-pun">},</span>
+  <span class="t-key">"allowedMcpServers"</span><span class="t-pun">: [</span>
+    <span class="t-pun">{</span> <span class="t-key">"serverUrl"</span><span class="t-pun">:</span> <span class="t-str">"https://api.githubcopilot.com/*"</span> <span class="t-pun">},</span>
+    <span class="t-pun">{</span> <span class="t-key">"serverCommand"</span><span class="t-pun">: [</span><span class="t-str">"npx"</span><span class="t-pun">,</span>     <span class="t-str">"@playwright/mcp@latest"</span><span class="t-pun">] }</span>
+  <span class="t-pun">],</span>
+  <span class="t-key">"deniedMcpServers"</span><span class="t-pun">: [</span>
+    <span class="t-pun">{</span> <span class="t-key">"serverCommand"</span><span class="t-pun">: [</span><span class="t-str">"npx"</span><span class="t-pun">,</span> <span class="t-str">"-y"</span><span class="t-pun">,</span> <span class="t-str">"@modelcontextprotocol/server-filesystem"</span><span class="t-pun">,</span> <span class="t-str">"/"</span><span class="t-pun">] }</span>
+  <span class="t-pun">]</span>
+<span class="t-pun">}</span></code></pre>
+      </figure>
+      <div class="annot-row">
+        <div class="annot">
+          <span class="side-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg></span>
+          <p><code>disableBypassPermissionsMode</code> suppresses <code>--yolo</code>, every <code>--allow-all*</code> flag, <code>/yolo</code> and <code>/allow-all</code>.</p>
+        </div>
+        <div class="annot">
+          <span class="side-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17h.01"/></svg></span>
+          <p>A managed <code>ask</code> can't be satisfied by bypass mode, hooks or saved approvals.</p>
+        </div>
+      </div>
+      <p class="status-line"><span class="status-tag">Status</span> managed permission rules <span class="badge badge-ga">GA (2026-09-09)</span>; MCP allow/deny lists <span class="badge badge-ga">GA (2026-08-06)</span>; neither applies to the cloud agent.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>Adapted from the official example configuration (model, plugin and telemetry keys removed for focus). Delete the comment line before committing; the docs show plain JSON.</p>
+    <p>What this does for CLI sessions and their subagents:</p>
+    <ul>
+      <li><strong>Bypass mode off</strong>: "all of the command line options for allowing all permissions ... are suppressed at startup and cannot grant elevated permissions. The <code>/yolo</code> and <code>/allow-all</code> slash commands are also blocked." The CLI also accepts <code>"allow-auto-only"</code>. The key was introduced 2026-06-17 and listed among the GA keys on 2026-07-01.</li>
+      <li><strong>Managed permission rules</strong>: precedence deny &gt; ask &gt; allow; operations matching no rule default to "ask" when rules are present. "Managed restrictions can't be weakened by user or workspace settings, auto-approval, or previously saved approvals." GA in the Copilot app, the CLI and VS Code Agent Host sessions; not in the cloud agent.</li>
+      <li><strong>MCP lists</strong>: covered on the next slide.</li>
+    </ul>
+    <p>Delivery caveats: server-managed settings follow the signed-in user's license; if the first fetch fails with no cache, that layer is unavailable for the session, so deliver must-have keys via MDM or a root-owned file. Sources disagree on exactly how MDM, server, file and user layers merge; treat <code>permissions.*</code>, <code>sandbox</code> and MCP lists as most-restrictive-wins and verify the rest on a pilot device. Long-running sessions re-apply managed settings hourly.</p>
+    <p class="sn-sources">Sources: research/2026-10-05-copilot-governance-appendix.md</p>
+  </aside>
+</article>

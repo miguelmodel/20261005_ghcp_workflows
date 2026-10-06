@@ -1,0 +1,111 @@
+/* ============================================================
+   PDF export: 16:9 pages (10in × 5.625in), zero margins,
+   one visible slide per page, active theme with exact colours.
+   ============================================================ */
+
+@page {
+  size: 10in 5.625in;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body {
+    width: 10in !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: var(--bg-primary) !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  #top-controls,
+  .nav-arrow,
+  .speaker-notes-overlay,
+  #admin-panel,
+  #admin-overlay,
+  #slide-counter,
+  #section-label,
+  #sr-status,
+  .motion-only,
+  .slide .speaker-notes {
+    display: none !important;
+  }
+
+  #stage {
+    position: static !important;
+    inset: auto !important;
+    width: 10in !important;
+    height: auto !important;
+    overflow: visible !important;
+    background: none !important;
+  }
+
+  #slide-scaler {
+    position: static !important;
+    visibility: visible !important;
+    transform: none !important;
+    width: 10in !important;
+    height: auto !important;
+    overflow: visible !important;
+    background: none !important;
+    box-shadow: none !important;
+  }
+
+  #slide-container {
+    position: static !important;
+    width: 10in !important;
+    height: auto !important;
+  }
+
+  .slide {
+    position: relative !important;
+    inset: auto !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: none !important;
+    width: 1920px !important;
+    height: 1080px !important;
+    zoom: .5;
+    overflow: hidden !important;
+    break-after: page;
+    page-break-after: always;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .slide.print-last {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  .slide.print-hidden {
+    display: none !important;
+  }
+
+  .code-figure {
+    box-shadow: none !important;
+  }
+}
+
+/* Fallback for engines without CSS zoom: scale with a transform and
+   collapse the layout box to the 960×540 CSS-pixel page. */
+@supports not (zoom: .5) {
+  @media print {
+    .slide {
+      transform: scale(.5) !important;
+      transform-origin: 0 0 !important;
+      margin-right: -960px !important;
+      margin-bottom: -540px !important;
+    }
+
+    #slide-container {
+      overflow: hidden !important;
+    }
+  }
+}

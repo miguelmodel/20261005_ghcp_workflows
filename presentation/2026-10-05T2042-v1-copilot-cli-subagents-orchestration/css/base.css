@@ -1,0 +1,426 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:wght@400;600;700&display=swap');
+
+/* ============================================================
+   Base: reset, shell, fixed 1920×1080 canvas, in-canvas chrome,
+   navigation arrows, top controls and the speaker-notes band.
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --notes-h: clamp(220px, 32vh, 360px);
+  --canvas-w: 1920px;
+  --canvas-h: 1080px;
+  color-scheme: dark light;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background: #000;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+/* ---------- Stage (letterboxed viewport area) ---------- */
+#stage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #000;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+body.notes-visible #stage {
+  bottom: var(--notes-h);
+}
+
+/* ---------- Fixed canvas ---------- */
+#slide-scaler {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  overflow: hidden;
+  background: var(--bg-primary);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .04);
+  /* hidden until the first fit to avoid a flash of unscaled canvas */
+  visibility: hidden;
+}
+
+body.is-fitted #slide-scaler {
+  visibility: visible;
+}
+
+#slide-container {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+}
+
+.deck-loading,
+.deck-error {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-size: 36px;
+  color: var(--text-secondary);
+}
+
+.deck-error {
+  color: var(--danger);
+  padding: 120px;
+  text-align: center;
+}
+
+/* ---------- In-canvas chrome: counter + section label ---------- */
+#slide-counter,
+#section-label {
+  position: absolute;
+  bottom: 28px;
+  z-index: 20;
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: .02em;
+  color: var(--text-secondary);
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border-card);
+  background: var(--bg-card);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+#slide-counter {
+  left: 40px;
+  font-variant-numeric: tabular-nums;
+}
+
+#section-label {
+  right: 40px;
+  max-width: 700px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#section-label.is-appendix {
+  color: var(--accent-text);
+  border-color: var(--accent-primary);
+}
+
+body.hide-slide-number #slide-counter,
+body.hide-section-label #section-label {
+  display: none;
+}
+
+/* ---------- Navigation arrows (transparent at rest, always tabbable) ---------- */
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 30;
+  width: 56px;
+  height: 96px;
+  margin-top: -48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--chrome-border);
+  border-radius: 14px;
+  background: var(--chrome-bg);
+  color: var(--chrome-text);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .2s ease, background-color .2s ease, transform .2s ease;
+}
+
+.nav-arrow svg {
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nav-prev {
+  left: 14px;
+}
+
+.nav-next {
+  right: 14px;
+}
+
+body.near-left .nav-prev,
+body.near-right .nav-next,
+.nav-arrow:focus-visible,
+.nav-arrow:hover {
+  opacity: 1;
+}
+
+.nav-arrow:hover {
+  background: var(--accent-primary);
+  color: var(--on-accent);
+}
+
+.nav-arrow[aria-disabled="true"] {
+  cursor: default;
+}
+
+body.near-left .nav-prev[aria-disabled="true"],
+body.near-right .nav-next[aria-disabled="true"] {
+  opacity: .35;
+}
+
+.nav-arrow[aria-disabled="true"]:focus-visible {
+  opacity: .6;
+}
+
+/* ---------- Top-right controls: notes toggle + settings gear ---------- */
+#top-controls {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 60;
+  display: flex;
+  gap: 8px;
+}
+
+.chrome-btn {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 12px;
+  border: 1px solid var(--chrome-border);
+  background: var(--chrome-bg);
+  color: var(--chrome-text);
+  cursor: pointer;
+  opacity: .55;
+  transition: opacity .2s ease, background-color .2s ease, color .2s ease;
+}
+
+.chrome-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.chrome-btn:hover,
+.chrome-btn:focus-visible,
+#top-controls:hover .chrome-btn {
+  opacity: 1;
+}
+
+.chrome-btn:hover {
+  background: var(--accent-primary);
+  color: var(--on-accent);
+}
+
+.chrome-btn[aria-pressed="true"],
+.chrome-btn[aria-expanded="true"] {
+  opacity: 1;
+  border-color: var(--accent-primary);
+  color: var(--accent-text);
+}
+
+.chrome-btn[aria-pressed="true"]:hover,
+.chrome-btn[aria-expanded="true"]:hover {
+  color: var(--on-accent);
+}
+
+/* ---------- Speaker notes: full-width bottom band ---------- */
+.speaker-notes-overlay {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--notes-h);
+  z-index: 40;
+  background: var(--panel-bg);
+  color: var(--text-primary);
+  border-top: 2px solid var(--accent-primary);
+  font-family: var(--font-body);
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, .35);
+}
+
+.speaker-notes-overlay.visible {
+  display: block;
+}
+
+.sn-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px 0 24px;
+  border-bottom: 1px solid var(--border-card);
+  background: var(--bg-secondary);
+}
+
+.sn-heading {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sn-close {
+  flex: 0 0 auto;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--chrome-border);
+  background: var(--panel-input-bg);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.sn-close:hover {
+  background: var(--accent-primary);
+  color: var(--on-accent);
+}
+
+.sn-body {
+  position: absolute;
+  top: 44px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 14px 28px 22px;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--text-primary);
+}
+
+.sn-body > :first-child {
+  margin-top: 0;
+}
+
+.sn-body p {
+  margin: 0 0 10px;
+  max-width: 1500px;
+}
+
+.sn-body ul,
+.sn-body ol {
+  margin: 0 0 10px;
+  padding-left: 26px;
+  max-width: 1500px;
+}
+
+.sn-body li {
+  margin: 3px 0;
+}
+
+.sn-body li > ul,
+.sn-body li > ol {
+  margin: 4px 0;
+}
+
+.sn-body strong {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.sn-body code {
+  font-family: var(--font-mono);
+  font-size: .9em;
+  padding: .05em .3em;
+  border-radius: 5px;
+  background: var(--code-inline-bg);
+  color: var(--code-inline-fg);
+}
+
+.sn-body .sn-sources {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-card);
+  color: var(--text-secondary);
+  font-size: 15px;
+}
+
+/* ---------- Screen-reader live region ---------- */
+#sr-status {
+  position: absolute;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-arrow,
+  .chrome-btn {
+    transition: none;
+  }
+}
