@@ -1,0 +1,32 @@
+<article class="slide is-appendix" data-number="47" data-type="table" data-section="Appendix">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <p class="appendix-mark">Appendix</p>
+    <h1 class="slide-title">Cost controls: what actually stops spend</h1>
+    <div class="slide-main">
+      <table class="slide-table table-md">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 28%">Control</th>
+            <th scope="col" style="width: 38%">Scope</th>
+            <th scope="col">Hard stop?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row"><code>/limits</code> or <code>--max-ai-credits</code></th><td>CLI soft cap; per-response vs per-session scope unresolved in the docs</td><td class="status-cell">No: a soft cap <span class="nw">(<span class="badge badge-preview">public preview, <span class="nw">2026-07-01</span></span>)</span></td></tr>
+          <tr><th scope="row">User-level budgets</th><td>Each user's total consumption</td><td class="status-cell">Yes, always <span class="nw">(<span class="badge badge-ga">GA, <span class="nw">2026-06-01</span></span>)</span></td></tr>
+          <tr><th scope="row">Cost center, org or enterprise budget</th><td>Metered charges after the pool runs out</td><td>Only with &ldquo;Stop usage when budget limit is reached&rdquo;, which is off by default</td></tr>
+          <tr><th scope="row">&ldquo;AI credits paid usage&rdquo; policy</th><td>Organization or enterprise</td><td>Enabled by default; disable it to block all overage</td></tr>
+        </tbody>
+      </table>
+      <p class="slide-takeaway is-sm">CLI runs in GitHub Actions with <code>GITHUB_TOKEN</code> bill the organization, and user-level budgets don't apply.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>CLI session limits: "These session limits are soft limits. If a response is in progress when the limit is reached, that response completes before the session stops." Minimum value 30; requires CLI 1.0.66+. Scope conflict: the how-to and changelogs say the interactive limit applies across the session; the command reference describes it as per response. Present it as a soft, preview guardrail, and confirm behavior with <code>/usage</code>. Session limits "don't replace user-level budgets or spending limits."</p>
+    <p>Org/enterprise: "'Stop usage when budget limit is reached' applies to enterprise spending limits, cost center budgets, and organization budgets only, and is off by default. Without it, charges continue to accrue past the limit." User-level budgets always hard-stop. The tightest remaining budget blocks first. When a user hits a budget, AI-credit features are blocked but code completions keep working.</p>
+    <p>GitHub's maximum-bill example: 400 Business seats ($7,600) plus a $5,000 enterprise budget gives at most $12,600, but <strong>only if</strong> stop-usage is enabled, no cost center is excluded from the enterprise budget, and the seat count doesn't grow mid-cycle.</p>
+    <p>GitHub's recommended setup: a universal user-level budget above the per-seat value, expiring overrides for power users (for example heavy <code>/fleet</code> users), an enterprise spending limit with stop-usage enabled, and at least monthly monitoring. The policy name appears as both "AI credits paid usage" and "AI credit paid usage" in the docs; check the UI label.</p>
+    <p class="sn-sources">Sources: research/2026-10-05-copilot-plans-pricing.md, research/2026-10-05-cli-fleet-delegate-workflows.md, research/2026-10-05-copilot-azure-billing.md</p>
+  </aside>
+</article>

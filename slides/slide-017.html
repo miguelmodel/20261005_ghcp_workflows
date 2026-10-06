@@ -1,0 +1,65 @@
+<!-- HAND-CRAFTED OVERRIDE — do not regenerate -->
+<article class="slide is-dense" data-number="17" data-type="diagram" data-section="Custom agents">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Tool scoping: a parent bounds its children</h1>
+    <div class="slide-main">
+      <div class="scope-layout">
+        <div class="tree-container">
+          <div class="tree-root">
+            <p class="tree-root-title">Default session agent</p>
+            <p class="tree-root-sub">(every tool the session allows)</p>
+          </div>
+          <div class="tree-trunk"><p class="tree-edge-label"><code>task</code></p></div>
+          <ul class="tree-children">
+            <li class="tree-child">
+              <div class="tree-leaf-card">
+                <p class="agent-name">implementer</p>
+                <ul class="tool-chips" aria-label="implementer tools">
+                  <li><code>view</code></li><li><code>grep</code></li><li><code>glob</code></li><li><code>edit</code></li><li><code>create</code></li><li><code>bash</code></li>
+                </ul>
+              </div>
+            </li>
+            <li class="tree-child">
+              <div class="tree-leaf-card">
+                <p class="agent-name">security-reviewer</p>
+                <ul class="tool-chips" aria-label="security-reviewer tools">
+                  <li><code>view</code></li><li><code>grep</code></li><li><code>glob</code></li><li><code>context7/*</code></li>
+                </ul>
+                <p class="leaf-note">(read-only by its tools list)</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="verdicts">
+          <div class="verdict">
+            <span class="verdict-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></svg></span>
+            <div>
+              <p class="verdict-title">Broad parent → narrower children</p>
+              <p class="verdict-text"><span class="visually-hidden">✔ </span>documented-safe shape</p>
+            </div>
+          </div>
+          <div class="verdict is-no">
+            <span class="verdict-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+            <div>
+              <p class="verdict-title">Read-only coordinator → editing child</p>
+              <p class="verdict-text"><span class="visually-hidden">✘ </span>not documented; may be blocked</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="slide-body is-sm">Tool restrictions persist into subagents, so a parent must hold the tools its children need.</p>
+      <p class="slide-body is-sm"><code>tools</code> decides which tools exist; permissions still decide whether a call needs approval.</p>
+      <p class="status-line"><span class="status-tag">Status</span> restriction persistence <span class="nw"><span class="badge badge-shipped">shipped in CLI v1.0.67 (<span class="nw">2026-06-30</span>) and v1.0.68 (<span class="nw">2026-07-01</span>); no separate status label</span>.</span></p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>Two changelog fixes make tool boundaries hold through delegation: "Subagent sessions keep parent tool restrictions" (v1.0.67) and "Custom agents keep their tool filters in nested subagents" (v1.0.68).</p>
+    <p>Design rule from the research: coordinate from the default session agent (or a parent that holds at least the union of its children's tools), and delegate to narrower specialists. That matches GitHub's own VS Code coordinator example, where the coordinator holds the edit tools and the workers are read-only.</p>
+    <p>What is <strong>not</strong> established: a narrow, read-only <code>.agent.md</code> coordinator whose children gain edit or shell tools. No CLI doc describes it, and current builds may block it. If you want the coordinator to "never edit", that's a prompt rule, not an enforced boundary. The only documented narrow-parent/wider-child mechanism is the Copilot SDK's <code>defaultAgent.excludedTools</code>, which applies to the SDK's default agent, not to <code>.agent.md</code> files.</p>
+    <p>Corroboration only (user-filed issue, not a spec): issue #4320 reports that from CLI 1.0.74 a nested agent's MCP tools depended on its immediate parent also declaring them.</p>
+    <p>Separate concern: the <code>tools</code> list controls availability. Whether a tool call still asks for approval is a permission question, covered in the guardrails section. The SDK docs sum up the principle: "Use explicit tool lists to enforce the principle of least privilege."</p>
+    <p>Transition: "Let's put model choice, tool scoping and agent-level MCP into one real file."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-custom-agents.md, research/2026-10-05-cli-permissions-guardrails.md</p>
+  </aside>
+</article>

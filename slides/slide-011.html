@@ -1,0 +1,46 @@
+<article class="slide is-dense" data-number="11" data-type="code-example" data-section="Built-in subagents">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Configure and manage: <code>/subagents</code> and <code>/tasks</code></h1>
+    <div class="slide-main">
+      <figure class="code-figure">
+        <div class="code-head" aria-hidden="true"><span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span><p class="code-lang">jsonc</p></div>
+<pre class="code-block code-lg" aria-label="settings.json example"><code><span class="t-com">// ~/.copilot/settings.json (the /subagents picker writes these keys for you)</span>
+<span class="t-pun">{</span>
+  <span class="t-key">"subagents"</span><span class="t-pun">: {</span>
+    <span class="t-key">"agents"</span><span class="t-pun">: {</span>
+      <span class="t-key">"explore"</span><span class="t-pun">: {</span> <span class="t-key">"model"</span><span class="t-pun">:</span> <span class="t-str">"claude-haiku-4.5"</span> <span class="t-pun">},</span>
+      <span class="t-key">"code-review"</span><span class="t-pun">: {</span> <span class="t-key">"model"</span><span class="t-pun">:</span> <span class="t-str">"inherit"</span><span class="t-pun">,</span> <span class="t-key">"effortLevel"</span><span class="t-pun">:</span> <span class="t-str">"high"</span><span class="t-pun">,</span> <span class="t-key">"contextTier"</span><span class="t-pun">:</span> <span class="t-str">"inherit"</span> <span class="t-pun">}</span>
+    <span class="t-pun">},</span>
+    <span class="t-key">"disabledSubagents"</span><span class="t-pun">: [</span><span class="t-str">"security-review"</span><span class="t-pun">]</span>
+  <span class="t-pun">}</span>
+<span class="t-pun">}</span></code></pre>
+      </figure>
+      <div class="annot-row">
+        <div class="annot">
+          <span class="side-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h10M4 12h16M4 18h7"/><circle cx="17" cy="6" r="2"/><circle cx="14" cy="18" r="2"/></svg></span>
+          <p><code>/subagents</code> (alias <code>/agents</code>) sets default and per-agent models and effort.</p>
+        </div>
+        <div class="annot">
+          <span class="side-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h10M7 17h6"/></svg></span>
+          <p><code>/tasks</code> lists running subagents and shell commands so you can kill (<kbd>x</kbd>) or background (<kbd>b</kbd>) them.</p>
+        </div>
+      </div>
+      <p class="status-line"><span class="status-tag">Status</span> <code>/subagents</code> <span class="nw"><span class="badge badge-shipped">shipped by CLI v1.0.64 (<span class="nw">2026-06-23</span>)</span>;</span> <code>/tasks</code> <span class="nw"><span class="badge badge-shipped">shipped in CLI v0.0.404 (<span class="nw">2026-02-04</span>)</span>;</span> no separate status labels.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>This JSON is an illustrative fragment synthesized from the documented <code>subagents.*</code> keys; prefer the <code>/subagents</code> picker, which writes these keys for you. Model IDs are point-in-time; confirm with <code>/model</code> on your account. <code>disabledSubagents</code> blocks dispatch of the named agents; it works for every built-in except <code>rubber-duck</code>.</p>
+    <p>If an agent file declares <code>modelPolicy: "required"</code>, the <code>/subagents</code> picker shows a locked <strong>Model</strong> entry and a <strong>Model enforcement</strong> row.</p>
+    <p><code>/tasks</code> essentials:</p>
+    <ul>
+      <li>Type the letter keys as <strong>unmodified lowercase</strong>: since CLI v1.0.85, capital letters and modifier chords don't trigger them, even though the reference prints uppercase keycaps.</li>
+      <li><code>j</code>/<code>k</code> move, <code>x</code> kills an active task, <code>r</code> removes a finished one, <code>f</code> shows finished tasks, <code>a</code> toggles nested levels, <code>b</code> promotes a sync task to the background, <code>Esc</code> closes.</li>
+      <li><code>Enter</code> on a row shows task details or, for a subagent, "teleports" into that subagent's own view, where you can steer it. Teleporting is documented, but no dated release introducing it was found, so it carries no status label and we don't use it in demos. Mention it as a capability; don't press <code>Enter</code> on a subagent row live.</li>
+      <li>From the main prompt, <code>Ctrl+X</code> then <code>b</code> promotes the running task; pressing <code>Esc</code> twice stops background agents when the main agent is idle.</li>
+    </ul>
+    <p>Watch-out: <code>/agent</code> (singular) picks the session agent; <code>/agents</code> (plural) is the subagent model picker.</p>
+    <p>Transition: "Enough slides. Let's watch the built-ins work."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-subagent-foundations.md, research/2026-10-05-cli-fleet-delegate-workflows.md</p>
+  </aside>
+</article>

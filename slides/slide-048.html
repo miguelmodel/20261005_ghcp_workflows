@@ -1,0 +1,45 @@
+<!-- HAND-CRAFTED OVERRIDE — do not regenerate -->
+<article class="slide is-appendix" data-number="48" data-type="diagram" data-section="Appendix">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <p class="appendix-mark">Appendix</p>
+    <h1 class="slide-title">Billing through Azure: how it flows</h1>
+    <div class="slide-main">
+      <div class="bill-flow">
+        <div class="bill-node is-github">
+          <p class="bill-title">GitHub organization or enterprise</p>
+          <p class="bill-sub">(org or enterprise owner)</p>
+        </div>
+        <div class="bill-connect">
+          <span class="conn-label">connect</span>
+          <span class="conn-line" aria-hidden="true"></span>
+        </div>
+        <div class="bill-node is-azure">
+          <p class="bill-title">Azure subscription</p>
+          <p class="bill-sub">(subscription Owner + Entra tenant-wide admin consent)</p>
+        </div>
+        <div class="bill-down">
+          <p>Copilot usage sent to Azure daily</p>
+        </div>
+        <div class="bill-node is-invoice">
+          <p class="bill-title">Azure invoice, at the start of the next month</p>
+          <p class="bill-sub">seats + AI credit usage beyond the pooled allowance</p>
+          <p class="bill-sub">shown as <code>enterprise:sku</code> or <code>costcenter:sku</code></p>
+        </div>
+        <div class="bill-notes">
+          <div class="callout"><p>Organization and enterprise accounts only; personal plans can't pay through Azure.</p></div>
+          <div class="callout is-warning"><p>Azure budgets only alert; enforce limits with GitHub budgets.</p></div>
+        </div>
+      </div>
+      <p class="status-line"><span class="status-tag">Status</span> <span class="badge badge-nodate">no official GA/preview statement</span> for the Azure connection itself as of <span class="nw">2026-10-05</span>.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>"You can connect an Azure subscription to your organization or enterprise account and pay for Copilot through Azure." When connected, charges are billed through Azure instead of GitHub, using your organization's standard Azure payment methods.</p>
+    <p>Setup roles (often two or more people): a GitHub org or enterprise owner; an Azure user with <strong>Owner</strong> on the subscription; and someone who can grant Microsoft Entra tenant-wide admin consent for GitHub's Subscription Permission Validation (SPV) app. Path on GitHub: Billing &amp; Licensing → Payment information → Add Azure Subscription. No API or CLI equivalent is documented.</p>
+    <p>Metering: usage is sent daily; the billing period is the calendar month; charges appear at the start of the next month. AI credit overage above the pool is included. Azure shows internal IDs in the <code>enterprise:sku</code> / <code>costcenter:sku</code> format, which can be hard to map back; record them when you connect.</p>
+    <p>Enforcement: "Notifications are triggered when the budget thresholds are exceeded. Resources aren't affected, and your consumption isn't stopped." So hard limits belong in GitHub.</p>
+    <p>Status, scoped to the Azure mechanisms: no official source states GA or preview for connecting an Azure subscription, cost centers with Azure IDs, Azure Cost Management budgets, or the Azure pre-purchase plans, so don't badge them. Usage-based billing itself is "in effect since 2026-06-01" with no GA/preview label. This does <strong>not</strong> apply to GitHub's user-level budgets, which the 2026-06-01 GitHub changelog states are generally available (GA, 2026-06-01; see the previous slide). Other GitHub budget types (cost center, organization, enterprise) carry no explicit label in the sources.</p>
+    <p class="sn-sources">Sources: research/2026-10-05-copilot-azure-billing.md, research/2026-10-05-copilot-plans-pricing.md</p>
+  </aside>
+</article>

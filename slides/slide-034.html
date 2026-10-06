@@ -1,0 +1,42 @@
+<article class="slide" data-number="34" data-type="code-example" data-section="Parallel &amp; delegated workflows">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Automating: one-off headless run or reusable workflow?</h1>
+    <div class="slide-main">
+      <figure class="code-figure">
+        <div class="code-head" aria-hidden="true"><span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span><p class="code-lang">shell</p></div>
+<pre class="code-block code-lg" aria-label="Headless fleet run"><code><span class="t-com"># One-off headless fleet run: nothing can prompt you, so pre-approve what the task needs</span>
+<span class="t-cmd">copilot</span> <span class="t-flag">-p</span> <span class="t-str">"/fleet &lt;YOUR TASK&gt;"</span> <span class="t-flag">--no-ask-user</span> <span class="t-flag">--allow-tool</span>=<span class="t-str">write</span></code></pre>
+      </figure>
+      <div class="choice-row">
+        <div class="choice-card">
+          <span class="side-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>
+          <p><strong>One-off job:</strong> a headless run, where anything not pre-approved is denied automatically.</p>
+        </div>
+        <div class="choice-card is-alt">
+          <span class="side-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg></span>
+          <p><strong>Repeatable process with stages and limits:</strong> a dynamic workflow, defined in code.</p>
+        </div>
+      </div>
+      <p class="status-line"><span class="status-tag">Status</span> <code>/fleet</code> <span class="nw"><span class="badge badge-shipped">shipped in CLI v0.0.411 (<span class="nw">2026-02-17</span>); no separate status label</span>.</span> Dynamic workflows: <span class="nw"><span class="badge badge-preview">public preview (<span class="nw">2026-10-01</span>)</span>,</span> needs <code>--experimental</code>.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p><strong>Live (1 minute): one decision, one command.</strong> The choice is "ad-hoc or reusable?"</p>
+    <ul>
+      <li><strong>Ad-hoc</strong>: the command on screen is the GitHub Blog's headless form (<code>copilot -p "/fleet &lt;YOUR TASK&gt;" --no-ask-user</code>) plus a write approval. In <code>-p</code> mode, "any action that isn't pre-approved is denied automatically", and the blog notes <code>--no-ask-user</code> "is required for non-interactive mode." Copilot decides the split each time.</li>
+      <li><strong>Reusable</strong>: "Unlike <code>/fleet</code>, where Copilot delegates work to subagents and coordinates their work in parallel, a dynamic workflow carries out a process defined in code." Use it when you want the same stages, checks and limits every run. Public preview since 2026-10-01; needs <code>--experimental</code> in the CLI.</li>
+    </ul>
+    <p><strong>Reference only (don't present; use for questions):</strong></p>
+    <ul>
+      <li>Scripted review: <code>copilot -p '/review the changes on this branch compared to main. Focus on bugs and security issues.' -s --allow-tool='shell(git:*)'</code> (verbatim from the docs on running the CLI programmatically).</li>
+      <li>GitHub Actions: GitHub recommends GitHub Agentic Workflows "for most automation use cases" over calling <code>copilot</code> directly. If you do, <code>GITHUB_TOKEN</code> with <code>copilot-requests: write</code> bills an org repo's usage to the organization. Fork-triggered workflows are particularly at risk.</li>
+      <li>Exit codes: since v1.0.87, "Prompt mode exits successfully when a child task fails but the parent recovers", so check results with tests or a diff.</li>
+      <li>Credit caps: <code>--max-ai-credits</code> is a soft limit in public preview (2026-07-01); the docs disagree on whether it applies per response or per session, so it's not a guaranteed budget.</li>
+      <li>Dynamic-workflow details: checkpoints; limits on agents, time and approximate AI credits; <code>copilot workflow run</code>.</li>
+      <li>App builders: the Copilot SDK (GA 2026-06-02) exposes the same runtime; its fleet binding is labeled experimental.</li>
+    </ul>
+    <p>Transition: "Time for the last demo: plan, fleet, review, and hand off."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-fleet-delegate-workflows.md, research/2026-10-05-copilot-plans-pricing.md</p>
+  </aside>
+</article>

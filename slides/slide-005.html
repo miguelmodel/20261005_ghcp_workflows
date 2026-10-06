@@ -1,0 +1,58 @@
+<!-- HAND-CRAFTED OVERRIDE — do not regenerate -->
+<article class="slide is-dense" data-number="5" data-type="diagram" data-section="Foundations">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">The agent loop and the <code>task</code> tool</h1>
+    <div class="slide-main">
+      <div class="loop-input-row">
+        <p class="io-pill">Your prompt</p>
+      </div>
+      <div class="loop-layout">
+        <section class="agent-panel" aria-label="Main agent">
+          <header class="agent-panel-head">
+            <h2 class="agent-panel-title">Main agent</h2>
+            <p class="agent-panel-sub">(session context window)</p>
+          </header>
+          <ol class="loop-steps">
+            <li class="loop-step"><span class="step-badge" aria-hidden="true">1</span><p>LLM call → chooses tools</p></li>
+            <li class="loop-step"><span class="step-badge" aria-hidden="true">2</span><p><code>view</code> · <code>grep</code> · <code>glob</code> · <code>edit</code> · <code>bash</code> · MCP tools</p></li>
+            <li class="loop-step is-task"><span class="step-badge" aria-hidden="true">3</span><p><code>task</code> → Subagent</p></li>
+            <li class="loop-step"><span class="step-badge" aria-hidden="true">4</span><p><code>read_agent</code> / <code>write_agent</code> <span class="muted">(background and multi-turn subagents)</span></p></li>
+            <li class="loop-step is-final"><span class="step-badge" aria-hidden="true">5</span><p>repeat until done → answer to you</p></li>
+          </ol>
+        </section>
+        <div class="loop-connector">
+          <div class="conn"><span class="conn-label">task</span><span class="conn-line" aria-hidden="true"></span></div>
+          <div class="conn is-back"><span class="conn-label">result</span><span class="conn-line" aria-hidden="true"></span></div>
+        </div>
+        <section class="agent-panel is-sub" aria-label="Subagent">
+          <header class="agent-panel-head">
+            <h2 class="agent-panel-title">Subagent</h2>
+          </header>
+          <p class="agent-panel-sub" style="margin: -6px 0 14px">(its own context window)</p>
+          <ul class="sub-steps">
+            <li><p>its own LLM calls and tool calls</p></li>
+            <li><p>returns a result to the parent</p></li>
+          </ul>
+        </section>
+      </div>
+      <p class="mgmt-line">Agent-management tools: <code>task</code>, <code>read_agent</code>, <code>write_agent</code>, <code>list_agents</code>.</p>
+      <p class="slide-takeaway is-sm">Each subagent runs its own loop and hands back only its result.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>GitHub describes the basic coding-agent loop as: "the agent assesses the task, then drafts a plan, implements, tests, and iterates if necessary." The CLI runs that loop in the main agent and starts a fresh loop for each subagent. When custom agents arrived, GitHub described the mechanism this way: custom agents "are also made available as tools to Copilot, and the model will start a new agentic loop using a relevant custom agent when necessary."</p>
+    <p>The diagram is synthesized from the CLI's OpenTelemetry schema: each agent invocation is an <code>invoke_agent</code> span containing LLM <code>chat</code> spans and <code>execute_tool</code> spans; subagents get their own <code>invoke_agent</code> spans. That's also how you can observe subagents in telemetry.</p>
+    <p>The four agent-management tools:</p>
+    <ul>
+      <li><code>task</code>: run a subagent.</li>
+      <li><code>read_agent</code>: check a background agent's status or result.</li>
+      <li><code>write_agent</code>: send a follow-up message to a running agent.</li>
+      <li><code>list_agents</code>: list available agents.</li>
+    </ul>
+    <p>Multi-turn subagents are "always enabled" since CLI v1.0.72 (2026-07-20); no separate status label. That's why the main agent can follow up with an agent it started earlier.</p>
+    <p>Context management matters here: the main window compacts automatically at about 80% capacity, and subagents are one of the main ways to keep that window clean.</p>
+    <p>Transition: "A subagent gets its own window. But what does it get to see?"</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-subagent-foundations.md</p>
+  </aside>
+</article>

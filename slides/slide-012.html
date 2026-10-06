@@ -1,0 +1,43 @@
+<article class="slide" data-number="12" data-type="demo-placeholder" data-section="Built-in subagents">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <div class="demo-terminal" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2.5" y="4" width="19" height="16" rx="2.5"/><path d="m6.5 9 3 3-3 3M12 15h5"/></svg></div>
+    <p class="demo-badge"><span class="demo-dot" aria-hidden="true"></span><span>Live demo</span></p>
+    <h1 class="slide-title">Demo 1: Built-in subagents in action</h1>
+    <p class="slide-subtitle">Delegation, <code>/tasks</code>, and per-agent models</p>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>Timing: 5-minute demo slot (counted). This also serves as the first break. Keep a clock visible and follow the elapsed-time cutoffs below; the last 30 seconds are reserved for wrap-up and the transition.</p>
+    <p>Setup before the session:</p>
+    <ul>
+      <li>Demo repo cloned and trusted; Copilot CLI updated (research baseline: stable 1.0.91, 2026-10-01).</li>
+      <li>Run <code>/model</code> and pick a <strong>specific</strong> session model, not Auto. Under Auto, a custom agent's <code>model</code> field is documented to be overridden, and how Auto treats <code>/subagents</code> preferences is undocumented, so a specific model keeps the demo predictable.</li>
+      <li>Optional: enable <code>streamerMode</code>, which hides preview model names, quota details and timestamps for screen sharing.</li>
+      <li>Fallback assets: a short screen recording of this exact run (including the <code>/tasks</code> list and <code>/subagents</code> picker) from rehearsal.</li>
+    </ul>
+    <p>Steps (elapsed time):</p>
+    <ol>
+      <li><strong>0:00–0:45</strong> Prompt: <code>How does authentication work in this codebase?</code> The docs say this typically triggers <code>explore</code>. Point out the subagent entry and the short, focused answer.
+        <ul>
+          <li>Fallback if the main agent answers directly (delegation is selective): <code>Use the explore agent to map how authentication works in this codebase and report the key files.</code></li>
+          <li>Cutoff: at 0:45, move on even if the answer is still streaming.</li>
+        </ul>
+      </li>
+      <li><strong>0:45–2:00</strong> Prompt: <code>In parallel: have the task agent run the unit test suite in the background, and have the explore agent list every HTTP route with the file that defines it. Keep working on a summary while they run.</code> Whether a task runs sync or background is the model's choice. Don't wait for completion; <code>/tasks</code> is more interesting while they run.</li>
+      <li><strong>2:00–3:00</strong> <code>/tasks</code>. Lowercase keys only: <code>j</code>/<code>k</code> to move between rows, <code>f</code> to show finished tasks, <code>b</code> on a sync task to promote it to the background, <code>x</code> to kill one, <code>Esc</code> to close. <strong>Don't press <code>Enter</code> on a subagent row</strong>: it can teleport into that subagent's view, which is excluded from demos because its introduction is undated. Just say the capability exists.</li>
+      <li><strong>3:00–4:00</strong> <code>/subagents</code>. Show the per-agent model and effort for <code>explore</code> and <code>code-review</code>, and the <code>inherit</code> option.</li>
+      <li><strong>4:00–4:30</strong> <code>/usage</code>: per-model token totals, and per-model AI credits on token-based billing. Skip this step if you're past 4:15.</li>
+      <li><strong>4:30–5:00</strong> Reserve: wrap up and transition. If you're ahead, optionally try <code>Ask the explore agent you started earlier which of those routes lack tests.</code> (multi-turn subagents, always enabled since CLI v1.0.72, 2026-07-20; no separate status label). If the agent already completed, the main agent may start a new one.</li>
+    </ol>
+    <p>Recovery:</p>
+    <ul>
+      <li>Anything hangs: press <code>Esc</code> twice to interrupt the running turn, then switch to the recording.</li>
+      <li>Keys "do nothing": check Caps Lock/Shift; only unmodified lowercase keys respond.</li>
+      <li>No subagent appears: name the agent explicitly.</li>
+      <li>A per-agent model seems ignored: first check whether the session is on Auto (one possible cause, not proof), then use <code>/usage</code> to see which models actually ran.</li>
+    </ul>
+    <p>Lifecycle of what's shown: <code>explore</code> and <code>task</code> are included in the Copilot CLI GA announcement (2026-02-25); <code>/tasks</code> shipped in CLI v0.0.404 (2026-02-04); <code>/subagents</code> shipped by CLI v1.0.64 (2026-06-23); per-model AI credits in <code>/usage</code> shipped in CLI v1.0.85 (2026-09-16); none of these has a separate status label. Deliberately not shown: teleporting into a subagent's view (no dated introduction evidence) and the <code>general-purpose</code> agent.</p>
+    <p>Transition after the demo: "Built-ins are great. Now let's build our own specialists."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-subagent-foundations.md, research/2026-10-05-cli-fleet-delegate-workflows.md, research/2026-10-05-copilot-plans-pricing.md</p>
+  </aside>
+</article>

@@ -1,0 +1,32 @@
+<article class="slide" data-number="27" data-type="list" data-section="Permissions &amp; guardrails">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Plan mode and human checkpoints</h1>
+    <div class="slide-main">
+      <div class="list-card">
+        <ul class="slide-list is-md">
+          <li>Plan mode (<kbd>Shift+Tab</kbd> or <code>/plan</code>) asks clarifying questions, writes <code>plan.md</code>, and waits for your approval.</li>
+          <li>File edits are blocked at runtime, and helper subagents inherit the block.</li>
+          <li>It's a safety net, not a guarantee: shell commands with unclear effects and MCP calls still pass.</li>
+          <li>Review with <code>/diff</code>; roll back a turn with <code>/undo</code> or <code>/rewind</code>.</li>
+          <li><code>--plan --mode autopilot</code> skips plan approval, so use it only where nobody needs to review the plan.</li>
+        </ul>
+      </div>
+      <p class="status-line"><span class="status-tag">Status</span> plan mode, <code>/diff</code> and undo/rewind <span class="nw"><span class="badge badge-announce">included in the Copilot CLI GA announcement (<span class="nw">2026-02-25</span>)</span>;</span> plan-then-autopilot <span class="nw"><span class="badge badge-shipped">shipped in CLI v1.0.79 (<span class="nw">2026-08-10</span>); no separate status label</span>.</span></p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>GitHub's best-practices guide: "Models achieve higher success rates when given a concrete plan to follow." Plan mode is enforced by the runtime, not just by asking the model, and "Delegated sub-tasks are protected too": a helper subagent "inherits the same restrictions and can't edit your project either."</p>
+    <p>But read the fine print: "It's a safety net, not a guarantee. This protection is designed to catch clear, direct attempts to change your files—it's not an airtight lockdown." Shell commands whose effect can't be determined in advance, and calls to external/MCP tools, are deliberately allowed through.</p>
+    <p>When a plan is ready, the exits include <strong>Accept plan and build on autopilot</strong> and <strong>Accept plan and build on autopilot + /fleet</strong>; we'll use the second one in Demo 3.</p>
+    <p>Other checkpoints:</p>
+    <ul>
+      <li>Clarifying questions come from the <code>ask_user</code> tool; <code>--no-ask-user</code> turns it off.</li>
+      <li>Rejecting a permission request with inline feedback redirects the agent without stopping it.</li>
+      <li>Rewind: choose <strong>Conversation only</strong> or <strong>Conversation + files</strong>. The files option, without a Git requirement, shipped in CLI v1.0.78 (2026-08-03). It restores only files Copilot changed and can't itself be undone.</li>
+      <li>Autopilot with limited permissions auto-denies anything that needs approval, so tasks may stall.</li>
+    </ul>
+    <p>Transition: "The last layer is having one agent check another's work. Let's be precise about what that guarantees."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-permissions-guardrails.md, research/2026-10-05-cli-subagent-foundations.md, research/2026-10-05-cli-fleet-delegate-workflows.md</p>
+  </aside>
+</article>

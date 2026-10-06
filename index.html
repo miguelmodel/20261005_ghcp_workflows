@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en" data-theme="github-cosmos">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Subagents &amp; Multi-Agent Orchestration with GitHub Copilot CLI — presentation (content v2, build v1)">
+  <title>Subagents &amp; Multi-Agent Orchestration with GitHub Copilot CLI</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d1117'/%3E%3Cpath d='M32 32 14 17M32 32l18-15M32 32v19' stroke='%2358a6ff' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='10' fill='%2358a6ff'/%3E%3Ccircle cx='14' cy='17' r='6' fill='%23bc8cff'/%3E%3Ccircle cx='50' cy='17' r='6' fill='%23bc8cff'/%3E%3Ccircle cx='32' cy='51' r='6' fill='%23bc8cff'/%3E%3C/svg%3E">
+  <script type="module" crossorigin src="/20261005_ghcp_workflows/assets/index-C1srMb6a.js"></script>
+  <link rel="stylesheet" crossorigin href="/20261005_ghcp_workflows/assets/index-C2J4rEwZ.css">
+</head>
+<body>
+  <main id="stage" aria-label="Presentation">
+    <div id="slide-scaler">
+      <div id="slide-container" aria-live="off">
+        <div class="deck-loading">Loading slides…</div>
+      </div>
+      <div id="slide-counter" aria-hidden="true">1 / 49</div>
+      <div id="section-label" aria-hidden="true"></div>
+    </div>
+
+    <button id="nav-prev" class="nav-arrow nav-prev" type="button" aria-label="Previous slide" title="Previous slide (←)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>
+    </button>
+    <button id="nav-next" class="nav-arrow nav-next" type="button" aria-label="Next slide" title="Next slide (→)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+    </button>
+  </main>
+
+  <div id="top-controls">
+    <button id="notes-toggle" class="chrome-btn" type="button" aria-pressed="false" aria-label="Show speaker notes (N)" title="Show speaker notes (N)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2.5"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+    </button>
+    <button id="admin-toggle" class="chrome-btn" type="button" aria-expanded="false" aria-controls="admin-panel" aria-label="Settings (A)" title="Settings (A)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.54V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1.11-1.56 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.54-1H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.65 8.9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1-1.54V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.54 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.54 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.54 1z"/></svg>
+    </button>
+  </div>
+
+  <aside class="speaker-notes-overlay" aria-label="Speaker notes" aria-hidden="true">
+    <div class="sn-header">
+      <p class="sn-heading">Notes</p>
+      <button class="sn-close" type="button" aria-label="Hide speaker notes">Hide notes</button>
+    </div>
+    <div class="sn-body" tabindex="0"></div>
+  </aside>
+
+  <div id="admin-overlay" aria-hidden="true"></div>
+  <aside id="admin-panel" role="dialog" aria-modal="true" aria-labelledby="admin-title">
+    <div class="admin-header">
+      <h2 id="admin-title" class="admin-title">Settings</h2>
+      <button id="admin-close" class="admin-close" type="button" aria-label="Close settings">Close</button>
+    </div>
+    <div class="admin-body">
+      <section class="admin-section" aria-labelledby="admin-sec-display">
+        <h3 id="admin-sec-display" class="admin-section-title">Display</h3>
+        <div class="admin-field">
+          <label for="admin-theme">Theme</label>
+          <select id="admin-theme" class="admin-select"></select>
+        </div>
+        <div class="admin-field">
+          <label for="admin-notes">Speaker notes <span class="admin-kbd">N</span></label>
+          <input id="admin-notes" class="admin-check" type="checkbox">
+        </div>
+        <div class="admin-field">
+          <label for="admin-slide-number">Slide number</label>
+          <input id="admin-slide-number" class="admin-check" type="checkbox">
+        </div>
+        <div class="admin-field">
+          <label for="admin-section-label">Section label</label>
+          <input id="admin-section-label" class="admin-check" type="checkbox">
+        </div>
+      </section>
+
+      <section class="admin-section" aria-labelledby="admin-sec-nav">
+        <h3 id="admin-sec-nav" class="admin-section-title">Navigate &amp; export</h3>
+        <div class="admin-field">
+          <label for="admin-goto-input">Go to slide</label>
+          <div class="admin-row">
+            <input id="admin-goto-input" class="admin-input" type="number" min="1" max="49" inputmode="numeric" placeholder="1–49">
+            <button id="admin-goto-btn" class="admin-btn" type="button">Go</button>
+          </div>
+        </div>
+        <div class="admin-field">
+          <span class="admin-label">PDF (16:9, visible slides)</span>
+          <button id="admin-pdf" class="admin-btn is-primary" type="button">Export PDF</button>
+        </div>
+        <p class="admin-hint">Keys: <span class="admin-kbd">←</span> <span class="admin-kbd">→</span> <span class="admin-kbd">Space</span> <span class="admin-kbd">Home</span> <span class="admin-kbd">End</span> <span class="admin-kbd">F</span> fullscreen <span class="admin-kbd">N</span> notes <span class="admin-kbd">A</span> settings <span class="admin-kbd">Esc</span> close</p>
+      </section>
+
+      <section class="admin-section" aria-labelledby="admin-sec-slides">
+        <h3 id="admin-sec-slides" class="admin-section-title">Slides (checked = shown)</h3>
+        <div class="checklist-tools">
+          <button id="admin-show-all" class="admin-btn" type="button">Show all slides</button>
+        </div>
+        <ul id="admin-checklist" class="slide-checklist"></ul>
+      </section>
+    </div>
+  </aside>
+
+  <div id="sr-status" class="visually-hidden" role="status" aria-live="polite"></div>
+
+</body>
+</html>

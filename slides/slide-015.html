@@ -1,0 +1,71 @@
+<!-- HAND-CRAFTED OVERRIDE — do not regenerate -->
+<article class="slide is-dense" data-number="15" data-type="diagram" data-section="Custom agents">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Where agents load from, and who wins</h1>
+    <div class="slide-main">
+      <div class="ladder-layout">
+        <div class="tier-stack">
+          <span class="tier-axis" aria-hidden="true"></span>
+          <p class="tier-cap">Highest priority <span class="tier-cap-note">(same agent ID → the first one loaded wins)</span></p>
+          <ol class="tier-list">
+            <li class="tier-item is-row">
+              <span class="tier-num" aria-hidden="true">1</span>
+              <p class="tier-name">User</p>
+              <p class="tier-detail"><code>~/.copilot/agents/</code></p>
+            </li>
+            <li class="tier-item is-row">
+              <span class="tier-num" aria-hidden="true">2</span>
+              <p class="tier-name">Project</p>
+              <p class="tier-detail"><code>.github/agents/</code> <span class="muted">(current directory up to the Git root)</span></p>
+            </li>
+            <li class="tier-item is-row">
+              <span class="tier-num" aria-hidden="true">3</span>
+              <p class="tier-name">Project</p>
+              <p class="tier-detail"><code>.claude/agents/</code></p>
+            </li>
+            <li class="tier-item is-row">
+              <span class="tier-num" aria-hidden="true">4</span>
+              <p class="tier-name">Added root</p>
+              <p class="tier-detail"><code>&lt;dir&gt;/.github/agents/</code> <span class="muted">via <code>--add-dir</code></span></p>
+            </li>
+            <li class="tier-item is-row">
+              <span class="tier-num" aria-hidden="true">5</span>
+              <p class="tier-name">Plugin</p>
+              <p class="tier-detail"><code>&lt;plugin&gt;/agents/</code></p>
+            </li>
+            <li class="tier-item is-row">
+              <span class="tier-num" aria-hidden="true">6</span>
+              <p class="tier-name">Remote</p>
+              <p class="tier-detail">organization / enterprise agents</p>
+            </li>
+          </ol>
+          <p class="tier-cap">Lowest priority</p>
+        </div>
+        <div class="side-stack">
+          <div class="callout">
+            <p>Duplicates resolve by the path-derived agent ID, not by <code>name</code>.</p>
+          </div>
+          <div class="callout">
+            <p>Org and enterprise agents distribute specialists; a user or repo agent with the same ID overrides them.</p>
+          </div>
+        </div>
+      </div>
+      <p class="status-line"><span class="status-tag">Status</span> organization- and enterprise-hosted custom agents are in <span class="nw"><span class="badge badge-preview">public preview (docs banner, read <span class="nw">2026-10-05</span>)</span>.</span></p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>Quote: "The CLI loads custom agents in the following priority order. When agents have the same ID, the first agent loaded is used."</p>
+    <p>Details:</p>
+    <ul>
+      <li><strong>Monorepos</strong>: within the project rows, the CLI walks from the current directory up to the Git root, so the deepest directory wins, and each package can contribute its own agents. All <code>.github/agents/</code> directories load before any <code>.claude/agents/</code>.</li>
+      <li><strong><code>--add-dir</code> is a trust decision</strong>: its agents and skills load as trusted configuration. Only add directories you trust.</li>
+      <li><strong><code>~/.claude/</code></strong> is no longer read by the Copilot CLI since v1.0.36 (2026-04-24); project-level <code>.claude/agents/</code> still is.</li>
+      <li><strong>Plugins</strong> can't override a project or personal agent with the same name; the plugin copy is silently ignored.</li>
+    </ul>
+    <p>Governance implication (more in the appendix): org/enterprise agents sit in the lowest-priority "Remote" tier, so they are a distribution mechanism, not an enforcement mechanism. Use managed settings, policy hooks and MCP lists to enforce behavior.</p>
+    <p>Likely question: "How do I check what loaded?" Run <code>/env</code> in a live session; the non-interactive <code>copilot ... list</code> commands don't cover custom agents.</p>
+    <p>Transition: "Once loaded, an agent can be used in two very different ways."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-custom-agents.md, research/2026-10-05-cli-customization-mcp.md, research/2026-10-05-copilot-governance-appendix.md</p>
+  </aside>
+</article>

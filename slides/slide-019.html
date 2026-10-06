@@ -1,0 +1,45 @@
+<article class="slide is-dense" data-number="19" data-type="table" data-section="Configuration &amp; MCP">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">The customization stack: pick the right tool</h1>
+    <div class="slide-main">
+      <table class="slide-table table-sm">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 21%">You need…</th>
+            <th scope="col" style="width: 16%">Use</th>
+            <th scope="col" style="width: 38%">Where it lives (user / repo)</th>
+            <th scope="col">When it loads</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Rules for almost every task</td><th scope="row">Custom instructions</th><td><code>~/.copilot/copilot-instructions.md</code> / <code>AGENTS.md</code>, <code>.github/copilot-instructions.md</code></td><td>Always, in the main agent</td></tr>
+          <tr><td>A procedure needed only sometimes</td><th scope="row">Skill (<code>SKILL.md</code>)</th><td><code>~/.copilot/skills/</code> / <code>.github/skills/</code></td><td>When relevant, or <code>/skill-name</code></td></tr>
+          <tr><td>A specialist with its own tools and model</td><th scope="row">Custom agent</th><td><code>~/.copilot/agents/</code> / <code>.github/agents/</code></td><td>When selected or delegated</td></tr>
+          <tr><td>Access to an external system</td><th scope="row">MCP server</th><td><code>~/.copilot/mcp-config.json</code> / <code>.github/mcp.json</code>, or per agent</td><td>Session start</td></tr>
+          <tr><td>A shareable bundle of the above</td><th scope="row">Plugin</th><td>Marketplace, repo or local path</td><td>On install or <code>enabledPlugins</code></td></tr>
+        </tbody>
+      </table>
+      <p class="status-line"><span class="status-tag">Status</span> custom agents, skills, MCP and plugins <span class="nw"><span class="badge badge-announce">included in the Copilot CLI GA announcement (<span class="nw">2026-02-25</span>)</span>;</span> Agent Plugins 1.0 format <span class="nw"><span class="badge badge-ga">GA (<span class="nw">2026-08-12</span>)</span>.</span></p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>GitHub frames these as distinct choices: custom instructions "tell Copilot how to behave in general", skills "tell Copilot how to handle a specific kind of task", and plugins are "packages that can deliver preconfigured customizations such as skills, hooks, custom agents, and MCP servers." The comparison page's one-liners are a good mental model:</p>
+    <ul>
+      <li>"I want Copilot to always follow our repository conventions" → custom instructions.</li>
+      <li>"I need Copilot to be able to use tools provided by an external service" → MCP servers.</li>
+      <li>"...operate as a specialist with a constrained toolset" → custom agent.</li>
+      <li>"...add a package of functionality ... without configuring it manually" → plugin.</li>
+    </ul>
+    <p>The three configuration levels this deck cares about: <strong>user</strong> (<code>~/.copilot/...</code>, follows you everywhere), <strong>repo</strong> (<code>.github/...</code>, committed and shared), and <strong>agent</strong> (an agent's own <code>tools</code> and <code>mcp-servers</code>, visible only to that agent). Hooks are the sixth building block; they get their own section.</p>
+    <p>Practical notes:</p>
+    <ul>
+      <li>Instructions are merged with <strong>no precedence order</strong>, so avoid conflicting files. Edits aren't live; start <code>/new</code> or resume the session.</li>
+      <li>Remember the inheritance slide: subagents don't get repo instructions unless they opt in.</li>
+      <li>Skills: first one found wins, in project then personal then plugin order. Only pre-approve <code>shell</code>/<code>bash</code> in a skill you've reviewed and trust.</li>
+      <li>Custom instructions themselves have no feature-specific dated status in the sources, so no label here.</li>
+    </ul>
+    <p>Transition: "MCP is the layer with the most moving parts. Let's look at its precedence."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-customization-mcp.md, research/2026-10-05-cli-permissions-guardrails.md</p>
+  </aside>
+</article>

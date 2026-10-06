@@ -1,0 +1,34 @@
+<article class="slide" data-number="32" data-type="comparison" data-section="Parallel &amp; delegated workflows">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Local, cloud, or remote control?</h1>
+    <div class="slide-main">
+      <table class="slide-table table-md compare-table">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 18%"><span class="visually-hidden">Aspect</span></th>
+            <th scope="col" style="width: 27%"><code>/fleet</code></th>
+            <th scope="col" style="width: 28%"><code>/delegate</code> or <code>&amp;</code></th>
+            <th scope="col">Remote control</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Who does the work</th><td>Local subagents</td><td>Copilot cloud agent</td><td>Your running local session</td></tr>
+          <tr><th scope="row">Where it runs</th><td>Your machine</td><td>GitHub's cloud</td><td>Your machine, which must stay online</td></tr>
+          <tr><th scope="row">What you get</th><td>Changes in your working tree</td><td>A branch and a draft pull request</td><td>The same session, steered from a browser or mobile</td></tr>
+          <tr><th scope="row">Can you close the laptop?</th><td>No</td><td>Yes</td><td>No</td></tr>
+          <tr><th scope="row">Status</th><td class="status-cell"><span class="badge badge-shipped">Shipped in CLI v0.0.411 (<span class="nw">2026-02-17</span>); no separate status label</span></td><td class="status-cell"><span class="badge badge-announce">Included in the Copilot CLI GA announcement (<span class="nw">2026-02-25</span>)</span></td><td class="status-cell"><span class="badge badge-shipped">Shipped in CLI v1.0.25 (<span class="nw">2026-04-13</span>); no separate status label</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p><code>/delegate</code> (or a prompt starting with <code>&amp;</code>) "pushes the task to Copilot cloud agent on GitHub. The work runs remotely: Copilot creates a branch, opens a draft pull request, and works in the background. Use <code>/delegate</code> when you want to hand off a task entirely and continue running even if you shut down your local machine."</p>
+    <p>What happens: "Copilot will ask to commit any of your unstaged changes as a checkpoint in a new branch it creates. Copilot cloud agent will open a draft pull request, make changes in the background, and request a review from you." The CLI prints links to the PR and the agent session. Track it from the CLI's <strong>Sessions</strong> tab (shipped in CLI v1.0.79, 2026-08-10; no separate status label) or <code>/resume</code>.</p>
+    <p>Requirements: Copilot cloud agent must be enabled (disabled by default for Copilot Business and Enterprise until an admin enables it; enabled by default for Pro, Pro+ and Max); you must be signed in to GitHub, even if you use your own model provider; and the repo needs a GitHub remote. Naming: "Copilot cloud agent" is the current name for "Copilot coding agent".</p>
+    <p>Don't confuse it with <strong>remote control</strong> (<code>--remote</code>, <code>/remote on</code>): that lets you steer a session that's still running locally, and "The machine where the CLI session is running must be online." Nothing moves to the cloud. It also requires the remote sessions feature on your account.</p>
+    <p>When to delegate, per best practices: tangential tasks, documentation updates, refactoring separate modules. Keep core feature work, debugging and exploration local.</p>
+    <p>Transition: "Besides fleet and delegate, several slash commands spin up specialist agents for you."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-fleet-delegate-workflows.md</p>
+  </aside>
+</article>

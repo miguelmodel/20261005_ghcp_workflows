@@ -1,0 +1,56 @@
+<article class="slide is-dense" data-number="26" data-type="code-example" data-section="Permissions &amp; guardrails">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">A <code>preToolUse</code> policy hook</h1>
+    <div class="slide-main">
+      <div class="code-split is-hook">
+        <figure class="code-figure">
+          <div class="code-head" aria-hidden="true"><span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span><p class="code-lang">json</p></div>
+<pre class="code-block" aria-label="preToolUse hook configuration"><code><span class="t-pun">{</span>
+  <span class="t-key">"version"</span><span class="t-pun">:</span> <span class="t-num">1</span><span class="t-pun">,</span>
+  <span class="t-key">"hooks"</span><span class="t-pun">: {</span>
+    <span class="t-key">"preToolUse"</span><span class="t-pun">: [</span>
+      <span class="t-pun">{</span>
+        <span class="t-key">"type"</span><span class="t-pun">:</span> <span class="t-str">"command"</span><span class="t-pun">,</span>
+        <span class="t-key">"matcher"</span><span class="t-pun">:</span> <span class="t-str">"bash|powershell"</span><span class="t-pun">,</span>
+        <span class="t-key">"bash"</span><span class="t-pun">:</span> <span class="t-str">"./scripts/pre-tool-policy.sh"</span><span class="t-pun">,</span>
+        <span class="t-key">"cwd"</span><span class="t-pun">:</span> <span class="t-str">".github/hooks"</span><span class="t-pun">,</span>
+        <span class="t-key">"timeoutSec"</span><span class="t-pun">:</span> <span class="t-num">15</span>
+      <span class="t-pun">}</span>
+    <span class="t-pun">]</span>
+  <span class="t-pun">}</span>
+<span class="t-pun">}</span></code></pre>
+        </figure>
+        <div class="side-stack">
+          <p class="hook-lead">The script reads the tool call on stdin and prints one decision:</p>
+          <figure class="code-figure">
+            <div class="code-head" aria-hidden="true"><span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span><p class="code-lang">stdout</p></div>
+<pre class="code-block code-wrap" aria-label="Hook decision output"><code><span class="t-pun">{</span><span class="t-key">"permissionDecision"</span><span class="t-pun">:</span><span class="t-kw">"deny"</span><span class="t-pun">,</span><span class="t-key">"permissionDecisionReason"</span><span class="t-pun">:</span><span class="t-str">"Privilege escalation is blocked by repository policy."</span><span class="t-pun">}</span></code></pre>
+          </figure>
+        </div>
+      </div>
+      <p class="status-line"><span class="status-tag">Status</span> <code>matcher</code> support <span class="nw"><span class="badge badge-shipped">shipped in CLI v1.0.36 (<span class="nw">2026-04-24</span>)</span>;</span> exit code <code>2</code> as a deny <span class="nw"><span class="badge badge-shipped">shipped in CLI v1.0.70 (<span class="nw">2026-07-09</span>)</span>;</span> no separate status labels.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>File 1 is <code>.github/hooks/copilot-cli-policy.json</code>, adapted from GitHub's official hooks tutorial. The <code>matcher</code> is a regex wrapped as <code>^(?:PATTERN)$</code>, so this hook fires only for shell tools.</p>
+    <p>The script (<code>.github/hooks/scripts/pre-tool-policy.sh</code>, full version in the permissions research) does four things:</p>
+    <ul>
+      <li>Denies privilege escalation (<code>sudo</code>, <code>su</code>, <code>runas</code>).</li>
+      <li>Denies download-and-execute patterns (<code>curl ... | sh</code>).</li>
+      <li>Denies recursive deletion of the filesystem root.</li>
+      <li>Returns <code>ask</code> for <code>git push</code>, forcing a human confirmation.</li>
+    </ul>
+    <p>Implementation details that matter:</p>
+    <ul>
+      <li><code>toolArgs</code> is typed <code>unknown</code> in the reference, but the tutorial says it arrives as a JSON string; a robust script handles both.</li>
+      <li>The script exits non-zero if <code>jq</code> is missing, so it <strong>fails closed</strong>: every shell call would be denied. Make sure <code>jq</code> is installed.</li>
+      <li>Print exactly one JSON object; two objects or invalid JSON count as "no decision".</li>
+      <li>Add a <code>"powershell"</code> entry pointing to an equivalent <code>.ps1</code> script for Windows users.</li>
+      <li>How <code>ask</code> behaves under <code>--allow-all</code> is undocumented; verify it.</li>
+    </ul>
+    <p>Rollout advice from the tutorial: "Start by logging prompts and tool usage without denying execution." Then enforce. You can unit-test the script by piping a sample payload into it before committing.</p>
+    <p>Transition: "Hooks guard individual tool calls. Plan mode guards the whole approach."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-permissions-guardrails.md</p>
+  </aside>
+</article>

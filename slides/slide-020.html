@@ -1,0 +1,62 @@
+<!-- HAND-CRAFTED OVERRIDE — do not regenerate -->
+<article class="slide is-dense" data-number="20" data-type="diagram" data-section="Configuration &amp; MCP">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">MCP layers and precedence</h1>
+    <div class="slide-main">
+      <div class="ladder-layout">
+        <div class="tier-stack">
+          <span class="tier-axis" aria-hidden="true"></span>
+          <p class="tier-cap">Highest priority <span class="tier-cap-note">(same server name → the higher layer wins)</span></p>
+          <ol class="tier-list">
+            <li class="tier-item is-row">
+              <span class="tier-num" aria-hidden="true">1</span>
+              <p class="tier-name">Session</p>
+              <p class="tier-detail"><code>--additional-mcp-config</code> <span class="muted">this run only</span></p>
+            </li>
+            <li class="tier-item is-row">
+              <span class="tier-num" aria-hidden="true">2</span>
+              <p class="tier-name">Plugin</p>
+              <p class="tier-detail">the plugin's MCP config</p>
+            </li>
+            <li class="tier-item is-row">
+              <span class="tier-num" aria-hidden="true">3</span>
+              <p class="tier-name">Workspace</p>
+              <p class="tier-detail"><code>.mcp.json</code> · <code>.github/mcp.json</code> <span class="muted">trusted folders only</span></p>
+            </li>
+            <li class="tier-item is-row">
+              <span class="tier-num" aria-hidden="true">4</span>
+              <p class="tier-name">User</p>
+              <p class="tier-detail"><code>~/.copilot/mcp-config.json</code></p>
+            </li>
+          </ol>
+          <p class="tier-cap">Lowest priority</p>
+        </div>
+        <section class="side-card" aria-labelledby="s20-beside">
+          <h2 id="s20-beside" class="side-card-title">Beside the stack</h2>
+          <ul class="side-list">
+            <li><p><strong>Agent level</strong>: <code>mcp-servers:</code> in an <code>.agent.md</code> → visible only to that agent</p></li>
+            <li><p><strong>Built-in</strong>: GitHub MCP server, available with no configuration</p></li>
+          </ul>
+        </section>
+      </div>
+      <p class="slide-takeaway is-sm">Every MCP tool call needs explicit permission, even read-only ones.</p>
+      <p class="status-line"><span class="status-tag">Status</span> MCP support and the built-in GitHub MCP server <span class="nw"><span class="badge badge-announce">included in the Copilot CLI GA announcement (<span class="nw">2026-02-25</span>)</span>.</span></p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>Quick MCP refresher for newcomers before the precedence rules. MCP uses a client–server model: the Copilot CLI is the host, and it opens one connection per MCP server. Each server exposes tools (plus resources and prompts). The spec defines two transports: <strong>stdio</strong> for a local process on your machine, and <strong>Streamable HTTP</strong> for a remote service. Every configuration file below simply lists servers by name; once connected, each server's tools become callable by the agent, named with the server as a prefix.</p>
+    <p>The command reference: "MCP servers from different sources are merged in priority order (highest first). When servers share a name, the higher-priority source takes precedence."</p>
+    <p>Details by layer:</p>
+    <ul>
+      <li><strong>Session</strong>: <code>--additional-mcp-config=JSON</code> or <code>=@file</code> adds a server for this session only and overrides same-named installed servers. Good for CI. (Listed among new automation flags in the 2026-01-14 changelog.)</li>
+      <li><strong>Workspace</strong>: <code>.mcp.json</code> (per-checkout) and <code>.github/mcp.json</code> (committed, shared). If both sit in the same directory, <code>.mcp.json</code> wins; closer to the working directory wins. These load only after you trust the folder; "They are silently skipped in untrusted directories." In <code>-p</code> mode they need a trusted folder or <code>GITHUB_COPILOT_PROMPT_MODE_WORKSPACE_MCP=true</code>.</li>
+      <li><strong>User</strong>: <code>~/.copilot/mcp-config.json</code>, managed with <code>/mcp add</code> or <code>copilot mcp add</code>.</li>
+      <li><strong>Agent level</strong>: an agent's <code>mcp-servers</code> "scop[es] an MCP server to just that agent". Where agent-level servers rank against the other layers is not documented.</li>
+      <li><strong>Built-in</strong>: the GitHub MCP server. The exact default tool subset, and whether <code>--add-github-mcp-toolset</code> adds to or replaces it, are inconsistently documented; inspect with <code>/mcp show github-mcp-server</code>. The built-in <code>explore</code> agent gets read-only GitHub MCP access.</li>
+    </ul>
+    <p>Gotchas: the CLI doesn't read <code>.vscode/mcp.json</code> (the docs give a <code>jq</code> migration command). With many MCP tools, tool search defers loading definitions; GitHub notes "A few dozen tool definitions can eat 10–20K tokens".</p>
+    <p>Transition: "Here's what a shared, committed MCP file looks like without leaking secrets."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-customization-mcp.md, research/2026-10-05-cli-permissions-guardrails.md, research/2026-10-05-cli-subagent-foundations.md</p>
+  </aside>
+</article>

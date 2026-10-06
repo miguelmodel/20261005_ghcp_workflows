@@ -1,0 +1,44 @@
+<article class="slide" data-number="24" data-type="code-example" data-section="Permissions &amp; guardrails">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Allow and deny: flags and patterns</h1>
+    <div class="slide-main">
+      <figure class="code-figure">
+        <div class="code-head" aria-hidden="true"><span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span><p class="code-lang">shell</p></div>
+<pre class="code-block" aria-label="Permission flag examples"><code><span class="t-com"># Explore, edit and commit; no push, no web fetch, no subagent fan-out (task is not available)</span>
+<span class="t-cmd">copilot</span> <span class="t-flag">--available-tools</span>=<span class="t-str">'bash,edit,view,grep,glob'</span> <span class="t-flag">--allow-tool</span>=<span class="t-str">'shell(git:*)'</span> <span class="t-flag">--deny-tool</span>=<span class="t-str">'shell(git push)'</span>
+
+<span class="t-com"># Everything allowed except rm and git push</span>
+<span class="t-cmd">copilot</span> <span class="t-flag">--allow-all-tools</span> <span class="t-flag">--deny-tool</span>=<span class="t-str">'shell(rm)'</span> <span class="t-flag">--deny-tool</span>=<span class="t-str">'shell(git push)'</span>
+
+<span class="t-com"># All tools from one MCP server except one destructive tool</span>
+<span class="t-cmd">copilot</span> <span class="t-flag">--allow-tool</span>=<span class="t-str">'My-MCP-Server'</span> <span class="t-flag">--deny-tool</span>=<span class="t-str">'My-MCP-Server(tool_name)'</span></code></pre>
+      </figure>
+      <p class="slide-takeaway is-sm">Deny beats allow in rule evaluation, even with <code>--allow-all</code> or saved approvals.</p>
+      <p class="slide-body is-sm">Patterns: <code>shell(...)</code>, <code>write(...)</code>, <code>read(...)</code>, <code>url(...)</code>, <code>memory</code>, <code>SERVER(tool)</code>.</p>
+      <p class="status-line"><span class="status-tag">Status</span> allow/deny flags are documented CLI controls with <span class="nw"><span class="badge badge-nodate">no separate status label</span>;</span> path-scoped <code>write(PATH)</code> deny <span class="nw"><span class="badge badge-shipped">shipped in CLI v1.0.71 (<span class="nw">2026-07-16</span>); no separate status label</span>.</span></p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>The commands are verbatim from the docs; comments added.</p>
+    <p>Two layers:</p>
+    <ul>
+      <li><strong>Visibility</strong>: <code>--available-tools</code> (allow-list) and <code>--excluded-tools</code> (block-list) decide what the model can even see. If a tool isn't available, <code>--allow-tool</code> can't bring it back. Leaving out <code>task</code> stops subagent fan-out; leaving out <code>web_fetch</code> removes the fetch tool.</li>
+      <li><strong>Approval</strong>: <code>--allow-tool</code> runs without a prompt; <code>--deny-tool</code> can't run at all. The docs: "Deny rules always take precedence over allow rules, even when <code>--allow-all</code> is set or a matching approval has been saved."</li>
+    </ul>
+    <p>Pattern details:</p>
+    <ul>
+      <li><code>shell(git:*)</code> matches <code>git push</code> and <code>git pull</code> but not <code>gitea</code>. For <code>git</code> and <code>gh</code> you can name a subcommand: <code>shell(git push)</code>.</li>
+      <li><code>write(PATH)</code> deny rules match an exact path or trailing segment, with "no glob support yet."</li>
+      <li><code>write</code> covers file tools, not shell commands. An allowed <code>npm test</code> or build script can still change a file you denied with <code>write(...)</code>.</li>
+    </ul>
+    <p>Caveats to state honestly:</p>
+    <ul>
+      <li><code>permissionRequest</code> hooks run before rule evaluation and can short-circuit it. Whether a hook's <code>allow</code> can override <code>--deny-tool</code> is undocumented; don't treat a deny flag as an absolute floor if such hooks are loaded.</li>
+      <li><code>--allow-all</code> / <code>--yolo</code>: "strongly recommended that you only use these options in an isolated environment", and never via a shell alias. <code>COPILOT_ALLOW_ALL=true</code> also trusts the working directory and loads its hooks and MCP servers.</li>
+      <li>In <code>-p</code> mode, anything not pre-approved is denied automatically.</li>
+    </ul>
+    <p>Transition: "Rules are static. When you need logic, you reach for hooks."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-permissions-guardrails.md, research/2026-10-05-cli-fleet-delegate-workflows.md</p>
+  </aside>
+</article>

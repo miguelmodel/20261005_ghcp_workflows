@@ -1,0 +1,76 @@
+<!-- HAND-CRAFTED OVERRIDE — do not regenerate -->
+<article class="slide is-dense" data-number="30" data-type="diagram" data-section="Parallel &amp; delegated workflows">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title"><code>/fleet</code>: an orchestrator and parallel waves</h1>
+    <div class="slide-main">
+      <div class="fleet">
+        <svg class="fleet-wires" viewBox="0 0 1680 540" aria-hidden="true" focusable="false">
+          <defs>
+            <marker id="s30-ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path class="wire-head" d="M0 0 L10 5 L0 10 z"/>
+            </marker>
+          </defs>
+          <path class="wire" d="M165 60 L165 90" marker-end="url(#s30-ah)"/>
+          <path class="wire" d="M562 128 L632 128" marker-end="url(#s30-ah)"/>
+          <path class="wire" d="M562 438 L632 438" marker-end="url(#s30-ah)"/>
+          <path class="wire is-dashed" d="M1160 258 L1160 330" marker-end="url(#s30-ah)"/>
+        </svg>
+
+        <div class="fleet-cmd"><p><code>/fleet &lt;task&gt;</code></p></div>
+
+        <section class="fleet-orch" aria-labelledby="s30-orch">
+          <h2 id="s30-orch" class="fleet-orch-title">Orchestrator (main agent)</h2>
+          <ol class="fleet-steps">
+            <li><span class="step-badge" aria-hidden="true">1</span><p>split the task into work items and dependencies</p></li>
+            <li><span class="step-badge" aria-hidden="true">2</span><p>dispatch independent items together</p></li>
+            <li><span class="step-badge" aria-hidden="true">3</span><p>poll for completion</p></li>
+            <li><span class="step-badge" aria-hidden="true">4</span><p>verify and combine the results</p></li>
+          </ol>
+        </section>
+
+        <section class="wave wave-1" aria-label="Wave 1">
+          <div class="wave-head">
+            <p class="wave-label">Wave 1</p>
+            <p class="wave-note">each in its own context</p>
+          </div>
+          <ul class="wave-agents">
+            <li class="sub-agent"><p class="sub-agent-name">subagent A</p></li>
+            <li class="sub-agent"><p class="sub-agent-name">subagent B</p></li>
+            <li class="sub-agent"><p class="sub-agent-name">subagent C</p></li>
+          </ul>
+          <div class="fs-bar">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h.01"/></svg>
+            <p>one shared filesystem, no file locking</p>
+          </div>
+        </section>
+
+        <section class="wave wave-2" aria-label="Wave 2">
+          <div class="wave-head">
+            <p class="wave-label">Wave 2</p>
+          </div>
+          <div class="sub-agent">
+            <p class="sub-agent-name">subagent D</p>
+            <p class="sub-agent-note">(depends on A, B and C)</p>
+          </div>
+        </section>
+      </div>
+      <div class="callout is-warning" style="width: 100%; max-width: 1680px"><p>Two subagents editing the same file: the last one to finish wins, silently.</p></div>
+      <p class="status-line"><span class="status-tag">Status</span> <code>/fleet</code> <span class="nw"><span class="badge badge-shipped">shipped in CLI v0.0.411 (<span class="nw">2026-02-17</span>); no separate status label</span>.</span></p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>Quote: "The /fleet slash command in Copilot CLI is designed to take an implementation plan and break it down into smaller, independent tasks that can be executed in parallel by subagents." The GitHub Blog (2026-04-01) describes the loop as: decompose with dependencies, find what can run in parallel, dispatch independent items as background subagents, poll and dispatch the next wave, then verify and combine. The changelog confirms "/fleet orchestrator validates subagent work" (v0.0.412).</p>
+    <p>Key properties:</p>
+    <ul>
+      <li>"Each sub-agent gets its own context window but shares the same filesystem." Same-file edits: "the last one to finish wins—silently. No error, no merge, just an overwrite." So give each subagent its own files.</li>
+      <li>"Sub-agents can't see the orchestrator's conversation history." Make the <code>/fleet</code> prompt self-contained.</li>
+      <li>Custom agents can be specialists inside a fleet: <code>Use @test-writer to create comprehensive unit tests for ...</code>.</li>
+      <li>The fleet page says subagents use "a low-cost AI model" by default, which doesn't match the built-in defaults table; check with <code>/usage</code> what actually ran.</li>
+      <li>Parallelism is capped by a concurrency limit. The reference documents per-plan rows (2, 4, 8, 16, 32) plus a usage-based-billing row of 32; which applies today is unresolved. Rehearse on your account.</li>
+    </ul>
+    <p>When not to use it: "For strictly linear, single-file work, regular Copilot CLI prompts are simpler and just as fast. Fleet adds coordination overhead." <code>/fleet</code> and autopilot are separate: you can use <code>/fleet</code> interactively, and autopilot doesn't imply parallelism. The documented <code>--fleet</code> command-line option has no dated release evidence, so this deck uses the <code>/fleet</code> slash command instead.</p>
+    <p>Transition: "How much runs in parallel depends almost entirely on how you write the prompt."</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-fleet-delegate-workflows.md, research/2026-10-05-cli-subagent-foundations.md, research/2026-10-05-copilot-plans-pricing.md</p>
+  </aside>
+</article>

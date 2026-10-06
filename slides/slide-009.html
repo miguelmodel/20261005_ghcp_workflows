@@ -1,0 +1,39 @@
+<article class="slide" data-number="9" data-type="comparison" data-section="Built-in subagents">
+  <div class="slide-bg"></div>
+  <div class="slide-content">
+    <h1 class="slide-title">Review specialists</h1>
+    <div class="slide-main">
+      <table class="slide-table table-md compare-table">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 16%"><span class="visually-hidden">Aspect</span></th>
+            <th scope="col" style="width: 28%"><code>/review</code></th>
+            <th scope="col" style="width: 28%"><code>/security-review</code></th>
+            <th scope="col"><code>/rubber-duck</code></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Agent</th><td><code>code-review</code></td><td><code>security-review</code></td><td><code>rubber-duck</code></td></tr>
+          <tr><th scope="row">Looks at</th><td>Staged, unstaged and branch changes</td><td>Active local changes</td><td>Plans, code and tests</td></tr>
+          <tr><th scope="row">Reports</th><td>Bugs, security, logic errors; never style</td><td>Only &gt;80%-confidence exploitable issues</td><td>Blocking, non-blocking, suggestions</td></tr>
+          <tr><th scope="row">Distinctive trait</th><td>Scope with a prompt, path or pattern</td><td>11 vulnerability categories</td><td>Runs on a different model family</td></tr>
+          <tr><th scope="row">Edits files?</th><td>No</td><td>No</td><td>No</td></tr>
+          <tr><th scope="row">Status</th><td class="status-cell"><span class="badge badge-announce">Included in the Copilot CLI GA announcement (<span class="nw">2026-02-25</span>)</span></td><td class="status-cell"><span class="badge badge-preview">Public preview (experimental), announced <span class="nw">2026-06-10</span></span></td><td class="status-cell"><span class="badge badge-ga">GA (<span class="nw">2026-06-02</span>)</span></td></tr>
+        </tbody>
+      </table>
+      <p class="slide-takeaway is-sm">Review agents never forward a full review to another review agent.</p>
+    </div>
+  </div>
+  <aside class="speaker-notes" hidden>
+    <p>These are your built-in "reviewer" half of a creator↔reviewer pattern.</p>
+    <ul>
+      <li><strong><code>/review</code></strong> runs the <code>code-review</code> agent on staged and unstaged changes and branch diffs. You can narrow it with a prompt, path or file pattern. Commands it proposes (for example, inspecting a diff) still go through approval.</li>
+      <li><strong><code>/security-review</code></strong> is a focused pass on active local changes, prioritized findings with remediation suggestions. The launch post calls it a Copilot-driven scan that doesn't depend on code scanning, Dependabot or secret scanning, so pair it with those; it is not a full audit.</li>
+      <li><strong><code>/rubber-duck</code></strong>: "A key design feature of the rubber duck agent is that it deliberately runs on a different AI model from the one driving your session." Copilot consults it automatically at high-leverage moments (after planning, mid-implementation, after writing tests, after repeated failures) and usually skips it for small changes. You can also ask: "Rubber duck your plan." It adds latency and model usage.</li>
+    </ul>
+    <p>The footer rule: <code>code-review</code> and <code>security-review</code> never hand a whole review to another review agent. <code>code-review</code> can still pass security-focused portions to <code>security-review</code>, and both can delegate narrow fact-finding to <code>explore</code>.</p>
+    <p>Likely question: "Is the rubber duck always on?" It runs only when a suitable critic model is available; <code>builtInAgents.rubberDuckAutoInvoke</code> (default false) opts into extra nudges.</p>
+    <p>Transition: "The rubber duck picks its own model. How does every other subagent get its model?"</p>
+    <p class="sn-sources">Sources: research/2026-10-05-cli-subagent-foundations.md, research/2026-10-05-cli-permissions-guardrails.md, research/2026-10-05-cli-fleet-delegate-workflows.md</p>
+  </aside>
+</article>
